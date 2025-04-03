@@ -1,0 +1,155 @@
+
+.customer-reviews-form-container {
+    max-width: 600px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#customer-reviews-form {
+    width: 580px;
+}
+
+h3 {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    height: 80px;
+}
+
+.rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: start;
+            font-size: 24px;
+            color: #ccc; /* Default star color */
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .rating label:hover,
+        .rating label:hover ~ label {
+            color: #ffcc00; /* Hover color for stars */
+        }
+
+        .rating input:checked ~ label {
+            color: #ffcc00; /* Selected star color */
+        }
+
+.submit-button {
+    width: 100%;
+    background: orange;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background: darkorange;
+}
+
+
+
+.review-list {
+    max-width: 700px;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+
+.review-item {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.review-content p {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.review-actions {
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+}
+
+.like-button, .dislike-button {
+    cursor: pointer;
+    padding: 5px;
+}
+
+.admin-response {
+    background: #f7f7f7;
+    padding: 10px;
+    border-left: 3px solid #ff6600;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.stars {
+    display: inline-flex;
+    align-items: center;
+    font-size: 16px;
+}
+
+.star {
+    font-size: 18px;
+    transition: color 0.2s ease-in-out;
+}
+
+.star.filled {
+    color: gold; /* Yellow for selected stars */
+}
+
+.star.empty {
+    color: lightgray; /* Gray for unselected stars */
+}
+
+
+
+
+
+
+
