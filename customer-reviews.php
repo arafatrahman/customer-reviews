@@ -53,8 +53,5 @@ include_once CR_PLUGIN_PATH . 'includes/views/review-view.php';
 include_once CR_PLUGIN_PATH . 'includes/model/review-model.php';
 include_once CR_PLUGIN_PATH . 'includes/controller/review-controller.php';
 
-include_once CR_PLUGIN_PATH . 'includes/review-settings.php';
-
-
   
 

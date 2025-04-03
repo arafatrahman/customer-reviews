@@ -118,7 +118,7 @@ class Review_View {
     }
     private function shortcode() {
         echo '<p>Use the following shortcode to display the review form on any post or page:</p>';
-        echo '<pre>[easy_review_form]</pre>';
+        echo '<pre>[customer_reviews]</pre>';
     }
 
   

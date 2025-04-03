@@ -13,7 +13,10 @@ class Review_Controller {
         add_action('admin_menu', [$this, 'add_admin_menu']);
 
         add_action('wp_enqueue_scripts', [$this,'review_enqueue_scripts']);
-        add_shortcode('easy_review_form', [$this,'easy_review_form_shortcode']);
+        add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
+
+
+        add_shortcode('customer_reviews', [$this,'customer_reviews_shortcode']);
 
         add_action('wp_ajax_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
@@ -21,7 +24,7 @@ class Review_Controller {
         
     }
 
-    public function easy_review_form_shortcode() {
+    public function customer_reviews_shortcode() {
         ob_start();
         include CR_PLUGIN_PATH . 'includes/views/customer-reviews-form.php';
         return ob_get_clean();
@@ -53,53 +56,27 @@ class Review_Controller {
 
     // Display Review Settings page
     public function display_settings_page() {
-        
-        
-    
-    echo '<div class="wrap">';
-    echo '<h1>Review Settings</h1>';
-    $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-
-    echo '<h2 class="nav-tab-wrapper">';
-    echo '<a href="?page=wp-review-settings&tab=general" class="nav-tab ' . ($active_tab === 'general' ? 'nav-tab-active' : '') . '">General</a>';
-    echo '<a href="?page=wp-review-settings&tab=advanced" class="nav-tab ' . ($active_tab === 'advanced' ? 'nav-tab-active' : '') . '">Advanced</a>';
-    echo '</h2>';
-
-    echo '<form method="post" action="">';
-    if ($active_tab === 'general') {
-        echo '<h3>General Settings</h3>';
-        echo '<label for="enable_reviews">';
-        echo '<input type="checkbox" name="enable_reviews" id="enable_reviews" value="1" ' . checked(1, get_option('customer_reviews_settings')['enable_reviews'], false) . '>';
-        echo ' Enable Reviews</label><br>';
-        echo '<label for="default_status">Default Status:</label>';
-        echo '<select name="default_status" id="default_status">';
-        echo '<option value="pending" ' . selected('pending', get_option('customer_reviews_settings')['default_status'], false) . '>Pending</option>';
-        echo '<option value="approved" ' . selected('approved', get_option('customer_reviews_settings')['default_status'], false) . '>Approved</option>';
-        echo '</select>';
-    } elseif ($active_tab === 'advanced') {
-        echo '<h3>Advanced Settings</h3>';
-        echo '<p>Additional advanced settings can be added here.</p>';
-    }
-    submit_button('Save Settings');
-    echo '</form>';
-    echo '</div>';
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+ 
+        $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
+        include CR_PLUGIN_PATH . 'includes/views/review-settings.php';
         $this->save_review_settings();
-    }
+    
 
 }
 
     // Save Review Settings
     private function save_review_settings() {
-        $settings = [
-            'enable_reviews' => isset($_POST['enable_reviews']) ? 1 : 0,
-            'default_status' => sanitize_text_field($_POST['default_status']),
-        ];
 
-        update_option('customer_reviews_settings', $settings);
-
-        echo '<div class="updated"><p>Settings saved successfully.</p></div>';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $settings = [
+                'reviews_per_page' => intval(sanitize_text_field($_POST['reviews_per_page'] ?? 10)),
+                'fields' => array_map(function($field) {
+                    return array_map('sanitize_text_field', $field);
+                }, $_POST['fields'] ?? [])
+            ];
+            update_option('customer_reviews_settings', $settings);
+            echo '<script>location.reload();</script>';
+        }
     }
 
 
@@ -139,6 +116,16 @@ class Review_Controller {
         wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], null, true);
         wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
         wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], null);
+        
+
+    }
+
+    public function wp_review_admin_styles() {
+        $screen = get_current_screen();
+        
+        if ($screen && $screen->id === 'all-reviews_page_wp-review-settings') {
+            wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], null);
+        }
     }
 
     private function sanitize_post_data($data) {
