@@ -109,52 +109,65 @@ class Review_Controller {
             $this->model->delete_reviews($review_ids);
          }
       }
-  }
+}
 
     // Enqueue scripts and styles
     public function review_enqueue_scripts() {
-        wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], null, true);
-        wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-        wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], null);
-        
-
+            wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], null, true);
+            wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], null);
     }
 
     public function wp_review_admin_styles() {
-        $screen = get_current_screen();
-        
-        if ($screen && $screen->id === 'all-reviews_page_wp-review-settings') {
-            wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], null);
-        }
+            $screen = get_current_screen();
+            
+            if ($screen && $screen->id === 'all-reviews_page_wp-review-settings') {
+                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], null);
+            }
     }
 
     private function sanitize_post_data($data) {
-        return array_map('sanitize_text_field', $data);
+            return array_map('sanitize_text_field', $data);
     }
 
     public function submit_review() {
-    $data = $this->sanitize_post_data($_POST);
-    $review_data = [
-            'author_name' => $data['author_name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'rating' => $data['rating'],
-            'comments' => $data['comments'],
-            'status' => 'pending'
-    ];
+            $data = $this->sanitize_post_data($_POST);
+            print_r($data);
+           
+            $review_data = [
+                    'author_name' => $data['author_name'],
+                    'email' => $data['email'],
+                    'phone' => $data['phone'],
+                    'city' => $data['city'],
+                    'state' => $data['state'],
+                    'rating' => $data['rating'],
+                    'comments' => $data['comments'],
+                    'status' => 'pending'
+            ];
 
+            $this->model->add_review($review_data);
 
+            // Notify admin via email
+            $this->notify_admin_of_pending_review($review_data);
 
-    $this->model->add_review($review_data);
+            // Send success response
+            wp_send_json([
+                    'success' => true,
+                    'message' => 'Review submitted successfully!',
+                    'reviews' => $this->get_review_list()
+            ]);
+    }
 
-    wp_send_json([
-        'success' => true,
-        'message' => 'Review submitted successfully!',
-        'reviews' => $this->get_review_list()
-    ]);
-}
+    private function notify_admin_of_pending_review($review_data) {
+        $admin_email = get_option('admin_email');
+        $subject = 'New Pending Review Submitted';
+        $message = "A new review has been submitted and is pending approval.\n\n";
+
+        $message .= "Please log in to the admin panel to review and approve it.\n";
+        $message .= "Pending reviews can be viewed here: " . admin_url('admin.php?page=wp-review-plugin&status=pending');
+
+        wp_mail($admin_email, $subject, $message);
+    }
 
 public function get_review_list() {
     ob_start();

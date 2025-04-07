@@ -11,7 +11,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
     $reviews_per_page = get_option('customer_reviews_settings')['reviews_per_page'] ?? 10;
     $reviews = array_slice($reviews, 0, $reviews_per_page);
 
-    print_r(get_option('customer_reviews_settings'));
+
 
     foreach ($reviews as $review) : ?>
         <div class="review-item">

@@ -2,20 +2,22 @@
     <h1>Customer Review Settings</h1>
 
     <h2 class="nav-tab-wrapper">
-        <a href="?page=wp-review-settings&tab=general" class="nav-tab <?= ($active_tab === 'general' ? 'nav-tab-active' : '') ?>">General</a>
-        <a href="?page=wp-review-settings&tab=review_form" class="nav-tab <?= ($active_tab === 'review_form' ? 'nav-tab-active' : '') ?>">Review Form Settings</a>
-        <a href="?page=wp-review-settings&tab=display" class="nav-tab <?= ($active_tab === 'display' ? 'nav-tab-active' : '') ?>">Display Settings</a>
+        <a href="#" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
+        <a href="#" class="nav-tab" onclick="showTab(event, 'review_form')">Review Form Settings</a>
+        <a href="#" class="nav-tab" onclick="showTab(event, 'display')">Display Settings</a>
     </h2>
 
     <form method="post" action="" class="wp-review-settings-form">
-        <?php if ($active_tab === 'general'): ?>
-            <div class="form-group">
-                <h3>General Settings</h3>
-                <label for="reviews_per_page">Reviews shown per page:</label>
-                <input type="number" name="reviews_per_page" id="reviews_per_page" 
-                    value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 10) ?>">
-            </div>
-        <?php elseif ($active_tab === 'review_form'): ?>
+        <!-- General Settings -->
+        <div class="form-group tab-section" id="tab-general">
+            <h3>General Settings</h3>
+            <label for="reviews_per_page">Reviews shown per page:</label>
+            <input type="number" name="reviews_per_page" id="reviews_per_page" 
+                value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 10) ?>">
+        </div>
+
+        <!-- Review Form Settings -->
+        <div class="tab-section" id="tab-review_form" style="display:none;">
             <h3>Review Form Settings</h3>
             <?php 
             $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment'];
@@ -30,22 +32,28 @@
                     </div>
                 </fieldset>
             <?php endforeach; ?>
-        <?php elseif ($active_tab === 'display'): ?>
-            <div class="form-group">
-                  <h3>Display Settings</h3>
+        </div>
 
-                                  
-                  <div class="shortcode-section">
-                        <label for="shortcode">Shortcode:</label>
-                        <input type="text" id="shortcode" value="[customer_reviews]" readonly>
-                        <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[customer_reviews]')">Copy</button>
-                       
-                  </div>
-
-                  
+        <!-- Display Settings -->
+        <div class="form-group tab-section" id="tab-display" style="display:none;">
+            <h3>Display Settings</h3>
+            <div class="shortcode-section">
+                <label for="shortcode">Shortcode:</label>
+                <input type="text" id="shortcode" value="[customer_reviews]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[customer_reviews]')">Copy</button>
             </div>
-        <?php endif; ?>
+        </div>
 
         <?php submit_button('Save Settings', 'primary', 'submit', true); ?>
     </form>
 </div>
+
+<script>
+function showTab(e, tabId) {
+    e.preventDefault();
+    document.querySelectorAll('.tab-section').forEach(tab => tab.style.display = 'none');
+    document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('nav-tab-active'));
+    document.getElementById('tab-' + tabId).style.display = 'block';
+    e.currentTarget.classList.add('nav-tab-active');
+}
+</script>
