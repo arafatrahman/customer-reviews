@@ -56,9 +56,9 @@ class Review_View {
                 $stars = str_repeat('⭐', $review->rating);
                 echo "<tr>
                         <th scope='row' class='check-column'><input type='checkbox' name='review_ids[]' value='{$review->id}' /></th>
-                        <td>{$review->author_name}</td>
+                        <td>{$review->name}</td>
                         <td>{$stars}</td>
-                        <td>{$review->comments}</td>
+                        <td>{$review->comment}</td>
                         <td><a href='?page=wp-review-plugin&status={$review->status}' class='review-status-link'>{$review->status}</a></td>
                       </tr>";
             }

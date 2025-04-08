@@ -15,6 +15,7 @@ jQuery(document).ready(function ($) {
             method: "POST",
             data: formData,
             success: function (data) {
+               
 
                 console.log("Response:", data);
 

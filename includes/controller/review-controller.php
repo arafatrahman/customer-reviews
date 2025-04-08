@@ -113,16 +113,16 @@ class Review_Controller {
 
     // Enqueue scripts and styles
     public function review_enqueue_scripts() {
-            wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], null, true);
+            wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
             wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], null);
+            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], '1.0.0');
     }
 
     public function wp_review_admin_styles() {
             $screen = get_current_screen();
             
             if ($screen && $screen->id === 'all-reviews_page_wp-review-settings') {
-                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], null);
+                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], '1.0.0');
             }
     }
 
@@ -132,16 +132,15 @@ class Review_Controller {
 
     public function submit_review() {
             $data = $this->sanitize_post_data($_POST);
-            print_r($data);
-           
+
             $review_data = [
-                    'author_name' => $data['author_name'],
+                    'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
                     'city' => $data['city'],
                     'state' => $data['state'],
                     'rating' => $data['rating'],
-                    'comments' => $data['comments'],
+                    'comment' => $data['comment'],
                     'status' => 'pending'
             ];
 

@@ -30,13 +30,13 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 }
                 ?>   
                 
-                by <?= esc_html($review->author_name); ?> </span>
+                by <?= esc_html($review->name); ?> </span>
                
                 <span class="review-author"></span>
                 <span class="review-date"><?= human_time_diff(strtotime($review->created_at), current_time('timestamp')) . ' ago'; ?></span>
             </div>
             <div class="review-content">
-                <p><?= esc_html($review->comments); ?></p>
+                <p><?= esc_html($review->comment); ?></p>
             </div>
             <?php if (!empty($review->admin_reply)) : ?>
                 <div class="admin-response">
