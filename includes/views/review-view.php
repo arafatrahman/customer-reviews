@@ -84,7 +84,7 @@ class Review_View {
         echo '</form>';
     
         // Add the popup HTML
-        echo $review->admin_reply . '<div id="reply-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
+        echo '<div id="cr-reply-popup" style="display:none;position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); z-index:1000;">
                 <h2>Reply to Review</h2>
                 <form id="reply-form">
                     <input type="hidden" name="review_id" id="reply-review-id" value="">
@@ -98,24 +98,7 @@ class Review_View {
     
         // Add JavaScript for popup functionality
         echo "<script>
-        document.querySelectorAll('.reply-now').forEach(button => {
-            button.addEventListener('click', function() {
-            console.log(this.dataset);
-                document.getElementById('reply-review-id').value = this.dataset.reviewId;
-               document.getElementById('reply-review-author').textContent = this.dataset.reviewAuthor;
-            document.getElementById('reply-message').value = this.dataset.replyMessage || '';
-                document.getElementById('reply-popup').style.display = 'block';
-            });
-        });
-    
-        document.getElementById('close-reply-popup').addEventListener('click', function() {
-            document.getElementById('reply-popup').style.display = 'none';
-        });
-    
-        document.getElementById('select-all').addEventListener('click', function() {
-            let checkboxes = document.querySelectorAll(\"input[name='review_ids[]']\");
-            checkboxes.forEach(cb => cb.checked = this.checked);
-        });
+        
         </script>";
     
         echo '</div>';

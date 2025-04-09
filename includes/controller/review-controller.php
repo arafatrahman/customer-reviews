@@ -20,9 +20,12 @@ class Review_Controller {
 
         add_action('wp_ajax_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
-        add_action('wp_ajax_admin_reply_review', [$this, 'admin_reply_review']);
+        add_action('wp_ajax_save_review_reply', [$this, 'save_review_reply']);
+        add_action('wp_ajax_nopriv_save_review_reply', [$this, 'save_review_reply']);
         
     }
+
+
 
     public function customer_reviews_shortcode() {
         ob_start();
@@ -115,15 +118,18 @@ class Review_Controller {
     public function review_enqueue_scripts() {
             wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
             wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/review-style.css', [], '1.0.0');
+            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/cr-frontend.css', [], '1.0.0');
     }
 
     public function wp_review_admin_styles() {
             $screen = get_current_screen();
             
             if ($screen && $screen->id === 'all-reviews_page_wp-review-settings') {
-                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/admin-review-style.css', [], '1.0.0');
+                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/cr-admin.css', [], '1.0.0');
             }
+            
+            wp_enqueue_script('cr-admin-script', CR_PLUGIN_ASSETS . 'js/cr-admin.js', ['jquery'], '1.0.0', true);
+            wp_localize_script('cr-admin-script', 'cradmin_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
     }
 
     private function sanitize_post_data($data) {
@@ -168,6 +174,8 @@ class Review_Controller {
         wp_mail($admin_email, $subject, $message);
     }
 
+
+
 public function get_review_list() {
     ob_start();
     include plugin_dir_path(__FILE__) . '../views/review-list.php';
@@ -176,9 +184,9 @@ public function get_review_list() {
 
 
 
-public function admin_reply_review() {
+public function save_review_reply() {
     $id = intval($_POST['review_id']);
-    $reply = sanitize_textarea_field($_POST['admin_reply']);
+    $reply = sanitize_textarea_field($_POST['reply_message']);
 
     $this->model->update_review($id, ['admin_reply' => $reply]);
 

@@ -43,6 +43,60 @@ $reviews = (new Review_Model())->get_reviews('approved');
                     <strong>Author Response</strong>
                     <p><?= esc_html($review->admin_reply); ?></p>
                 </div>
+                <div class="customer-reply">
+                    <strong>Your Reply</strong>
+                    <form method="post" action="">
+                        <textarea name="customer_reply" rows="3" placeholder="Write your reply here..."></textarea>
+                        <input type="hidden" name="review_id" value="<?= esc_attr($review->id); ?>">
+                        <button type="submit">Submit Reply</button>
+                    </form>
+                </div>
+                <style>
+                    .customer-reply {
+                        margin-top: 15px;
+                        padding: 10px;
+                        border: 1px solid #ddd;
+                        border-radius: 5px;
+                        background-color: #f9f9f9;
+                    }
+
+                    .customer-reply strong {
+                        display: block;
+                        margin-bottom: 10px;
+                        font-size: 14px;
+                        color: #333;
+                    }
+
+                    .customer-reply form {
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    .customer-reply textarea {
+                        width: 96%;
+                        padding: 8px;
+                        margin-bottom: 10px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                        resize: vertical;
+                        font-size: 14px;
+                    }
+
+                    .customer-reply button {
+                        align-self: flex-start;
+                        padding: 8px 15px;
+                        background-color: #0073aa;
+                        color: #fff;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        font-size: 14px;
+                    }
+
+                    .customer-reply button:hover {
+                        background-color: #005177;
+                    }
+                </style>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
