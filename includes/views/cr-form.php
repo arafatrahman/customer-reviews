@@ -9,13 +9,17 @@
         $settings = get_option('customer_reviews_settings')['fields'] ?? [];
 
         foreach ($fields as $field): 
+
+            
             $field_key = strtolower($field);
             $is_required = $settings[$field]['require'] ?? 0;
             $is_shown = $settings[$field]['show'] ?? 0;
+            $label_name = $settings[$field]['label'] ?? $field;
+            
 
             if ($is_shown): ?>
                 <div class="form-group">
-                    <label><?= esc_html($field) ?></label>
+                    <label><?= esc_html($label_name) ?></label>
                     <?php if ($field === 'Comment'): ?>
                         <textarea name="<?= esc_attr($field_key) ?>" <?= $is_required ? 'required' : '' ?>></textarea>
                     <?php else: ?>
@@ -40,7 +44,7 @@
     </form>
     <p id="review-message"></p>
     <h3>Previous Reviews</h3>
-    <div id="reviews-container"><?php include CR_PLUGIN_PATH . 'includes/views/review-list.php'; ?></div>
+    <div id="reviews-container"><?php include CR_PLUGIN_PATH . 'includes/views/cr-list.php'; ?></div>
 </div>
 
 <?php if (!defined('ABSPATH')) exit; ?>

@@ -23,7 +23,11 @@
             $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment'];
             foreach ($fields as $field): ?>
                 <fieldset>
-                    <legend><?= esc_html($field) ?></legend>
+                    <legend>
+                        <input type="text" name="fields[<?= esc_attr($field) ?>][label]" 
+                            value="<?= esc_attr(get_option('customer_reviews_settings')['fields'][$field]['label'] ?? $field) ?>" 
+                            placeholder="<?= esc_attr($field) ?>">
+                    </legend>
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="fields[<?= esc_attr($field) ?>][require]" value="1"
                             <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['require'] ?? 0, false) ?>> Require</label>

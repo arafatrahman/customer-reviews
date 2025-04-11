@@ -15,11 +15,8 @@ jQuery(document).ready(function ($) {
             method: "POST",
             data: formData,
             success: function (data) {
-               
 
-                console.log("Response:", data);
-
-                
+                console.log(data);
                 let $message = $("#review-message");
                 if (data.success) {
                     $message.html("✅ Review submitted successfully!").css("color", "green");

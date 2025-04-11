@@ -103,9 +103,6 @@ class Review_View {
     
         echo '</div>';
     }
-
   
-
-    
 }
 ?>

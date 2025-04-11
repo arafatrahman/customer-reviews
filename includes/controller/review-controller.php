@@ -29,7 +29,7 @@ class Review_Controller {
 
     public function customer_reviews_shortcode() {
         ob_start();
-        include CR_PLUGIN_PATH . 'includes/views/customer-reviews-form.php';
+        include CR_PLUGIN_PATH . 'includes/views/cr-form.php';
         return ob_get_clean();
 
     }
@@ -138,14 +138,15 @@ class Review_Controller {
 
     public function submit_review() {
             $data = $this->sanitize_post_data($_POST);
-
+        
             $review_data = [
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
+                    'website' => $data['website'],
                     'city' => $data['city'],
                     'state' => $data['state'],
-                    'rating' => $data['rating'],
+                    'rating' => intval($data['rating']),
                     'comment' => $data['comment'],
                     'status' => 'pending'
             ];
@@ -178,7 +179,7 @@ class Review_Controller {
 
 public function get_review_list() {
     ob_start();
-    include plugin_dir_path(__FILE__) . '../views/review-list.php';
+    include plugin_dir_path(__FILE__) . '../views/cr-list.php';
     return ob_get_clean();
 }
 
