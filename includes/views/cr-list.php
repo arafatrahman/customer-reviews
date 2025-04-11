@@ -52,52 +52,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
                         <button type="submit"><?php esc_html_e('Submit Reply', 'wp_cr'); ?></button>
                     </form>
                 </div>
-                <style>
-                    .customer-reply {
-                        margin-top: 15px;
-                        padding: 10px;
-                        border: 1px solid #ddd;
-                        border-radius: 5px;
-                        background-color: #f9f9f9;
-                    }
 
-                    .customer-reply strong {
-                        display: block;
-                        margin-bottom: 10px;
-                        font-size: 14px;
-                        color: #333;
-                    }
-
-                    .customer-reply form {
-                        display: flex;
-                        flex-direction: column;
-                    }
-
-                    .customer-reply textarea {
-                        width: 96%;
-                        padding: 8px;
-                        margin-bottom: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                        resize: vertical;
-                        font-size: 14px;
-                    }
-
-                    .customer-reply button {
-                        align-self: flex-start;
-                        padding: 8px 15px;
-                        background-color: #0073aa;
-                        color: #fff;
-                        border: none;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 14px;
-                    }
-
-                    .customer-reply button:hover {
-                        background-color: #005177;
-                    }
-                </style>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
