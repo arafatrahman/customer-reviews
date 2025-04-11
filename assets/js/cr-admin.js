@@ -1,4 +1,7 @@
 jQuery(document).ready(function($) {
+
+
+
       $('.reply-now').on('click', function() {
 
       $('#reply-review-id').val($(this).data('review-id'));
@@ -50,3 +53,8 @@ jQuery(document).ready(function($) {
       $('input[name=\"review_ids[]\"]').prop('checked', isChecked);
       });
   });
+
+
+
+// Example usage: Add this to an element in your HTML
+// <a href="#" onclick="showTab(event, 'general')">General</a>

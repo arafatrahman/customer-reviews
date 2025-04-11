@@ -16,7 +16,8 @@ class Review_Controller {
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
 
 
-        add_shortcode('customer_reviews', [$this,'customer_reviews_shortcode']);
+        add_shortcode('wp_cr_form', [$this,'customer_reviews_form_shortcode']);
+        add_shortcode('wp_cr_lists', [$this,'customer_reviews_list_shortcode']);
 
         add_action('wp_ajax_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
@@ -27,12 +28,7 @@ class Review_Controller {
 
 
 
-    public function customer_reviews_shortcode() {
-        ob_start();
-        include CR_PLUGIN_PATH . 'includes/views/cr-form.php';
-        return ob_get_clean();
-
-    }
+ 
 
     // Add menu pages
     public function add_admin_menu() {
@@ -61,7 +57,7 @@ class Review_Controller {
     public function display_settings_page() {
  
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-        include CR_PLUGIN_PATH . 'includes/views/review-settings.php';
+        include CR_PLUGIN_PATH . 'includes/views/cr-settings.php';
         $this->save_review_settings();
     
 
@@ -166,11 +162,14 @@ class Review_Controller {
 
     private function notify_admin_of_pending_review($review_data) {
         $admin_email = get_option('admin_email');
-        $subject = 'New Pending Review Submitted';
-        $message = "A new review has been submitted and is pending approval.\n\n";
+        $subject = __('New Pending Review Submitted', 'wp_cr');
+        $message = __("A new review has been submitted and is pending approval.\n\n", 'wp_cr');
 
-        $message .= "Please log in to the admin panel to review and approve it.\n";
-        $message .= "Pending reviews can be viewed here: " . admin_url('admin.php?page=wp-review-plugin&status=pending');
+        $message .= __("Please log in to the admin panel to review and approve it.\n", 'wp_cr');
+        $message .= sprintf(
+            __("Pending reviews can be viewed here: %s", 'wp_cr'),
+            admin_url('admin.php?page=wp-review-plugin&status=pending')
+        );
 
         wp_mail($admin_email, $subject, $message);
     }
@@ -194,7 +193,22 @@ public function save_review_reply() {
     wp_send_json(['success' => true, 'reply' => $reply]);
 }
 
+public function customer_reviews_form_shortcode() {
+    ob_start();
+    include CR_PLUGIN_PATH . 'includes/views/cr-form.php';
+    return ob_get_clean();
 
 }
+
+public function customer_reviews_list_shortcode() {
+    ob_start();
+    include CR_PLUGIN_PATH . 'includes/views/cr-list.php';
+    return ob_get_clean();
+}
+
+
+}
+
+
 new Review_Controller();
 ?>

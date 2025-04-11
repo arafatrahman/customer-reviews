@@ -5,7 +5,8 @@ if (!defined('ABSPATH')) {
 }
 $reviews = (new Review_Model())->get_reviews('approved');
 ?>
-
+<div class="customer-reviews-form-container">
+    <div id="reviews-container">
 <div class="review-list">
     <?php
     $reviews_per_page = get_option('customer_reviews_settings')['reviews_per_page'] ?? 10;
@@ -40,15 +41,15 @@ $reviews = (new Review_Model())->get_reviews('approved');
             </div>
             <?php if (!empty($review->admin_reply)) : ?>
                 <div class="admin-response">
-                    <strong>Author Response</strong>
+                    <strong><?php esc_html_e('Author Response', 'wp_cr'); ?></strong>
                     <p><?= esc_html($review->admin_reply); ?></p>
                 </div>
                 <div class="customer-reply">
-                    <strong>Your Reply</strong>
+                    <strong><?php esc_html_e('Your Reply', 'wp_cr'); ?></strong>
                     <form method="post" action="">
                         <textarea name="customer_reply" rows="3" placeholder="Write your reply here..."></textarea>
                         <input type="hidden" name="review_id" value="<?= esc_attr($review->id); ?>">
-                        <button type="submit">Submit Reply</button>
+                        <button type="submit"><?php esc_html_e('Submit Reply', 'wp_cr'); ?></button>
                     </form>
                 </div>
                 <style>
@@ -101,3 +102,4 @@ $reviews = (new Review_Model())->get_reviews('approved');
         </div>
     <?php endforeach; ?>
 </div>
+</div></div>

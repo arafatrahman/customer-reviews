@@ -10,15 +10,15 @@
     <form method="post" action="" class="wp-review-settings-form">
         <!-- General Settings -->
         <div class="form-group tab-section" id="tab-general">
-            <h3>General Settings</h3>
-            <label for="reviews_per_page">Reviews shown per page:</label>
+            <h3><?php esc_html_e('General Settings', 'wp_cr'); ?></h3>
+            <label for="reviews_per_page"><?php esc_html_e('Reviews shown per page:', 'wp_cr'); ?></label>
             <input type="number" name="reviews_per_page" id="reviews_per_page" 
                 value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 10) ?>">
         </div>
 
         <!-- Review Form Settings -->
         <div class="tab-section" id="tab-review_form" style="display:none;">
-            <h3>Review Form Settings</h3>
+            <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
             <?php 
             $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment'];
             foreach ($fields as $field): ?>
@@ -40,11 +40,16 @@
 
         <!-- Display Settings -->
         <div class="form-group tab-section" id="tab-display" style="display:none;">
-            <h3>Display Settings</h3>
+            <h3><?php esc_html_e('Display Settings', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
-                <label for="shortcode">Shortcode:</label>
-                <input type="text" id="shortcode" value="[customer_reviews]" readonly>
-                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[customer_reviews]')">Copy</button>
+                <label for="shortcode">Form Shortcode:</label>
+                <input type="text" id="shortcode" value="[wp_cr_form]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_cr_form]')">Copy</button>
+            </div>
+            <div class="shortcode-section">
+                <label for="shortcode">Review Lists Shortcode:</label>
+                <input type="text" id="shortcode" value="[wp_cr_lists]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_cr_lists]')">Copy</button>
             </div>
         </div>
 

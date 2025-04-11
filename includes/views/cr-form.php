@@ -30,7 +30,7 @@
         endforeach; ?>
 
         <div class="form-group">
-            <label>Rating</label>
+            <label><?php echo esc_html__('Rating', 'wp_cr'); ?></label>
             <div class="rating">
                 <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>
                 <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
@@ -40,11 +40,9 @@
             </div>
         </div>
 
-        <button type="submit" class="submit-button">Submit Review</button>
+        <button type="submit" class="submit-button"><?php echo esc_html__('Submit Review', 'wp_cr'); ?></button>
     </form>
     <p id="review-message"></p>
-    <h3>Previous Reviews</h3>
-    <div id="reviews-container"><?php include CR_PLUGIN_PATH . 'includes/views/cr-list.php'; ?></div>
 </div>
 
 <?php if (!defined('ABSPATH')) exit; ?>
