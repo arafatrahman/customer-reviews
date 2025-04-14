@@ -4,7 +4,7 @@
     <h2 class="nav-tab-wrapper">
         <a href="#" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
         <a href="#" class="nav-tab" onclick="showTab(event, 'review_form')">Review Form Settings</a>
-        <a href="#" class="nav-tab" onclick="showTab(event, 'display')">Display Settings</a>
+        <a href="#" class="nav-tab" onclick="showTab(event, 'display')">Shortcodes</a>
     </h2>
 
     <form method="post" action="" class="wp-review-settings-form">
@@ -13,7 +13,7 @@
             <h3><?php esc_html_e('General Settings', 'wp_cr'); ?></h3>
             <label for="reviews_per_page"><?php esc_html_e('Reviews shown per page:', 'wp_cr'); ?></label>
             <input type="number" name="reviews_per_page" id="reviews_per_page" 
-                value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 10) ?>">
+                value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 12) ?>">
         </div>
 
         <!-- Review Form Settings -->

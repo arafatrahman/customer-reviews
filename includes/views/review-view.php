@@ -88,7 +88,7 @@ class Review_View {
                 <h2>Reply to Review</h2>
                 <form id="reply-form">
                     <input type="hidden" name="review_id" id="reply-review-id" value="">
-                    <p><strong>Author:</strong> <span id="reply-review-author"></span></p>
+                    <p><strong>To:</strong> <span id="reply-review-author"></span></p>
                     <textarea name="reply_message" id="reply-message" rows="5" style="width:100%;" placeholder="Write your reply here..."></textarea>
                     <br><br>
                     <button type="submit" class="button button-primary">Send Reply</button>
