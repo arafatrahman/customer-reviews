@@ -15,6 +15,17 @@
             <input type="number" name="reviews_per_page" id="reviews_per_page" 
                 value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 12) ?>">
 
+                <label for="date_format"><?php esc_html_e('Date Format:', 'wp_cr'); ?></label>
+                <select name="date_format" id="date_format">
+                    <option value="MM/DD/YYYY" <?= selected(get_option('customer_reviews_settings')['date_format'] ?? '', 'MM/DD/YYYY', false) ?>>MM/DD/YYYY</option>
+                    <option value="DD/MM/YYYY" <?= selected(get_option('customer_reviews_settings')['date_format'] ?? '', 'DD/MM/YYYY', false) ?>>DD/MM/YYYY</option>
+                    <option value="YYYY/MM/DD" <?= selected(get_option('customer_reviews_settings')['date_format'] ?? '', 'YYYY/MM/DD', false) ?>>YYYY/MM/DD</option>
+                </select>
+
+                <label for="include_time"><?php esc_html_e('Include Time:', 'wp_cr'); ?></label>
+                <input type="checkbox" name="include_time" id="include_time" value="1" 
+                    <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>>
+
                 <label for="star_color"><?php esc_html_e('Star Color:', 'wp_cr'); ?></label>
                 <input type="color" name="star_color" id="star_color" 
                     value="<?= esc_attr(get_option('customer_reviews_settings')['star_color'] ?? '#fbbc04') ?>">

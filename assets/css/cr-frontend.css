@@ -57,7 +57,9 @@ textarea {
             transition: color 0.2s;
         }
 
-        
+        .review-author{
+    font-size: 16px;
+        }
 
 .submit-button {
     width: 100%;

@@ -17,6 +17,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
     foreach ($reviews as $review) : ?>
         <div class="review-item">
             <div class="review-header">
+            <span class="review-author"> Posted By <?= esc_html($review->name); ?> <?= esc_html($review->city); ?> <?= esc_html($review->state); ?></span>
                 <span class="stars">
                 <?php
                 $total_stars = 5; // Total number of stars
@@ -31,10 +32,35 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 }
                 ?>   
                 
-                by <?= esc_html($review->name); ?> </span>
+                </span>
                
-                <span class="review-author"></span>
-                <span class="review-date"><?= human_time_diff(strtotime($review->created_at), current_time('timestamp')) . ' ago'; ?></span>
+                
+                <?php
+                $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
+                $include_time = get_option('customer_reviews_settings')['include_time'] ?? 0;
+
+                $formatted_date = '';
+                if (!empty($review->created_at)) {
+                    $timestamp = strtotime($review->created_at);
+                    switch ($date_format) {
+                        case 'DD/MM/YYYY':
+                            $formatted_date = date('d/m/Y', $timestamp);
+                            break;
+                        case 'YYYY/MM/DD':
+                            $formatted_date = date('Y/m/d', $timestamp);
+                            break;
+                        case 'MM/DD/YYYY':
+                        default:
+                            $formatted_date = date('m/d/Y', $timestamp);
+                            break;
+                    }
+
+                    if ($include_time) {
+                        $formatted_date .= ' ' . date('H:i', $timestamp);
+                    }
+                }
+                ?>
+               <span class="review-date"><?= esc_html($formatted_date); ?></span>
             </div>
             <div class="review-content">
                 <p><?= esc_html($review->comment); ?></p>

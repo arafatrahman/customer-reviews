@@ -55,10 +55,11 @@ class Review_View {
     
         if (!empty($reviews)) {
             foreach ($reviews as $review) {
+                print_r($review);
                 $stars = str_repeat('⭐', $review->rating);
                 echo "<tr>
                         <th scope='row' class='check-column'><input type='checkbox' name='review_ids[]' value='{$review->id}' /></th>
-                        <td>{$review->name}</td>
+                        <td>{$review->name} <br> {$review->email} {$review->phone} {$review->city}  {$review->state} </td>
                         <td>{$stars}</td>
                         <td>{$review->comment}</td>
                         <td>{$review->admin_reply}</td>
