@@ -69,6 +69,7 @@ class Review_Controller {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settings = [
                 'reviews_per_page' => intval(sanitize_text_field($_POST['reviews_per_page'] ?? 10)),
+                'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),
                 'fields' => array_map(function($field) {
                     return array_map('sanitize_text_field', $field);
                 }, $_POST['fields'] ?? [])
@@ -115,6 +116,21 @@ class Review_Controller {
             wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
             wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
             wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/cr-frontend.css', [], '1.0.0');
+            // Add dynamic CSS
+           
+           $settings = get_option('customer_reviews_settings');
+           $star_color = isset($settings['star_color']) ? sanitize_hex_color($settings['star_color']) : '#fbbc04';
+           $custom_css = "
+               
+               .rating label:hover,
+               .rating label:hover ~ label {
+                   color: {$star_color};
+               }
+               .rating input:checked ~ label {
+                   color: {$star_color};
+               }
+           ";
+           wp_add_inline_style('review-style', $custom_css);
     }
 
     public function wp_review_admin_styles() {

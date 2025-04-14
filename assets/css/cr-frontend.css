@@ -57,14 +57,7 @@ textarea {
             transition: color 0.2s;
         }
 
-        .rating label:hover,
-        .rating label:hover ~ label {
-            color: #ffcc00; /* Hover color for stars */
-        }
-
-        .rating input:checked ~ label {
-            color: #ffcc00; /* Selected star color */
-        }
+        
 
 .submit-button {
     width: 100%;

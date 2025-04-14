@@ -1,6 +1,8 @@
 jQuery(document).ready(function($) {
 
-
+    $('#star_color').on('input', function() {
+        $(this).attr('value', $(this).val());
+    });
 
       $('.reply-now').on('click', function() {
 

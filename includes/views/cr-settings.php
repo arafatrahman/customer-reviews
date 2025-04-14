@@ -14,6 +14,11 @@
             <label for="reviews_per_page"><?php esc_html_e('Reviews shown per page:', 'wp_cr'); ?></label>
             <input type="number" name="reviews_per_page" id="reviews_per_page" 
                 value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 12) ?>">
+
+                <label for="star_color"><?php esc_html_e('Star Color:', 'wp_cr'); ?></label>
+                <input type="color" name="star_color" id="star_color" 
+                    value="<?= esc_attr(get_option('customer_reviews_settings')['star_color'] ?? '#fbbc04') ?>">
+                
         </div>
 
         <!-- Review Form Settings -->
