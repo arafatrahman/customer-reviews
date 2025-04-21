@@ -12,6 +12,75 @@ jQuery(document).ready(function($) {
       $('#cr-reply-popup').show();
       });
 
+    $('.edit-review').on('click', function() {
+       
+        $('#edit-review-id').val($(this).data('review-id'));
+        $('#edit-review-name').val($(this).data('review-author'));
+        $('#edit-review-email').val($(this).data('review-email'));
+        $('#edit-review-phone').val($(this).data('review-phone'));
+        $('#edit-review-website').val($(this).data('review-website'));
+        $('#edit-review-comment').val($(this).data('review-comment'));
+        $('#edit-review-city').val($(this).data('review-city'));
+        $('#edit-review-state').val($(this).data('review-state'));
+        $('#edit-review-status').val($(this).data('review-status'));
+        $('#edit-review-rating').val($(this).data('review-rating'));
+
+        $('#cr-edit-review-popup').show();
+    });
+
+    $('#close-edit-review-popup').on('click', function() {
+        $('#cr-edit-review-popup').hide();
+    });
+
+    $('#update-customer-review').on('click', function(event) {
+        alert('Form submitted!');
+        // Prevent the default form submission
+        event.preventDefault();
+       
+        let reviewId = $('#edit-review-id').val();
+        let reviewName = $('#edit-review-name').val();
+        let reviewEmail = $('#edit-review-email').val();
+        let reviewPhone = $('#edit-review-phone').val();
+        let reviewWebsite = $('#edit-review-website').val();
+        let reviewComment = $('#edit-review-comment').val();
+        let reviewCity = $('#edit-review-city').val();
+        let reviewState = $('#edit-review-state').val();
+        let reviewStatus = $('#edit-review-status').val();
+        let reviewRating = $('#edit-review-rating').val();
+        let reviewTitle = $('#edit-review-title').val();
+        $.ajax({
+            url: cradmin_ajax.ajax_url,
+            method: 'POST',
+            data: {
+                action: 'edit_customer_review',
+                review_id: reviewId,
+                review_name: reviewName,
+                review_email: reviewEmail,
+                review_phone: reviewPhone,
+                review_website: reviewWebsite,
+                review_comment: reviewComment,
+                review_city: reviewCity,
+                review_state: reviewState,
+                review_status: reviewStatus,
+                review_rating: reviewRating,
+                review_title: reviewTitle
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Review updated successfully.');
+                    $('#cr-edit-review-popup').hide();
+                    location.reload();
+                } else {
+                    console.log(response.data);
+                    alert('Failed to update review: ' + response.data);
+                }
+            },
+            error: function() {
+                alert('An error occurred while updating the review.');
+            }
+        });
+    });
+
       $('#close-reply-popup').on('click', function() {
       $('#cr-reply-popup').hide();
       });

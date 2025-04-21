@@ -23,6 +23,9 @@ class Review_Controller {
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_save_review_reply', [$this, 'save_review_reply']);
         add_action('wp_ajax_nopriv_save_review_reply', [$this, 'save_review_reply']);
+
+        add_action('wp_ajax_edit_customer_review', [$this, 'edit_customer_review']);
+        add_action('wp_ajax_nopriv_edit_customer_review', [$this, 'edit_customer_review']);
         
     }
 
@@ -209,6 +212,20 @@ public function save_review_reply() {
     $this->model->update_review($id, ['admin_reply' => $reply]);
 
     wp_send_json(['success' => true, 'reply' => $reply]);
+}
+
+public function edit_customer_review() {
+    updtae_option('sscustomer_reviews_settings', $_POST);
+    
+    $this->model->edit_customer_review($_POST);
+
+
+
+    if ($review) {
+        wp_send_json(['success' => true, 'data' => $_POST]);
+    } else {
+        wp_send_json(['success' => false, 'message' => 'Review not found.']);
+    }
 }
 
 public function customer_reviews_form_shortcode() {
