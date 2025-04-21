@@ -68,7 +68,8 @@ class Review_Model {
     }
 
     public function update_review($id, $data) {
-        return $this->wpdb->update($this->table, $data, ['id' => $id]);
+     
+      return $this->wpdb->update($this->table, $data, ['id' => $id]);
     }
 
     public function delete_review($id) {

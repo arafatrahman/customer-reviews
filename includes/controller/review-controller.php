@@ -215,17 +215,33 @@ public function save_review_reply() {
 }
 
 public function edit_customer_review() {
-    updtae_option('sscustomer_reviews_settings', $_POST);
-    
-    $this->model->edit_customer_review($_POST);
+    $id = intval($_POST['id']);
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $phone = sanitize_text_field($_POST['phone']);
+    $website = sanitize_text_field($_POST['website']);
+    $comment = sanitize_textarea_field($_POST['comment']);
+    $city = sanitize_text_field($_POST['city']);
+    $state = sanitize_text_field($_POST['state']);
+    $status = sanitize_text_field($_POST['status']);
+    $rating = intval($_POST['rating']);
+    $title = sanitize_text_field($_POST['title']);
 
-
-
-    if ($review) {
-        wp_send_json(['success' => true, 'data' => $_POST]);
-    } else {
-        wp_send_json(['success' => false, 'message' => 'Review not found.']);
-    }
+    $data = [
+        'name' => $name,
+        'email' => $email,
+        'phone' => $phone,
+        'website' => $website,
+        'comment' => $comment,
+        'city' => $city,
+        'state' => $state,
+        'status' => $status,
+        'rating' => $rating,
+        'title' => $title,
+    ];
+    $this->model->update_review($id, $data);
+    wp_send_json(['success' => true, 'data' => $data]);
+   
 }
 
 public function customer_reviews_form_shortcode() {

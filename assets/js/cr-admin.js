@@ -22,8 +22,9 @@ jQuery(document).ready(function($) {
         $('#edit-review-comment').val($(this).data('review-comment'));
         $('#edit-review-city').val($(this).data('review-city'));
         $('#edit-review-state').val($(this).data('review-state'));
-        $('#edit-review-status').val($(this).data('review-status'));
+        $('#edit-review-title').val($(this).data('review-status'));
         $('#edit-review-rating').val($(this).data('review-rating'));
+        $('#edit-review-title').val($(this).data('review-title'));
 
         $('#cr-edit-review-popup').show();
     });
@@ -33,7 +34,7 @@ jQuery(document).ready(function($) {
     });
 
     $('#update-customer-review').on('click', function(event) {
-        alert('Form submitted!');
+        
         // Prevent the default form submission
         event.preventDefault();
        
@@ -48,24 +49,26 @@ jQuery(document).ready(function($) {
         let reviewStatus = $('#edit-review-status').val();
         let reviewRating = $('#edit-review-rating').val();
         let reviewTitle = $('#edit-review-title').val();
+
         $.ajax({
             url: cradmin_ajax.ajax_url,
             method: 'POST',
             data: {
                 action: 'edit_customer_review',
-                review_id: reviewId,
-                review_name: reviewName,
-                review_email: reviewEmail,
-                review_phone: reviewPhone,
-                review_website: reviewWebsite,
-                review_comment: reviewComment,
-                review_city: reviewCity,
-                review_state: reviewState,
-                review_status: reviewStatus,
-                review_rating: reviewRating,
-                review_title: reviewTitle
+                id: reviewId,
+                name: reviewName,
+                email: reviewEmail,
+                phone: reviewPhone,
+                website: reviewWebsite,
+                comment: reviewComment,
+                city: reviewCity,
+                state: reviewState,
+                status: reviewStatus,
+                rating: reviewRating,
+                title: reviewTitle
             },
             success: function(response) {
+                
                 if (response.success) {
                     alert('Review updated successfully.');
                     $('#cr-edit-review-popup').hide();
