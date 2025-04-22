@@ -44,7 +44,6 @@ class Review_Controller {
             $enable_reviews = isset($cr_meta_settingss['enable_reviews']) ? $cr_meta_settingss['enable_reviews'] : 1;
 
             if ($enable_reviews) {
-                
                 if ($enable_review_form) {
                     $content .= do_shortcode('[wp_cr_form]');
                 }
@@ -63,7 +62,7 @@ class Review_Controller {
             'cr_meta_box',
             __('Customer Reviews', 'wp_cr'),
             [$this, 'render_cr_meta_box'],
-            ['post', 'page'],           // Screen (post types)
+            ['post', 'page', 'product'], // Screen (post types)
             'normal',                   // Context (normal, side, advanced)
             'high'
             );
@@ -84,7 +83,7 @@ class Review_Controller {
         echo '<p>';
         echo '<label for="enable_reviews">';
         echo '<input type="checkbox" id="enable_reviews" name="enable_reviews" value="1" ' . checked(1, $settings['enable_reviews'], false) . ' />';
-        echo __('Enable Customer Reviews', 'wp_cr');
+        echo __('Enable Customer Reviews For This Page', 'wp_cr');
         echo '</label>';
         echo '</p>';
 
@@ -92,7 +91,7 @@ class Review_Controller {
         echo '<p>';
         echo '<label for="enable_review_form">';
         echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, $settings['enable_review_form'], false) . ' />';
-        echo __('Enable Review Form', 'wp_cr');
+        echo __('Display Review Form', 'wp_cr');
         echo '</label>';
         echo '</p>';
 
@@ -100,7 +99,7 @@ class Review_Controller {
         echo '<p>';
         echo '<label for="enable_review_list">';
         echo '<input type="checkbox" id="enable_review_list" name="enable_review_list" value="1" ' . checked(1, $settings['enable_review_list'], false) . ' />';
-        echo __('Enable Review List', 'wp_cr');
+        echo __('Display Review List', 'wp_cr');
         echo '</label>';
         echo '</p>';
     }
