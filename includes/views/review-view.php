@@ -74,7 +74,7 @@ class Review_View {
                         data-review-id='{$review->id}' data-review-author='{$review->name}' data-review-email='{$review->email}' 
                         data-review-phone='{$review->phone}' data-review-website='{$review->website}' data-review-title='{$review->title}' 
                         data-review-comment='{$review->comment}' data-review-rating='{$review->rating}' data-review-status='{$review->status}'  
-                        data-review-city='{$review->city}' data-review-state='{$review->state}' >Edit Review</button></td>";
+                        data-review-city='{$review->city}' data-review-state='{$review->state}' data-review-positionid='{$review->positionid}'>Edit Review</button></td>";
                     
                     
 
@@ -161,6 +161,17 @@ class Review_View {
                             <option value="rejected">Rejected</option>
                             <option value="trash">Trash</option>
                         </select>
+                    </p>
+                    <p>
+                        <label for="edit-review-positionid"><strong>Reviewed Display Post/Page:</strong></label><br>
+                        <select name="review-positionid" id="edit-review-positionid" style="width:100%;">';
+                            
+                            $posts = get_posts(['post_type' => ['post', 'page'], 'numberposts' => -1]);
+                            foreach ($posts as $post) {
+                                echo "<option value='{$post->ID}'>{$post->post_title}</option>";
+                            }
+                            
+                        echo '</select>
                     </p>
                     <button type="submit" id="update-customer-review" class="button button-primary">Update Review</button>
                     <button type="button" class="button" id="close-edit-review-popup">Cancel</button>

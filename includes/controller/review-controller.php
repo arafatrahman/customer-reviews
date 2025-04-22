@@ -27,10 +27,103 @@ class Review_Controller {
         add_action('wp_ajax_edit_customer_review', [$this, 'edit_customer_review']);
         add_action('wp_ajax_nopriv_edit_customer_review', [$this, 'edit_customer_review']);
         
+        add_action( 'add_meta_boxes', [$this, 'cr_add_meta_box' ]);
+        add_action( 'save_post', [$this, 'cr_save_meta_box_data' ] );
+
+        add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
+
+         
     }
 
+    // Append the customer reviews shortcode to the content
+    public function append_customer_reviews_shortcode($content) {
+        if (is_singular(['post', 'page'])) {
+            $cr_meta_settingss = get_option('customer_reviews_settings');
+            $enable_review_list = isset($cr_meta_settingss['enable_review_list']) ? $cr_meta_settingss['enable_review_list'] : 1;
+            $enable_review_form = isset($cr_meta_settingss['enable_review_form']) ? $cr_meta_settingss['enable_review_form'] : 1;
+            $enable_reviews = isset($cr_meta_settingss['enable_reviews']) ? $cr_meta_settingss['enable_reviews'] : 1;
 
+            if ($enable_reviews) {
+                
+                if ($enable_review_form) {
+                    $content .= do_shortcode('[wp_cr_form]');
+                }
+                if ($enable_review_list) {
+                    $content .= do_shortcode('[wp_cr_lists]');
+                }
+            }
+        }
+    
+        return $content;
+    }
 
+    // Add meta box to the review post type
+    public function cr_add_meta_box() {
+        add_meta_box(
+            'cr_meta_box',
+            __('Customer Reviews', 'wp_cr'),
+            [$this, 'render_cr_meta_box'],
+            ['post', 'page'],           // Screen (post types)
+            'normal',                   // Context (normal, side, advanced)
+            'high'
+            );
+    }
+    // Render the meta box content
+    public function render_cr_meta_box($post) {
+        // Retrieve current settings
+        $settings = get_option('customer_reviews_settings', [
+            'enable_reviews' => 1,
+            'enable_review_form' => 1,
+            'enable_review_list' => 1,
+        ]);
+
+        // Add nonce field for security
+        wp_nonce_field('cr_meta_box_nonce', 'cr_meta_box_nonce');
+
+        // Enable customer reviews option
+        echo '<p>';
+        echo '<label for="enable_reviews">';
+        echo '<input type="checkbox" id="enable_reviews" name="enable_reviews" value="1" ' . checked(1, $settings['enable_reviews'], false) . ' />';
+        echo __('Enable Customer Reviews', 'wp_cr');
+        echo '</label>';
+        echo '</p>';
+
+        // Enable review form option
+        echo '<p>';
+        echo '<label for="enable_review_form">';
+        echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, $settings['enable_review_form'], false) . ' />';
+        echo __('Enable Review Form', 'wp_cr');
+        echo '</label>';
+        echo '</p>';
+
+        // Enable review list option
+        echo '<p>';
+        echo '<label for="enable_review_list">';
+        echo '<input type="checkbox" id="enable_review_list" name="enable_review_list" value="1" ' . checked(1, $settings['enable_review_list'], false) . ' />';
+        echo __('Enable Review List', 'wp_cr');
+        echo '</label>';
+        echo '</p>';
+    }
+    // Save meta box data
+    public function cr_save_meta_box_data($post_id) {
+        // Check nonce for security
+        if (!isset($_POST['cr_meta_box_nonce']) || !wp_verify_nonce($_POST['cr_meta_box_nonce'], 'cr_meta_box_nonce')) {
+            return;
+        }
+
+        // Check if the user has permission to save data
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+
+        // Save the settings
+        $settings = [
+            'enable_reviews' => isset($_POST['enable_reviews']) ? 1 : 0,
+            'enable_review_form' => isset($_POST['enable_review_form']) ? 1 : 0,
+            'enable_review_list' => isset($_POST['enable_review_list']) ? 1 : 0,
+        ];
+        update_option('customer_reviews_settings', $settings);
+    }
  
 
     // Add menu pages
@@ -165,7 +258,8 @@ class Review_Controller {
                     'state' => $data['state'],
                     'rating' => intval($data['rating']),
                     'comment' => $data['comment'],
-                    'status' => 'pending'
+                    'status' => 'pending',
+                    'positionid' => intval($data['positionid'])
             ];
 
             $this->model->add_review($review_data);
@@ -226,6 +320,7 @@ public function edit_customer_review() {
     $status = sanitize_text_field($_POST['status']);
     $rating = intval($_POST['rating']);
     $title = sanitize_text_field($_POST['title']);
+    $positionid = intval($_POST['positionid']);
 
     $data = [
         'name' => $name,
@@ -238,6 +333,7 @@ public function edit_customer_review() {
         'status' => $status,
         'rating' => $rating,
         'title' => $title,
+        'positionid' => $positionid,
     ];
     $this->model->update_review($id, $data);
     wp_send_json(['success' => true, 'data' => $data]);

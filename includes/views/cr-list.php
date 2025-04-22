@@ -14,7 +14,12 @@ $reviews = (new Review_Model())->get_reviews('approved');
 
 
 
-    foreach ($reviews as $review) : ?>
+    foreach ($reviews as $review){
+
+    if (get_the_ID() !== (int) $review->positionid && empty($review->positionid)) {
+        continue;
+    } 
+    ?>
         <div class="review-item">
             <div class="review-header">
             <span class="review-author"> Posted By <?= esc_html($review->name); ?> <?= esc_html($review->city); ?> <?= esc_html($review->state); ?></span>
@@ -81,6 +86,6 @@ $reviews = (new Review_Model())->get_reviews('approved');
 
             <?php endif; ?>
         </div>
-    <?php endforeach; ?>
+    <?php } ?>
 </div>
 </div></div>

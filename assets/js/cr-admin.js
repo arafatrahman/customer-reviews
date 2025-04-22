@@ -25,6 +25,7 @@ jQuery(document).ready(function($) {
         $('#edit-review-title').val($(this).data('review-status'));
         $('#edit-review-rating').val($(this).data('review-rating'));
         $('#edit-review-title').val($(this).data('review-title'));
+        $('#edit-review-positionid').val($(this).data('review-positionid'));
 
         $('#cr-edit-review-popup').show();
     });
@@ -49,6 +50,9 @@ jQuery(document).ready(function($) {
         let reviewStatus = $('#edit-review-status').val();
         let reviewRating = $('#edit-review-rating').val();
         let reviewTitle = $('#edit-review-title').val();
+        let reviewPositionId = $('#edit-review-positionid').val();
+        
+
 
         $.ajax({
             url: cradmin_ajax.ajax_url,
@@ -65,7 +69,8 @@ jQuery(document).ready(function($) {
                 state: reviewState,
                 status: reviewStatus,
                 rating: reviewRating,
-                title: reviewTitle
+                title: reviewTitle,
+                positionid: reviewPositionId
             },
             success: function(response) {
                 
