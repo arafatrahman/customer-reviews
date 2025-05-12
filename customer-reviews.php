@@ -55,6 +55,7 @@ function wp_customer_reviews_table_create() {
 // Define plugin path
 define('CR_PLUGIN_PATH', plugin_dir_path(__FILE__));
 define('CR_PLUGIN_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
+define('CR_BASE_NAME', plugin_basename(__FILE__));
 
 // Include MVC structure
 include_once CR_PLUGIN_PATH . 'includes/views/review-view.php';

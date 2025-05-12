@@ -11,6 +11,7 @@ class Review_Controller {
         $this->model = new Review_Model();
         $this->view = new Review_View();
         add_action('admin_menu', [$this, 'add_admin_menu']);
+        add_filter('plugin_action_links_' . CR_BASE_NAME, array($this, 'cr_plugin_action_links'));
 
         add_action('wp_enqueue_scripts', [$this,'review_enqueue_scripts']);
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
@@ -33,6 +34,17 @@ class Review_Controller {
         add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
 
          
+    }
+
+    // Add settings link to the plugin page
+    public function cr_plugin_action_links($links) {
+        // We shouldn't encourage editing our plugin directly.
+      unset($links['edit']);
+
+      // Add our custom links to the returned array value.
+      return array_merge(array(
+         '<a href="' . admin_url('admin.php?page=wp-review-settings') . '">' . __('Settings', 'wp_cr') . '</a>'
+      ), $links);
     }
 
     // Append the customer reviews shortcode to the content
