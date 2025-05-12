@@ -170,8 +170,8 @@ class Review_Controller {
     // Add menu pages
     public function add_admin_menu() {
         add_menu_page(
-            'All Reviews',
-            'All Reviews',
+            'Reviews',
+            'Reviews',
             'manage_options',
             'wp-review-plugin',
             array($this, 'display_reviews_page'),
