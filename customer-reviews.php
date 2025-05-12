@@ -71,5 +71,27 @@ include_once CR_PLUGIN_PATH . 'includes/views/review-view.php';
 include_once CR_PLUGIN_PATH . 'includes/model/review-model.php';
 include_once CR_PLUGIN_PATH . 'includes/controller/review-controller.php';
 
+add_action('load-toplevel_page_wp-review-plugin', 'cr_add_screen_option');
+
+function cr_add_screen_option() {
+    $option = 'per_page';
+    $args = [
+        'label'   => 'Reviews per page',
+        'default' => 10,
+        'option'  => 'cr_reviews_per_page'
+    ];
+    add_screen_option($option, $args);
+}
+
+add_filter('set-screen-option', 'cr_save_screen_option', 10, 3);
+
+function cr_save_screen_option($status, $option, $value) {
+    if ($option === 'cr_reviews_per_page') {
+        return $value;
+    }
+    return $status;
+}
+
+
 
 
