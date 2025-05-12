@@ -1,10 +1,19 @@
 <?php
 /*
-Plugin Name: Customer Reviews
-Plugin URI: https://webbird.co.uk
-Description: A simple WordPress plugin for managing customer reviews.
-Version: 1.0.0
-Author: Arafat Rahman
+ * Plugin Name:          Customer Reviews
+ * Plugin URI:           http://wordpress.org/plugins/customer-reviews/
+ * Description:          The Customer Review plugin allows you to manage and display customer-submitted reviews for products and services. A short code can be added to any page, post, or custom post type.
+ * Version:              1.0.0
+ * Author:               Artios Media
+ * Author URI:           http://www.artiosmedia.com
+ * Developer:            Arafat Rahman
+ * Copyright:            © 2019-2025 Artios Media (email : contact@artiosmedia.com).
+ * License: GNU          General Public License v3.0
+ * License URI:          http://www.gnu.org/licenses/gpl-3.0.html
+ * Tested up to:         6.8.1
+ * WC requires at least: 6.5.0
+ * WC tested up to:      9.8.5
+ * PHP tested up to:     8.2.4
 */
 
 // Prevent direct access

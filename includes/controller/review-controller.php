@@ -13,6 +13,10 @@ class Review_Controller {
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_filter('plugin_action_links_' . CR_BASE_NAME, array($this, 'cr_plugin_action_links'));
 
+        //Add plugin description link
+        add_filter('plugin_row_meta', array($this, 'add_cr_description_link'), 10, 2);
+        add_filter('plugin_row_meta', array($this, 'add_cr_details_link'), 10, 4);
+
         add_action('wp_enqueue_scripts', [$this,'review_enqueue_scripts']);
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
 
@@ -46,6 +50,32 @@ class Review_Controller {
          '<a href="' . admin_url('admin.php?page=wp-review-settings') . '">' . __('Settings', 'wp_cr') . '</a>'
       ), $links);
     }
+
+    public function add_cr_description_link($links, $file)
+    {
+
+        
+        
+       if (CR_BASE_NAME == $file) {
+        // Add a donation link to the plugin row meta
+          $row_meta = array(
+             'donation' => '<a href="' . esc_url(' https://www.zeffy.com/en-US/donation-form/your-donation-makes-a-difference-6') . '" target="_blank">' . esc_html__('Donation for Homeless', 'wp_cr') . '</a>'
+          );
+          return array_merge($links, $row_meta);
+       }
+       return (array) $links;
+    }
+
+    public function add_cr_details_link($links, $plugin_file, $plugin_data)
+   {
+
+      if (isset($plugin_data['PluginURI']) && false !== strpos($plugin_data['PluginURI'], 'http://wordpress.org/plugins/customer-reviews/')) {
+        $slug = basename($plugin_data['PluginURI']);
+         unset($links[2]);
+         $links[] = sprintf('<a href="%s" class="thickbox" title="%s">%s</a>', self_admin_url('plugin-install.php?tab=plugin-information&amp;plugin=' . $slug . '&amp;TB_iframe=true&amp;width=772&amp;height=563'), esc_attr(sprintf(__('More information about %s', 'ctyw'), $plugin_data['Name'])), __('View Details', 'wp_cr'));
+      }
+      return $links;
+   }
 
     // Append the customer reviews shortcode to the content
     public function append_customer_reviews_shortcode($content) {
