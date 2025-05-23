@@ -88,9 +88,9 @@
             <?php endforeach; ?>
         </div>
 
-        <!-- Display Settings -->
+        <!-- Shortcodes -->
         <div class="form-group tab-section" id="tab-display" style="display:none;">
-            <h3><?php esc_html_e('Display Settings', 'wp_cr'); ?></h3>
+            <h3><?php esc_html_e('Shortcodes', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
                 <label for="shortcode">Form Shortcode:</label>
                 <input type="text" id="shortcode" value="[wp_cr_form]" readonly>
