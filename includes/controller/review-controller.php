@@ -274,7 +274,6 @@ class Review_Controller {
 
     public function wp_review_admin_styles() {
             $screen = get_current_screen();
-            echo $screen->id;
             if ($screen && $screen->id === 'reviews_page_wp-review-settings') {
                     wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/cr-admin.css', [], '1.0.0');
             }
