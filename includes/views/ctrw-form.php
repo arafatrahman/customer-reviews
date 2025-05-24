@@ -9,12 +9,18 @@
         $settings = get_option('customer_reviews_settings')['fields'] ?? [];
 
         foreach ($fields as $field): 
-
-            
             $field_key = strtolower($field);
-            $is_required = $settings[$field]['require'] ?? 0;
-            $is_shown = $settings[$field]['show'] ?? 0;
-            $label_name = $settings[$field]['label'] ?? $field;
+
+            // Show all fields by default if no settings
+            if (empty($settings)) {
+                $is_shown = 1;
+                $is_required = 0;
+                $label_name = $field;
+            } else {
+                $is_shown = $settings[$field]['show'] ?? 0;
+                $is_required = $settings[$field]['require'] ?? 0;
+                $label_name = $settings[$field]['label'] ?? $field;
+            }
 
             if ($is_shown): ?>
                 <div class="form-group">
@@ -32,8 +38,6 @@
                     <?php else: ?>
                         <input type="<?= $field === 'Email' ? 'email' : 'text' ?>" name="<?= esc_attr($field_key) ?>" <?= $is_required ? 'required' : '' ?>>
                     <?php endif; ?>
-                    
-                    
                 </div>
             <?php endif; 
         endforeach; ?>

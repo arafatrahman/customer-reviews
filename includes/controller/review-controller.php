@@ -198,7 +198,7 @@ class Review_Controller {
     public function display_settings_page() {
  
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-        include CTRW_PLUGIN_PATH . 'includes/views/cr-settings.php';
+        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-settings.php';
         $this->save_review_settings();
     
 
@@ -258,7 +258,7 @@ class Review_Controller {
     public function review_enqueue_scripts() {
             wp_enqueue_script('review-script', CTRW_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
             wp_localize_script('review-script', 'ctrw_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-            wp_enqueue_style('review-style', CTRW_PLUGIN_ASSETS . 'css/cr-frontend.css', [], '1.0.0');
+            wp_enqueue_style('review-style', CTRW_PLUGIN_ASSETS . 'css/ctrw-frontend.css', [], '1.0.0');
             // Add dynamic CSS
            
            $settings = get_option('customer_reviews_settings');
@@ -279,10 +279,10 @@ class Review_Controller {
     public function wp_review_admin_styles() {
             $screen = get_current_screen();
             if ($screen && $screen->id === 'reviews_page_wp-review-settings') {
-                    wp_enqueue_style('wp-review-admin', CTRW_PLUGIN_ASSETS . 'css/cr-admin.css', [], '1.0.0');
+                    wp_enqueue_style('wp-review-admin', CTRW_PLUGIN_ASSETS . 'css/ctrw-admin.css', [], '1.0.0');
             }
             
-            wp_enqueue_script('cr-admin-script', CTRW_PLUGIN_ASSETS . 'js/cr-admin.js', ['jquery'], '1.0.0', true);
+            wp_enqueue_script('cr-admin-script', CTRW_PLUGIN_ASSETS . 'js/ctrw-admin.js', ['jquery'], '1.0.0', true);
             wp_localize_script('cr-admin-script', 'cradmin_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
     }
 
@@ -337,7 +337,7 @@ class Review_Controller {
 
 public function get_review_list() {
     ob_start();
-    include plugin_dir_path(__FILE__) . '../views/cr-list.php';
+    include plugin_dir_path(__FILE__) . '../views/ctrw-list.php';
     return ob_get_clean();
 }
 
@@ -386,14 +386,14 @@ public function edit_customer_review() {
 
 public function customer_reviews_form_shortcode() {
     ob_start();
-    include CTRW_PLUGIN_PATH . 'includes/views/cr-form.php';
+    include CTRW_PLUGIN_PATH . 'includes/views/ctrw-form.php';
     return ob_get_clean();
 
 }
 
 public function customer_reviews_list_shortcode() {
     ob_start();
-    include CTRW_PLUGIN_PATH . 'includes/views/cr-list.php';
+    include CTRW_PLUGIN_PATH . 'includes/views/ctrw-list.php';
     return ob_get_clean();
 }
 
