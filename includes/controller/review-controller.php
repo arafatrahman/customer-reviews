@@ -11,18 +11,18 @@ class Review_Controller {
         $this->model = new Review_Model();
         $this->view = new Review_View();
         add_action('admin_menu', [$this, 'add_admin_menu']);
-        add_filter('plugin_action_links_' . CR_BASE_NAME, array($this, 'cr_plugin_action_links'));
+        add_filter('plugin_action_links_' . CTRW_BASE_NAME, array($this, 'ctrw_plugin_action_links'));
 
         //Add plugin description link
-        add_filter('plugin_row_meta', array($this, 'add_cr_description_link'), 10, 2);
-        add_filter('plugin_row_meta', array($this, 'add_cr_details_link'), 10, 4);
+        add_filter('plugin_row_meta', array($this, 'add_ctrw_description_link'), 10, 2);
+        add_filter('plugin_row_meta', array($this, 'add_ctrw_details_link'), 10, 4);
 
         add_action('wp_enqueue_scripts', [$this,'review_enqueue_scripts']);
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
 
 
-        add_shortcode('wp_cr_form', [$this,'customer_reviews_form_shortcode']);
-        add_shortcode('wp_cr_lists', [$this,'customer_reviews_list_shortcode']);
+        add_shortcode('wp_ctrw_form', [$this,'customer_reviews_form_shortcode']);
+        add_shortcode('wp_ctrw_lists', [$this,'customer_reviews_list_shortcode']);
 
         add_action('wp_ajax_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
@@ -32,8 +32,8 @@ class Review_Controller {
         add_action('wp_ajax_edit_customer_review', [$this, 'edit_customer_review']);
         add_action('wp_ajax_nopriv_edit_customer_review', [$this, 'edit_customer_review']);
         
-        add_action( 'add_meta_boxes', [$this, 'cr_add_meta_box' ]);
-        add_action( 'save_post', [$this, 'cr_save_meta_box_data' ] );
+        add_action( 'add_meta_boxes', [$this, 'ctrw_add_meta_box' ]);
+        add_action( 'save_post', [$this, 'ctrw_save_meta_box_data' ] );
 
         add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
 
@@ -41,7 +41,7 @@ class Review_Controller {
     }
 
     // Add settings link to the plugin page
-    public function cr_plugin_action_links($links) {
+    public function ctrw_plugin_action_links($links) {
         // We shouldn't encourage editing our plugin directly.
       unset($links['edit']);
 
@@ -51,12 +51,12 @@ class Review_Controller {
       ), $links);
     }
 
-    public function add_cr_description_link($links, $file)
+    public function add_ctrw_description_link($links, $file)
     {
 
         
         
-       if (CR_BASE_NAME == $file) {
+       if (CTRW_BASE_NAME == $file) {
         // Add a donation link to the plugin row meta
           $row_meta = array(
              'donation' => '<a href="' . esc_url(' https://www.zeffy.com/en-US/donation-form/your-donation-makes-a-difference-6') . '" target="_blank">' . esc_html__('Donation for Homeless', 'wp_cr') . '</a>'
@@ -66,7 +66,7 @@ class Review_Controller {
        return (array) $links;
     }
 
-    public function add_cr_details_link($links, $plugin_file, $plugin_data)
+    public function add_ctrw_details_link($links, $plugin_file, $plugin_data)
    {
 
       if (isset($plugin_data['PluginURI']) && false !== strpos($plugin_data['PluginURI'], 'http://wordpress.org/plugins/customer-reviews/')) {
@@ -80,17 +80,23 @@ class Review_Controller {
     // Append the customer reviews shortcode to the content
     public function append_customer_reviews_shortcode($content) {
         if (is_singular(['post', 'page'])) {
-            $cr_meta_settingss = get_option('customer_reviews_settings');
-            $enable_review_list = isset($cr_meta_settingss['enable_review_list']) ? $cr_meta_settingss['enable_review_list'] : 1;
-            $enable_review_form = isset($cr_meta_settingss['enable_review_form']) ? $cr_meta_settingss['enable_review_form'] : 1;
-            $enable_reviews = isset($cr_meta_settingss['enable_reviews']) ? $cr_meta_settingss['enable_reviews'] : 1;
+
+            // Get per-post meta settings (fallback to enabled if not set)
+            $enable_reviews = get_post_meta(get_the_ID(), '_ctrw_enable_reviews', true);
+            $enable_review_form = get_post_meta(get_the_ID(), '_ctrw_enable_review_form', true);
+            $enable_review_list = get_post_meta(get_the_ID(), '_ctrw_enable_review_list', true);
+
+            // Default to enabled if meta not set
+            $enable_reviews = ($enable_reviews === '') ? 1 : intval($enable_reviews);
+            $enable_review_form = ($enable_review_form === '') ? 1 : intval($enable_review_form);
+            $enable_review_list = ($enable_review_list === '') ? 1 : intval($enable_review_list);
 
             if ($enable_reviews) {
                 if ($enable_review_form) {
-                    $content .= do_shortcode('[wp_cr_form]');
+                    $content .= do_shortcode('[wp_ctrw_form]');
                 }
                 if ($enable_review_list) {
-                    $content .= do_shortcode('[wp_cr_lists]');
+                    $content .= do_shortcode('[wp_ctrw_lists]');
                 }
             }
         }
@@ -99,32 +105,33 @@ class Review_Controller {
     }
 
     // Add meta box to the review post type
-    public function cr_add_meta_box() {
+    public function ctrw_add_meta_box() {
         add_meta_box(
-            'cr_meta_box',
+            'ctrw_meta_box',
             __('Customer Reviews', 'wp_cr'),
-            [$this, 'render_cr_meta_box'],
-            ['post', 'page', 'product'], // Screen (post types)
-            'normal',                   // Context (normal, side, advanced)
-            'high'
-            );
+            [$this, 'render_ctrw_meta_box'],
+            ['post', 'page', 'product'], // Post types
+            'side',                      // Context: 'side' places it on the right
+            'high'                       // Priority
+        );
     }
+
     // Render the meta box content
-    public function render_cr_meta_box($post) {
+    public function render_ctrw_meta_box($post) {
         // Retrieve current settings
-        $settings = get_option('customer_reviews_settings', [
-            'enable_reviews' => 1,
-            'enable_review_form' => 1,
-            'enable_review_list' => 1,
-        ]);
+        $settings = [
+            'enable_reviews'      => get_post_meta($post->ID, '_ctrw_enable_reviews', true),
+            'enable_review_form'  => get_post_meta($post->ID, '_ctrw_enable_review_form', true),
+            'enable_review_list'  => get_post_meta($post->ID, '_ctrw_enable_review_list', true),
+        ];
 
         // Add nonce field for security
-        wp_nonce_field('cr_meta_box_nonce', 'cr_meta_box_nonce');
+        wp_nonce_field('ctrw_meta_box_nonce', 'ctrw_meta_box_nonce');
 
         // Enable customer reviews option
         echo '<p>';
         echo '<label for="enable_reviews">';
-        echo '<input type="checkbox" id="enable_reviews" name="enable_reviews" value="1" ' . checked(1, $settings['enable_reviews'], false) . ' />';
+        echo '<input type="checkbox" id="enable_reviews" name="enable_reviews" value="1" ' . checked(1, isset($settings['enable_reviews']) ? $settings['enable_reviews'] : 1, false) . ' />';
         echo __('Enable Customer Reviews For This Page', 'wp_cr');
         echo '</label>';
         echo '</p>';
@@ -132,7 +139,7 @@ class Review_Controller {
         // Enable review form option
         echo '<p>';
         echo '<label for="enable_review_form">';
-        echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, $settings['enable_review_form'], false) . ' />';
+        echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, isset($settings['enable_review_form']) ? $settings['enable_review_form'] : 1, false) . ' />';
         echo __('Display Review Form', 'wp_cr');
         echo '</label>';
         echo '</p>';
@@ -140,15 +147,15 @@ class Review_Controller {
         // Enable review list option
         echo '<p>';
         echo '<label for="enable_review_list">';
-        echo '<input type="checkbox" id="enable_review_list" name="enable_review_list" value="1" ' . checked(1, $settings['enable_review_list'], false) . ' />';
+        echo '<input type="checkbox" id="enable_review_list" name="enable_review_list" value="1" ' . checked(1, isset($settings['enable_review_list']) ? $settings['enable_review_list'] : 1, false) . ' />';
         echo __('Display Review List', 'wp_cr');
         echo '</label>';
         echo '</p>';
     }
     // Save meta box data
-    public function cr_save_meta_box_data($post_id) {
+    public function ctrw_save_meta_box_data($post_id) {
         // Check nonce for security
-        if (!isset($_POST['cr_meta_box_nonce']) || !wp_verify_nonce($_POST['cr_meta_box_nonce'], 'cr_meta_box_nonce')) {
+        if (!isset($_POST['ctrw_meta_box_nonce']) || !wp_verify_nonce($_POST['ctrw_meta_box_nonce'], 'ctrw_meta_box_nonce')) {
             return;
         }
 
@@ -157,13 +164,10 @@ class Review_Controller {
             return;
         }
 
-        // Save the settings
-        $settings = [
-            'enable_reviews' => isset($_POST['enable_reviews']) ? 1 : 0,
-            'enable_review_form' => isset($_POST['enable_review_form']) ? 1 : 0,
-            'enable_review_list' => isset($_POST['enable_review_list']) ? 1 : 0,
-        ];
-        update_option('customer_reviews_settings', $settings);
+        // Save the settings as post meta for this post/page only
+        update_post_meta($post_id, '_ctrw_enable_reviews', isset($_POST['enable_reviews']) ? 1 : 0);
+        update_post_meta($post_id, '_ctrw_enable_review_form', isset($_POST['enable_review_form']) ? 1 : 0);
+        update_post_meta($post_id, '_ctrw_enable_review_list', isset($_POST['enable_review_list']) ? 1 : 0);
     }
  
 
@@ -194,7 +198,7 @@ class Review_Controller {
     public function display_settings_page() {
  
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-        include CR_PLUGIN_PATH . 'includes/views/cr-settings.php';
+        include CTRW_PLUGIN_PATH . 'includes/views/cr-settings.php';
         $this->save_review_settings();
     
 
@@ -252,9 +256,9 @@ class Review_Controller {
 
     // Enqueue scripts and styles
     public function review_enqueue_scripts() {
-            wp_enqueue_script('review-script', CR_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
-            wp_localize_script('review-script', 'cr_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-            wp_enqueue_style('review-style', CR_PLUGIN_ASSETS . 'css/cr-frontend.css', [], '1.0.0');
+            wp_enqueue_script('review-script', CTRW_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
+            wp_localize_script('review-script', 'ctrw_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+            wp_enqueue_style('review-style', CTRW_PLUGIN_ASSETS . 'css/cr-frontend.css', [], '1.0.0');
             // Add dynamic CSS
            
            $settings = get_option('customer_reviews_settings');
@@ -275,10 +279,10 @@ class Review_Controller {
     public function wp_review_admin_styles() {
             $screen = get_current_screen();
             if ($screen && $screen->id === 'reviews_page_wp-review-settings') {
-                    wp_enqueue_style('wp-review-admin', CR_PLUGIN_ASSETS . 'css/cr-admin.css', [], '1.0.0');
+                    wp_enqueue_style('wp-review-admin', CTRW_PLUGIN_ASSETS . 'css/cr-admin.css', [], '1.0.0');
             }
             
-            wp_enqueue_script('cr-admin-script', CR_PLUGIN_ASSETS . 'js/cr-admin.js', ['jquery'], '1.0.0', true);
+            wp_enqueue_script('cr-admin-script', CTRW_PLUGIN_ASSETS . 'js/cr-admin.js', ['jquery'], '1.0.0', true);
             wp_localize_script('cr-admin-script', 'cradmin_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
     }
 
@@ -382,14 +386,14 @@ public function edit_customer_review() {
 
 public function customer_reviews_form_shortcode() {
     ob_start();
-    include CR_PLUGIN_PATH . 'includes/views/cr-form.php';
+    include CTRW_PLUGIN_PATH . 'includes/views/cr-form.php';
     return ob_get_clean();
 
 }
 
 public function customer_reviews_list_shortcode() {
     ob_start();
-    include CR_PLUGIN_PATH . 'includes/views/cr-list.php';
+    include CTRW_PLUGIN_PATH . 'includes/views/cr-list.php';
     return ob_get_clean();
 }
 

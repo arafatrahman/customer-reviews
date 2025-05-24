@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
         formData += "&action=submit_review";
 
         $.ajax({
-            url: cr_ajax.ajax_url,
+            url: ctrw_ajax.ajax_url,
             method: "POST",
             data: formData,
             success: function (data) {

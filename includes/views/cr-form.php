@@ -5,7 +5,7 @@
     <h3>Submit Your Review</h3>
     <form id="customer-reviews-form">
         <?php 
-        $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Title', 'Comment', 'Rating'];
+        $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment', 'Rating'];
         $settings = get_option('customer_reviews_settings')['fields'] ?? [];
 
         foreach ($fields as $field): 

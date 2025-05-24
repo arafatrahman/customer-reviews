@@ -62,31 +62,31 @@ function wp_customer_reviews_table_create() {
   
 
 // Define plugin path
-define('CR_PLUGIN_PATH', plugin_dir_path(__FILE__));
-define('CR_PLUGIN_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
-define('CR_BASE_NAME', plugin_basename(__FILE__));
+define('CTRW_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('CTRW_PLUGIN_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
+define('CTRW_BASE_NAME', plugin_basename(__FILE__));
 
 // Include MVC structure
-include_once CR_PLUGIN_PATH . 'includes/views/review-view.php';
-include_once CR_PLUGIN_PATH . 'includes/model/review-model.php';
-include_once CR_PLUGIN_PATH . 'includes/controller/review-controller.php';
+include_once CTRW_PLUGIN_PATH . 'includes/views/review-view.php';
+include_once CTRW_PLUGIN_PATH . 'includes/model/review-model.php';
+include_once CTRW_PLUGIN_PATH . 'includes/controller/review-controller.php';
 
-add_action('load-toplevel_page_wp-review-plugin', 'cr_add_screen_option');
+add_action('load-toplevel_page_wp-review-plugin', 'ctrw_add_screen_option');
 
-function cr_add_screen_option() {
+function ctrw_add_screen_option() {
     $option = 'per_page';
     $args = [
         'label'   => 'Reviews per page',
         'default' => 10,
-        'option'  => 'cr_reviews_per_page'
+        'option'  => 'ctrw_reviews_per_page'
     ];
     add_screen_option($option, $args);
 }
 
-add_filter('set-screen-option', 'cr_save_screen_option', 10, 3);
+add_filter('set-screen-option', 'ctrw_save_screen_option', 10, 3);
 
-function cr_save_screen_option($status, $option, $value) {
-    if ($option === 'cr_reviews_per_page') {
+function ctrw_save_screen_option($status, $option, $value) {
+    if ($option === 'ctrw_reviews_per_page') {
         return $value;
     }
     return $status;

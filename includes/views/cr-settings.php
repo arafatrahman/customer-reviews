@@ -70,7 +70,7 @@
         <div class="tab-section" id="tab-review_form" style="display:none;">
             <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
             <?php 
-            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Title', 'Comment', 'Rating'];
+            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment', 'Rating'];
             foreach ($fields as $field): ?>
                 <fieldset>
                     <legend>
@@ -93,13 +93,13 @@
             <h3><?php esc_html_e('Shortcodes', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
                 <label for="shortcode">Form Shortcode:</label>
-                <input type="text" id="shortcode" value="[wp_cr_form]" readonly>
-                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_cr_form]')">Copy</button>
+                <input type="text" id="shortcode" value="[wp_ctrw_form]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_form]')">Copy</button>
             </div>
             <div class="shortcode-section">
                 <label for="shortcode">Review Lists Shortcode:</label>
-                <input type="text" id="shortcode" value="[wp_cr_lists]" readonly>
-                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_cr_lists]')">Copy</button>
+                <input type="text" id="shortcode" value="[wp_ctrw_lists]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_lists]')">Copy</button>
             </div>
         </div>
 

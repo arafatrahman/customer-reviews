@@ -8,7 +8,7 @@ class Review_View {
     public function display_reviews($reviews, $counts, $current_status) {
         global $wpdb;
     
-        $per_page = get_user_meta(get_current_user_id(), 'cr_reviews_per_page', true);
+        $per_page = get_user_meta(get_current_user_id(), 'ctrw_reviews_per_page', true);
         $per_page = $per_page ? (int)$per_page : 10;
         $page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
         $offset = ($page - 1) * $per_page;
