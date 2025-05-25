@@ -79,7 +79,7 @@ class Review_Controller {
 
     // Append the customer reviews shortcode to the content
     public function append_customer_reviews_shortcode($content) {
-        if (is_singular(['post', 'page'])) {
+        if (is_singular(['post', 'page', 'product'])) {
 
             // Get per-post meta settings (fallback to enabled if not set)
             $enable_reviews = get_post_meta(get_the_ID(), '_ctrw_enable_reviews', true);
@@ -118,6 +118,7 @@ class Review_Controller {
 
     // Render the meta box content
     public function render_ctrw_meta_box($post) {
+
         // Retrieve current settings
         $settings = [
             'enable_reviews'      => get_post_meta($post->ID, '_ctrw_enable_reviews', true),
@@ -181,6 +182,7 @@ class Review_Controller {
             array($this, 'display_reviews_page'),
             'dashicons-star-filled'
         );
+        
 
         add_submenu_page(
             'wp-review-plugin',
@@ -190,7 +192,24 @@ class Review_Controller {
             'wp-review-settings',
             array($this, 'display_settings_page')
         );
+
+        add_submenu_page( 'woocommerce', 'Reviews', 'Reviews', 'manage_options', 'customer-product-reviews', 'my_custom_submenu_page_callback' ); 
+
     }
+
+    public function my_custom_submenu_page_callback() {
+      // Retrieve the status from the URL, defaulting to 'all' if none is provided
+      if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action']) && isset($_POST['review_ids'])) {
+            $this->handle_bulk_action();
+        }
+
+        $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'all';
+        $reviews = $this->model->get_reviews_by_status($status);
+        $counts = $this->model->get_review_counts();
+        $this->view->display_reviews($reviews, $counts, $status);
+  }
+
+
 
 
 
