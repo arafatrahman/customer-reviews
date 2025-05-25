@@ -60,9 +60,16 @@
                     <label for="edit-review-positionid"><strong>Reviewed Display Post/Page:</strong></label><br>
                     <select name="review_positionid" id="edit-review-positionid" style="width:100%;">
                         <?php
-                        $posts = get_posts(['post_type' => ['post', 'page'], 'numberposts' => -1]);
-                        foreach ($posts as $post) {
-                            echo '<option value="'.intval($post->ID).'">'.esc_html($post->post_title).'</option>';
+                        $post_types = ['post' => 'Post', 'page' => 'Page', 'product' => 'Product'];
+                        foreach ($post_types as $type => $label) {
+                            $posts = get_posts(['post_type' => $type, 'numberposts' => -1]);
+                            if (!empty($posts)) {
+                                echo '<optgroup label="' . esc_attr($label) . 's">';
+                                foreach ($posts as $post) {
+                                    echo '<option value="' . intval($post->ID) . '">' . esc_html($post->post_title) . '</option>';
+                                }
+                                echo '</optgroup>';
+                            }
                         }
                         ?>
                     </select>

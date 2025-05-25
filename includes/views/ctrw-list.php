@@ -16,9 +16,20 @@ $reviews = (new Review_Model())->get_reviews('approved');
 
     foreach ($reviews as $review){
 
-    if (get_the_ID() !== (int) $review->positionid && empty($review->positionid)) {
+    $page_id = get_queried_object_id();
+    $post_id = get_the_ID();
+    $product_id = function_exists('wc_get_product') ? get_the_ID() : null;
+
+    if (
+        (!empty($review->positionid)) &&
+        $review->positionid != $page_id &&
+        $review->positionid != $post_id &&
+        ($product_id === null || $review->positionid != $product_id)
+    ) {
         continue;
-    } 
+    }
+
+   
     ?>
         <div class="review-item">
             <div class="review-header">
@@ -74,14 +85,6 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 <div class="admin-response">
                     <strong><?php esc_html_e('Author Response', 'wp_cr'); ?></strong>
                     <p><?= esc_html($review->admin_reply); ?></p>
-                </div>
-                <div class="customer-reply">
-                    <strong><?php esc_html_e('Your Reply', 'wp_cr'); ?></strong>
-                    <form method="post" action="">
-                        <textarea name="customer_reply" rows="3" placeholder="Write your reply here..."></textarea>
-                        <input type="hidden" name="review_id" value="<?= esc_attr($review->id); ?>">
-                        <button type="submit"><?php esc_html_e('Submit Reply', 'wp_cr'); ?></button>
-                    </form>
                 </div>
 
             <?php endif; ?>
