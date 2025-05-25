@@ -9,6 +9,8 @@ $reviews = (new Review_Model())->get_reviews('approved');
     <div id="reviews-container">
 <div class="review-list">
     <?php
+
+    
     $reviews_per_page = get_option('customer_reviews_settings')['reviews_per_page'] ?? 10;
     $reviews = array_slice($reviews, 0, $reviews_per_page);
 

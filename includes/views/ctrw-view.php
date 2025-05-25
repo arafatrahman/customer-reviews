@@ -6,6 +6,8 @@ if (!defined('ABSPATH')) {
 class Review_View {
     
     public function display_reviews($reviews, $counts, $current_status) {
+
+        
     foreach ($reviews as &$review) {
         $post_type = get_post_type($review->positionid);
         $review->review_type = $post_type ? $post_type : 'unknown';
@@ -14,10 +16,10 @@ class Review_View {
     // Pagination and filtering
     $per_page = get_user_meta(get_current_user_id(), 'ctrw_reviews_per_page', true);
     $per_page = $per_page ? (int)$per_page : 10;
-    $page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+    $page = isset($_POST['paged']) ? max(1, intval($_POST['paged'])) : 1;
     $offset = ($page - 1) * $per_page;
 
-    $selected_review_type = $_GET['review_type'] ?? '';
+    $selected_review_type = $_POST['review_type'] ?? '';
 
     if ($selected_review_type) {
         $reviews = array_filter($reviews, function($review) use ($selected_review_type) {

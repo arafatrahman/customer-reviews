@@ -11,7 +11,7 @@
     <?php endforeach; ?>
 </ul>
 
-<form method="get">
+<form method="post">
     <input type="hidden" name="page" value="customer-reviews" />
     
     <div class="tablenav top">
@@ -27,7 +27,7 @@
             </select>
 
            <?php
-            $selected_review_type = $_GET['review_type'] ?? '';
+            $selected_review_type = $_POST['review_type'] ?? '';
             ?>
             <select name="review_type">
                 <option value="" <?= $selected_review_type === '' ? 'selected' : '' ?>>All Review Types</option>

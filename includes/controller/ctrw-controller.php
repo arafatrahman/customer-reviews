@@ -206,7 +206,7 @@ class Review_Controller {
             $this->handle_bulk_action();
         }
 
-        $status = isset($_GET['status']) ? sanitize_text_field($_GET['status']) : 'all';
+        $status = isset($_POST['status']) ? sanitize_text_field($_POST['status']) : 'all';
         $reviews = $this->model->get_reviews_by_status($status);
         $counts = $this->model->get_review_counts();
         $this->view->display_reviews($reviews, $counts, $status);
