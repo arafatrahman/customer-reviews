@@ -93,7 +93,10 @@ class Review_Controller {
 
             if ($enable_reviews) {
                 if ($enable_review_form) {
-                    $content .= do_shortcode('[wp_ctrw_form]');
+                    // Only append the form shortcode if it's not already present in the content
+                    if (strpos($content, '[wp_ctrw_form]') === false) {
+                        $content .= do_shortcode('[wp_ctrw_form]');
+                    }
                 }
                 if ($enable_review_list) {
                     $content .= do_shortcode('[wp_ctrw_lists]');
@@ -178,14 +181,14 @@ class Review_Controller {
             'Reviews',
             'Reviews',
             'manage_options',
-            'wp-review-plugin',
+            'customer-reviews',
             array($this, 'display_reviews_page'),
             'dashicons-star-filled'
         );
         
 
         add_submenu_page(
-            'wp-review-plugin',
+            'customer-reviews',
             'Review Settings',
             'Review Settings',
             'manage_options',
@@ -313,6 +316,7 @@ class Review_Controller {
             $data = $this->sanitize_post_data($_POST);
         
             $review_data = [
+                    
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
@@ -325,10 +329,10 @@ class Review_Controller {
                     'positionid' => intval($data['positionid'])
             ];
 
-            $this->model->add_review($review_data);
+            $this->model->ctrw_add_review($review_data);
 
             // Notify admin via email
-            $this->notify_admin_of_pending_review($review_data);
+         //   $this->notify_admin_of_pending_review($review_data);
 
             // Send success response
             wp_send_json([
@@ -346,7 +350,7 @@ class Review_Controller {
         $message .= __("Please log in to the admin panel to review and approve it.\n", 'wp_cr');
         $message .= sprintf(
             __("Pending reviews can be viewed here: %s", 'wp_cr'),
-            admin_url('admin.php?page=wp-review-plugin&status=pending')
+            admin_url('admin.php?page=customer-reviews&status=pending')
         );
 
         wp_mail($admin_email, $subject, $message);

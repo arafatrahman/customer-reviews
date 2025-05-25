@@ -59,7 +59,8 @@ class Review_Model {
         );
     }
 
-    public function add_review($data) {
+    public function ctrw_add_review($data) {
+        update_option('ccmuucustomer_reviews_settings', $data);
         return $this->wpdb->insert($this->table, $data);
     }
 

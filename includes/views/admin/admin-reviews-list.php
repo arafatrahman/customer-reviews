@@ -4,7 +4,7 @@
         $class = (isset($_GET['status']) && $_GET['status'] === $key) ? 'current' : '';
     ?>
         <li class="<?= esc_attr($key) ?>">
-            <a href="?page=wp-review-plugin&status=<?= esc_attr($key) ?>" class="<?= esc_attr($class) ?>">
+            <a href="?page=customer-reviews&status=<?= esc_attr($key) ?>" class="<?= esc_attr($class) ?>">
                 <?= esc_html($label) ?> <span class="count">(<?= intval($count) ?>)</span>
             </a>
         </li>
@@ -52,8 +52,8 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($paged_reviews)): ?>
-                <?php foreach ($paged_reviews as $review):
+            <?php if (!empty($all_reviews)): ?>
+                <?php foreach ($all_reviews as $review):
                     $stars = str_repeat('⭐', intval($review->rating));
                 ?>
                     <tr>
@@ -66,7 +66,7 @@
                         <td><?= esc_html($review->comment) ?></td>
                         <td><?= esc_html($review->admin_reply) ?></td>
                         <td>
-                            <a href="?page=wp-review-plugin&status=<?= esc_attr($review->status) ?>" class="review-status-link">
+                            <a href="?page=customer-reviews&status=<?= esc_attr($review->status) ?>" class="review-status-link">
                                 <?= esc_html($review->status) ?>
                             </a>
                         </td>

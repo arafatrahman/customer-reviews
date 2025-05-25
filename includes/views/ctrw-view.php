@@ -14,9 +14,8 @@ class Review_View {
         $offset = ($page - 1) * $per_page;
 
         $total_reviews = count($reviews);
-        $paged_reviews = array_slice($reviews, $offset, $per_page);
-        $total_pages = ceil($total_reviews / $per_page);
-
+        $all_reviews = array_slice($reviews, $offset, $per_page);
+        $total_pages = ceil($total_reviews / $per_page);s
         $statuses = [
             'all' => 'All',
             'approved' => 'Approve',
@@ -28,7 +27,7 @@ class Review_View {
         echo '<div class="wrap"><h1>Customer Reviews</h1>';
 
         // Variables to be used inside included files:
-        // $paged_reviews, $counts, $current_status, $statuses, $page, $total_pages, $per_page
+        // $all_reviews, $counts, $current_status, $statuses, $page, $total_pages, $per_page
 
         include 'admin/admin-reviews-list.php';
         include 'admin/admin-review-reply-popup.php';
