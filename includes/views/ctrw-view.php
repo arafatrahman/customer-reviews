@@ -15,7 +15,7 @@ class Review_View {
 
         $total_reviews = count($reviews);
         $all_reviews = array_slice($reviews, $offset, $per_page);
-        $total_pages = ceil($total_reviews / $per_page);s
+        $total_pages = ceil($total_reviews / $per_page);
         $statuses = [
             'all' => 'All',
             'approved' => 'Approve',
