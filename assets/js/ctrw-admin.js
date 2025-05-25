@@ -13,8 +13,9 @@ jQuery(document).ready(function($) {
       });
 
     $('.edit-review').on('click', function() {
-       
+      
         $('#edit-review-id').val($(this).data('review-id'));
+        $('#update-type').val($(this).data('update-type'));
         $('#edit-review-name').val($(this).data('review-author'));
         $('#edit-review-email').val($(this).data('review-email'));
         $('#edit-review-phone').val($(this).data('review-phone'));
@@ -40,6 +41,7 @@ jQuery(document).ready(function($) {
         event.preventDefault();
        
         let reviewId = $('#edit-review-id').val();
+        let updateType = $('#update-type').val();
         let reviewName = $('#edit-review-name').val();
         let reviewEmail = $('#edit-review-email').val();
         let reviewPhone = $('#edit-review-phone').val();
@@ -60,6 +62,7 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'edit_customer_review',
                 id: reviewId,
+                update_type: updateType,
                 name: reviewName,
                 email: reviewEmail,
                 phone: reviewPhone,

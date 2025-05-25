@@ -31,6 +31,7 @@
             </div>
             <div style="flex:1;">
                 <input type="hidden" name="review_id" id="edit-review-id" value="">
+                <input type="hidden" name="review_id" id="update-type" value="">
                 <p>
                     <label for="edit-review-title"><strong>Review Title:</strong></label><br>
                     <input type="text" name="review_title" id="edit-review-title" style="width:100%;">

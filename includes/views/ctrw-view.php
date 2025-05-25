@@ -38,13 +38,13 @@ class Review_View {
         'pending' => 'Pending',
         'trash' => 'Trash'
     ];
-
-    echo '<div class="wrap"><h1>Customer Reviews</h1>';
+    echo '<h1 class="wp-heading-inline">Customer Reviews</h1><button type="button" class="button edit-review" data-update-type="add">Add Customer Reviews</button>
+    <hr class="wp-header-end">';
 
     // Provide variables to the included template files
-    include 'admin/admin-reviews-list.php';
-    include 'admin/admin-review-reply-popup.php';
-    include 'admin/admin-review-edit-popup.php';
+    include 'admin/ctrw-reviews-list.php';
+    include 'admin/ctrw-reply-popup.php';
+    include 'admin/ctrw-review-update-popup.php';
 
     echo '</div>';
 }

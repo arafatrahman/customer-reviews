@@ -105,7 +105,7 @@
                                     data-review-status="<?= esc_attr($review->status) ?>"
                                     data-review-city="<?= esc_attr($review->city) ?>"
                                     data-review-state="<?= esc_attr($review->state) ?>"
-                                    data-review-positionid="<?= intval($review->positionid) ?>">
+                                    data-review-positionid="<?= intval($review->positionid) ?>" data-update-type="update">
                                     Edit Review
                                 </button>
                             <?php else: ?>

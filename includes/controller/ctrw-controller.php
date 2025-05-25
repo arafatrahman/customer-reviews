@@ -377,6 +377,7 @@ public function save_review_reply() {
 
 public function edit_customer_review() {
     $id = intval($_POST['id']);
+    $update_type = sanitize_text_field($_POST['update_type']);
     $name = sanitize_text_field($_POST['name']);
     $email = sanitize_email($_POST['email']);
     $phone = sanitize_text_field($_POST['phone']);
@@ -390,7 +391,6 @@ public function edit_customer_review() {
     $positionid = intval($_POST['positionid']);
 
     $data = [
-        
         'name' => $name,
         'email' => $email,
         'phone' => $phone,
@@ -403,7 +403,12 @@ public function edit_customer_review() {
         'title' => $title,
         'positionid' => $positionid,
     ];
-    $this->model->update_review($id, $data);
+    if ($update_type === 'add') {
+        $this->model->ctrw_add_review($data);
+    } else {
+         $this->model->update_review($id, $data);
+    }
+   
     wp_send_json(['success' => true, 'data' => $data]);
    
 }
