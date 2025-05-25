@@ -108,7 +108,7 @@ class Review_Controller {
     public function ctrw_add_meta_box() {
         add_meta_box(
             'ctrw_meta_box',
-            __('Customer Reviews', 'wp_cr'),
+            __('Customer Reviews', 'wp_ctrw'),
             [$this, 'render_ctrw_meta_box'],
             ['post', 'page', 'product'], // Post types
             'side',                      // Context: 'side' places it on the right
