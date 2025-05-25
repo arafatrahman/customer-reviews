@@ -11,7 +11,9 @@
     <?php endforeach; ?>
 </ul>
 
-<form method="post">
+<form method="get">
+    <input type="hidden" name="page" value="customer-reviews" />
+    
     <div class="tablenav top">
         <div class="alignleft actions">
             <select name="bulk_action">
@@ -23,12 +25,27 @@
                     <option value="delete_permanently">Delete Permanently</option>
                 <?php endif; ?>
             </select>
+
+           <?php
+            $selected_review_type = $_GET['review_type'] ?? '';
+            ?>
+            <select name="review_type">
+                <option value="" <?= $selected_review_type === '' ? 'selected' : '' ?>>All Review Types</option>
+                <option value="page" <?= $selected_review_type === 'page' ? 'selected' : '' ?>>Page Reviews</option>
+                <option value="post" <?= $selected_review_type === 'post' ? 'selected' : '' ?>>Post Reviews</option>
+                <option value="product" <?= $selected_review_type === 'product' ? 'selected' : '' ?>>Product Reviews</option>
+            </select>
+
+            <input type="submit" name="filter_action" id="post-query-submit" class="button" value="Filter">
             <input type="submit" name="apply" id="doaction" class="button action" value="Apply" />
         </div>
 
         <div class="tablenav-pages">
             <?= paginate_links([
-                'base' => add_query_arg('paged', '%#%'),
+                'base' => add_query_arg([
+                    'paged' => '%#%',
+                    'review_type' => $review->review_type ?? ''
+                ]),
                 'format' => '',
                 'prev_text' => __('«'),
                 'next_text' => __('»'),
@@ -106,7 +123,10 @@
     <div class="tablenav bottom">
         <div class="tablenav-pages">
             <?= paginate_links([
-                'base' => add_query_arg('paged', '%#%'),
+                'base' => add_query_arg([
+                    'paged' => '%#%',
+                    'review_type' => $_GET['review_type'] ?? ''
+                ]),
                 'format' => '',
                 'prev_text' => __('«'),
                 'next_text' => __('»'),
@@ -116,3 +136,4 @@
         </div>
     </div>
 </form>
+
