@@ -68,11 +68,8 @@ textarea {
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    padding: 4px 10px;
-    padding-top: 4px;
-    padding-right: 10px;
-    padding-bottom: 4px;
-    padding-left: 10px;
+    padding: 10px;
+
 }
 
 .submit-button:hover {
