@@ -9,37 +9,26 @@
                     <input type="text" name="review_name" id="edit-review-name" style="width:100%;">
                 </p>
                 <p>
-                    <label for="edit-review-email"><strong>Review Email:</strong></label><br>
+                    <label for="edit-review-email"><strong>Reviewers Email:</strong></label><br>
                     <input type="email" name="review_email" id="edit-review-email" style="width:100%;">
                 </p>
                 <p>
-                    <label for="edit-review-website"><strong>Review Website:</strong></label><br>
+                    <label for="edit-review-website"><strong>Reviewers Website:</strong></label><br>
                     <input type="url" name="review_website" id="edit-review-website" style="width:100%;">
                 </p>
                 <p>
-                    <label for="edit-review-phone"><strong>Review Phone:</strong></label><br>
+                    <label for="edit-review-phone"><strong>Reviewers Phone:</strong></label><br>
                     <input type="tel" name="review_phone" id="edit-review-phone" style="width:100%;">
                 </p>
                 <p>
-                    <label for="edit-review-city"><strong>Review City:</strong></label><br>
+                    <label for="edit-review-city"><strong>Reviewers City:</strong></label><br>
                     <input type="text" name="review_city" id="edit-review-city" style="width:100%;">
                 </p>
                 <p>
-                    <label for="edit-review-state"><strong>Review State:</strong></label><br>
+                    <label for="edit-review-state"><strong>Reviewers State:</strong></label><br>
                     <input type="text" name="review_state" id="edit-review-state" style="width:100%;">
                 </p>
-            </div>
-            <div style="flex:1;">
-                <input type="hidden" name="review_id" id="edit-review-id" value="">
-                <input type="hidden" name="review_id" id="update-type" value="">
-                <p>
-                    <label for="edit-review-title"><strong>Review Title:</strong></label><br>
-                    <input type="text" name="review_title" id="edit-review-title" style="width:100%;">
-                </p>
-                <p>
-                    <label for="edit-review-comment"><strong>Review Comment:</strong></label><br>
-                    <textarea name="review_comment" id="edit-review-comment" rows="5" style="width:100%;"></textarea>
-                </p>
+
                 <p>
                     <label for="edit-review-rating"><strong>Rating:</strong></label><br>
                     <select name="review_rating" id="edit-review-rating" style="width:100%;">
@@ -57,6 +46,19 @@
                         <option value="trash">Trash</option>
                     </select>
                 </p>
+            </div>
+            <div style="flex:1;">
+                <input type="hidden" name="review_id" id="edit-review-id" value="">
+                <input type="hidden" name="review_id" id="update-type" value="">
+                <p>
+                    <label for="edit-review-title"><strong>Review Title:</strong></label><br>
+                    <input type="text" name="review_title" id="edit-review-title" style="width:100%;">
+                </p>
+                <p>
+                    <label for="edit-review-comment"><strong>Review Comment:</strong></label><br>
+                    <textarea name="review_comment" id="edit-review-comment" rows="10" style="width:100%;"></textarea>
+                </p>
+                
                 <p>
                     <label for="edit-review-positionid"><strong>Reviewed Display Post/Page:</strong></label><br>
                     <select name="review_positionid" id="edit-review-positionid" style="width:100%;">
