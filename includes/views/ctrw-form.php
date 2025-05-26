@@ -2,7 +2,7 @@
 <?php if (!defined('ABSPATH')) exit; ?>
 
 <div class="customer-reviews-form-container">
-    <h3>Submit Your Review</h3>
+    <b class="ctrw-form-heading">Submit Your Review</b>
     <form id="customer-reviews-form">
         <?php 
         $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment', 'Rating'];

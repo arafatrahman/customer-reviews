@@ -9,7 +9,7 @@
 }
 
 #customer-reviews-form {
- /*    width: 580px; */
+     padding-top: 22px;
 }
 
 h3 {
@@ -188,6 +188,13 @@ textarea {
 
 .customer-reply button:hover {
     background-color: #005177;
+}
+
+.ctrw-form-heading{
+    font-size: 18pt;
+
+    border-left: 6px solid orange;
+    padding-left: 10px;
 }
 
 
