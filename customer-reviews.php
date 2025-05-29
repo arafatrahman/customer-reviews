@@ -11,8 +11,6 @@
  * License: GNU          General Public License v3.0
  * License URI:          http://www.gnu.org/licenses/gpl-3.0.html
  * Tested up to:         6.8.1
- * WC requires at least: 6.5.0
- * WC tested up to:      9.8.5
  * PHP tested up to:     8.2.4
 */
 

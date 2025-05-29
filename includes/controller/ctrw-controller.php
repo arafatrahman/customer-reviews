@@ -81,15 +81,11 @@ class Review_Controller {
     public function append_customer_reviews_shortcode($content) {
         if (is_singular(['post', 'page', 'product'])) {
 
-            // Get per-post meta settings (fallback to enabled if not set)
-            $enable_reviews = get_post_meta(get_the_ID(), '_ctrw_enable_reviews', true);
-            $enable_review_form = get_post_meta(get_the_ID(), '_ctrw_enable_review_form', true);
-            $enable_review_list = get_post_meta(get_the_ID(), '_ctrw_enable_review_list', true);
+            $post_id = get_the_ID();
+            $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
+            $enable_review_form = get_post_meta($post_id, '_ctrw_enable_review_form', true);
+            $enable_review_list = get_post_meta($post_id, '_ctrw_enable_review_list', true);
 
-            // Default to enabled if meta not set
-            $enable_reviews = ($enable_reviews === '') ? 1 : intval($enable_reviews);
-            $enable_review_form = ($enable_review_form === '') ? 1 : intval($enable_review_form);
-            $enable_review_list = ($enable_review_list === '') ? 1 : intval($enable_review_list);
 
             if ($enable_reviews) {
                 if ($enable_review_form) {
