@@ -45,6 +45,7 @@ textarea {
             justify-content: start;
             font-size: 24px;
             color: #ccc; /* Default star color */
+            margin-top: -10px;
         }
 
         .rating input {
@@ -193,6 +194,16 @@ textarea {
 .ctrw-form-heading{
     font-size: 18pt;
 }
+
+#customer-reviews-form input
+ {
+
+    padding: 4px 10px;
+    padding-top: 4px;
+    padding-right: 10px;
+    padding-bottom: 4px;
+    padding-left: 10px;
+ }
 
 
 
