@@ -44,14 +44,7 @@
                 <div style="flex: 1 1 0; min-width: 260px;">
                     
 
-                    <label for="time_date_font_size"><?php esc_html_e('Time/Date Font Size:', 'wp_cr'); ?></label>
-                    <input type="number" name="time_date_font_size" id="time_date_font_size" 
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['time_date_font_size'] ?? 10) ?>" min="1">
-                    <label for="time_date_font_weight"><?php esc_html_e('Time/Date Font Weight:', 'wp_cr'); ?></label>
-                    <select name="time_date_font_weight" id="time_date_font_weight">
-                        <option value="normal" <?= selected(get_option('customer_reviews_settings')['time_date_font_weight'] ?? '', 'normal', false) ?>>Normal</option>
-                        <option value="bold" <?= selected(get_option('customer_reviews_settings')['time_date_font_weight'] ?? '', 'bold', false) ?>>Bold</option>
-                    </select>
+                   
 
                     <label for="comment_font_size"><?php esc_html_e('Comment Font Size:', 'wp_cr'); ?></label>
                     <input type="number" name="comment_font_size" id="comment_font_size" 
