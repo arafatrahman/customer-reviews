@@ -227,6 +227,12 @@ class Review_Controller {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settings = [
+                'enable_email_notification' => isset($_POST['enable_email_notification']) ? 1 : 0,
+                'enable_customer_email_notification' => isset($_POST['enable_customer_email_notification']) ? 1 : 0,
+                'name_font_size' => intval(sanitize_text_field($_POST['name_font_size'] ?? 10)),
+                'name_font_weight' => sanitize_text_field($_POST['name_font_weight'] ?? 'normal'),
+                'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 9)),
+                'comment_font_style' => sanitize_text_field($_POST['comment_font_style'] ?? 'normal'),
                 'reviews_per_page' => intval(sanitize_text_field($_POST['reviews_per_page'] ?? 10)),
                 'date_format' => sanitize_text_field($_POST['date_format'] ?? 'MM/DD/YYYY'),
                 'include_time' => isset($_POST['include_time']) ? 1 : 0,
@@ -328,14 +334,32 @@ class Review_Controller {
             $this->model->ctrw_add_review($review_data);
 
             // Notify admin via email
-         //   $this->notify_admin_of_pending_review($review_data);
-
+            if (get_option('customer_reviews_settings')['enable_email_notification'] ?? false) {
+                $this->notify_admin_of_pending_review($data['name'], $data['email']);
+            }
+            // Notify customer via email if enabled
+            if (get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? false) {
+                $this->notify_cutomer_of_pending_review($review_data);
+            }
             // Send success response
             wp_send_json([
                     'success' => true,
                     'message' => 'Review submitted successfully!',
                     'reviews' => $this->get_review_list()
             ]);
+    }
+
+    // Notify customer of a new pending review
+    private function notify_cutomer_of_pending_review($email,$name) {
+        if (empty($email)) {
+            return;
+        }
+        $subject = __('Thank you for your review', 'wp_cr');
+        $message = sprintf(
+            __("Thank you %s for your review! It is currently pending approval.", 'wp_cr'),
+            esc_html($name)
+        );
+        wp_mail($email, $subject, $message);
     }
 
     private function notify_admin_of_pending_review($review_data) {

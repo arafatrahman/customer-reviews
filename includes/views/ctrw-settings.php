@@ -26,11 +26,10 @@
 
                     <label for="include_time"><input type="checkbox" name="include_time" id="include_time" value="1" 
                     <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>> <?php esc_html_e('Include Time', 'wp_cr'); ?></label>
-                    <label for="enable_admin_response"><input type="checkbox" name="enable_admin_response" id="enable_admin_response" value="1" 
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_admin_response'] ?? 0, false) ?>> <?php esc_html_e('Enable Admin Response', 'wp_cr'); ?></label>
                     <label for="enable_email_notification"><input type="checkbox" name="enable_email_notification" id="enable_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Email Notification', 'wp_cr'); ?></label>
-                
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
+                    <label for="enable_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Notification', 'wp_cr'); ?></label>
                     <label for="name_font_size"><?php esc_html_e('Name Font Size:', 'wp_cr'); ?></label>
                     <input type="number" name="name_font_size" id="name_font_size" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['name_font_size'] ?? 10) ?>" min="1">
