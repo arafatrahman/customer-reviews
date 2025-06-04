@@ -34,8 +34,8 @@ input, textarea {
     border-radius: 5px;
 }
 
-textarea {
-    height: 80px;
+.customer-reviews-form-container textarea {
+    height: 125px;
 }
 
 .rating {
