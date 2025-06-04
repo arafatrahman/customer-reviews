@@ -2,7 +2,6 @@
 .customer-reviews-form-container {
    /* max-width: 600px;
     margin: auto; */
-    background: #fff;
     padding: 0px; 
     border-radius: 8px;
     margin-top: 5%;
@@ -62,20 +61,6 @@ textarea {
     font-size: 16px;
         }
 
-.submit-button {
-    width: auto;
-    background: orange;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 10px;
-
-}
-
-.submit-button:hover {
-    background: darkorange;
-}
 
 
 
