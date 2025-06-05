@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
         $('#edit-review-comment').val($(this).data('review-comment'));
         $('#edit-review-city').val($(this).data('review-city'));
         $('#edit-review-state').val($(this).data('review-state'));
-        $('#edit-review-title').val($(this).data('review-status'));
+        $('#edit-review-status').val($(this).data('review-status'));
         $('#edit-review-rating').val($(this).data('review-rating'));
         $('#edit-review-title').val($(this).data('review-title'));
         $('#edit-review-positionid').val($(this).data('review-positionid'));
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
                 positionid: reviewPositionId
             },
             success: function(response) {
-                
+                 console.log(response.data);
                 if (response.success) {
                     alert('Review updated successfully.');
                     $('#cr-edit-review-popup').hide();

@@ -335,11 +335,12 @@ class Review_Controller {
 
             // Notify admin via email
             if (get_option('customer_reviews_settings')['enable_email_notification'] ?? false) {
-                $this->notify_admin_of_pending_review($data['name'], $data['email']);
+                $this->notify_admin_of_pending_review($review_data);
             }
             // Notify customer via email if enabled
             if (get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? false) {
-                $this->notify_cutomer_of_pending_review($review_data);
+              $status = 'pending';
+              $this->notify_customer_of_pending_review($data['email'],$data['name'],$status);
             }
             // Send success response
             wp_send_json([
@@ -350,16 +351,23 @@ class Review_Controller {
     }
 
     // Notify customer of a new pending review
-    private function notify_cutomer_of_pending_review($email,$name) {
+    private function notify_customer_of_pending_review($email,$name,$status) {
         if (empty($email)) {
+            return;
+        }
+        // check enable_customer_email_notification
+        if (!get_option('customer_reviews_settings')['enable_customer_email_notification']) {
             return;
         }
         $subject = __('Thank you for your review', 'wp_cr');
         $message = sprintf(
-            __("Thank you %s for your review! It is currently pending approval.", 'wp_cr'),
-            esc_html($name)
+            __("Thank you %s for your review! It is now currently %s ", 'wp_cr'),
+            $name,
+            $status
         );
+
         wp_mail($email, $subject, $message);
+        
     }
 
     private function notify_admin_of_pending_review($review_data) {
@@ -423,13 +431,22 @@ public function edit_customer_review() {
         'title' => $title,
         'positionid' => $positionid,
     ];
+    //get old status for notification
     if ($update_type === 'add') {
         $this->model->ctrw_add_review($data);
     } else {
-         $this->model->update_review($id, $data);
+
+        $old_review = $this->model->get_review_by_id($id);
+        $old_status = $old_review->status ?? '';
+        if ($old_status != $status) {
+         $this->notify_customer_of_pending_review($email,$name,$status);
+        }
+        $this->model->update_review($id, $data);
     }
+
+    wp_send_json(['success' => true, 'data' => $mydata]);
    
-    wp_send_json(['success' => true, 'data' => $data]);
+    
    
 }
 

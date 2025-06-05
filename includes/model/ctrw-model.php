@@ -64,8 +64,11 @@ class Review_Model {
         return $this->wpdb->insert($this->table, $data);
     }
 
-    public function get_reviews($status = 'approved') {
+    public function get_reviews($status = 'approved'){
         return $this->wpdb->get_results("SELECT * FROM {$this->table} WHERE status = '$status' ORDER BY created_at DESC");
+    }
+    public function get_review_by_id($id) {
+        return $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM $this->table WHERE id = %d", $id));
     }
 
     public function update_review($id, $data) {
