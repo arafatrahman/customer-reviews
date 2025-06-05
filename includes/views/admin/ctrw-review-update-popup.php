@@ -29,14 +29,7 @@
                     <input type="text" name="review_state" id="edit-review-state" style="width:100%;">
                 </p>
 
-                <p>
-                    <label for="edit-review-rating"><strong>Rating:</strong></label><br>
-                    <select name="review_rating" id="edit-review-rating" style="width:100%;">
-                        <?php for ($i=1; $i<=5; $i++): ?>
-                            <option value="<?= $i ?>"><?= $i ?> Star<?= $i > 1 ? 's' : '' ?></option>
-                        <?php endfor; ?>
-                    </select>
-                </p>
+               
                 <p>
                     <label for="edit-review-status"><strong>Status:</strong></label><br>
                     <select name="review_status" id="edit-review-status" style="width:100%;">
@@ -57,6 +50,15 @@
                 <p>
                     <label for="edit-review-comment"><strong>Review Comment:</strong></label><br>
                     <textarea name="review_comment" id="edit-review-comment" rows="10" style="width:100%;"></textarea>
+                </p>
+
+                 <p>
+                    <label for="edit-review-rating"><strong>Rating:</strong></label><br>
+                    <select name="review_rating" id="edit-review-rating" style="width:100%;">
+                        <?php for ($i=1; $i<=5; $i++): ?>
+                            <option value="<?= $i ?>"><?= $i ?> Star<?= $i > 1 ? 's' : '' ?></option>
+                        <?php endfor; ?>
+                    </select>
                 </p>
                 
                 <p>
