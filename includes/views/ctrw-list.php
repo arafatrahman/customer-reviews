@@ -35,7 +35,16 @@ $reviews = (new Review_Model())->get_reviews('approved');
     ?>
         <div class="review-item">
             <div class="review-header">
-            <span class="review-author"> Posted By <?= esc_html($review->name); ?> <?= esc_html($review->city); ?> <?= esc_html($review->state); ?></span>
+            <span class="review-author">
+                Posted By 
+                
+                <?php if (!empty($review->name)) : ?>
+                    <?= esc_html($review->name); ?> , 
+                <?php endif; ?>
+                <?php if (!empty($review->city)) : ?>
+                    <?= esc_html($review->city); ?> , 
+                <?php endif; ?>
+            <?= esc_html($review->state); ?></span>
                 <span class="stars">
                 <?php
                 $total_stars = 5; // Total number of stars
