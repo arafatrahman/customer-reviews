@@ -229,6 +229,7 @@ class Review_Controller {
             $settings = [
                 'enable_email_notification' => isset($_POST['enable_email_notification']) ? 1 : 0,
                 'enable_customer_email_notification' => isset($_POST['enable_customer_email_notification']) ? 1 : 0,
+                'auto_approve_reviews' => isset($_POST['auto_approve_reviews']) ? 1 : 0,
                 'name_font_size' => intval(sanitize_text_field($_POST['name_font_size'] ?? 10)),
                 'name_font_weight' => sanitize_text_field($_POST['name_font_weight'] ?? 'normal'),
                 'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 9)),
@@ -316,6 +317,14 @@ class Review_Controller {
 
     public function submit_review() {
             $data = $this->sanitize_post_data($_POST);
+
+            //check auto approve reviews setting
+            $settings = get_option('customer_reviews_settings');
+            if (isset($settings['auto_approve_reviews']) && $settings['auto_approve_reviews'] == 1) {
+                $status = 'approved';
+            } else {
+                $status = 'pending';
+            }
         
             $review_data = [
                     
@@ -327,7 +336,7 @@ class Review_Controller {
                     'state' => $data['state'],
                     'rating' => intval($data['rating']),
                     'comment' => $data['comment'],
-                    'status' => 'pending',
+                    'status' => $status,
                     'positionid' => intval($data['positionid'])
             ];
 
@@ -339,7 +348,7 @@ class Review_Controller {
             }
             // Notify customer via email if enabled
             if (get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? false) {
-              $status = 'pending';
+            
               $this->notify_customer_of_pending_review($data['email'],$data['name'],$status);
             }
             // Send success response
