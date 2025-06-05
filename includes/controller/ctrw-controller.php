@@ -230,6 +230,8 @@ class Review_Controller {
                 'enable_email_notification' => isset($_POST['enable_email_notification']) ? 1 : 0,
                 'enable_customer_email_notification' => isset($_POST['enable_customer_email_notification']) ? 1 : 0,
                 'auto_approve_reviews' => isset($_POST['auto_approve_reviews']) ? 1 : 0,
+                'show_city' => isset($_POST['show_city']) ? 1 : 0,
+                'show_state' => isset($_POST['show_state']) ? 1 : 0,
                 'name_font_size' => intval(sanitize_text_field($_POST['name_font_size'] ?? 10)),
                 'name_font_weight' => sanitize_text_field($_POST['name_font_weight'] ?? 'normal'),
                 'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 9)),

@@ -28,13 +28,22 @@
                     <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>> <?php esc_html_e('Include Time', 'wp_cr'); ?></label>
                     <label for="enable_email_notification"><input type="checkbox" name="enable_email_notification" id="enable_email_notification" value="1"
                     <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
-                    <label for="enable_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Notification', 'wp_cr'); ?></label>
+                    <label for="enable_customer_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Notification', 'wp_cr'); ?></label>
                     <label for="auto_approve_reviews">
                         <input type="checkbox" name="auto_approve_reviews" id="auto_approve_reviews" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['auto_approve_reviews'] ?? 0, false) ?>>
                         <?php esc_html_e('Enable Automatic Review Approval', 'wp_cr'); ?>
                     </label>
+                    <label for="show_city">
+                        <input type="checkbox" name="show_city" id="show_city" value="1"
+                        <?= checked(1, get_option('customer_reviews_settings')['show_city'] ?? 0, false) ?>>
+                        <?php esc_html_e('Show City in Review List', 'wp_cr'); ?>
+                    </label>
+                    <label for="show_state">
+                        <input type="checkbox" name="show_state" id="show_state" value="1"
+                        <?= checked(1, get_option('customer_reviews_settings')['show_state'] ?? 0, false) ?>>
+                        <?php esc_html_e('Show State in Review List', 'wp_cr'); ?>
                     <input type="number" name="name_font_size" id="name_font_size" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['name_font_size'] ?? 10) ?>" min="1">
                     <label for="name_font_weight"><?php esc_html_e('Name Font Weight:', 'wp_cr'); ?></label>
