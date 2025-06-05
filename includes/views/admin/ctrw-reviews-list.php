@@ -69,43 +69,57 @@
             </tr>
         </thead>
         <tbody>
-            <?php if (!empty($all_reviews)): ?>
-                <?php foreach ($all_reviews as $review):
-                    $stars = str_repeat('⭐', intval($review->rating));
+            <?php if (!empty($all_reviews)): 
+                
+                $reviews = array_map(function($item) {
+                return (array)$item;
+                }, $all_reviews);
+
+                ?>
+                <?php foreach ($reviews as $review):
+                    $rating = intval($review['rating']);
+                    $stars = '';
+                    for ($i = 1; $i <= 5; $i++) {
+                        if ($i <= $rating) {
+                            $stars .= '<span style="color: #ffc107;">&#9733;</span>'; // Gold star
+                        } else {
+                            $stars .= '<span style="color: #ccc;">&#9733;</span>'; // Gray star
+                        }
+                    }
                 ?>
                     <tr>
                         <th scope="row" class="check-column">
-                            <input type="checkbox" name="review_ids[]" value="<?= intval($review->id) ?>" />
+                            <input type="checkbox" name="review_ids[]" value="<?= intval($review['id']) ?>" />
                         </th>
-                        <td><?= esc_html($review->title) ?></td>
-                        <td><?= esc_html($review->name) ?></td>
+                        <td><?= esc_html($review['title']) ?></td>
+                        <td><?= esc_html($review['name']) ?></td>
                         <td><?= $stars ?></td>
-                        <td><?= esc_html($review->comment) ?></td>
-                        <td><?= esc_html($review->admin_reply) ?></td>
+                        <td><?= esc_html($review['comment']) ?></td>
+                        <td><?= esc_html($review['admin_reply']) ?></td>
                         <td>
-                            <a href="?page=customer-reviews&status=<?= esc_attr($review->status) ?>" class="review-status-link">
-                                <?= esc_html($review->status) ?>
+                            <a href="?page=customer-reviews&status=<?= esc_attr($review['status']) ?>" class="review-status-link">
+                                <?= esc_html($review['status']) ?>
                             </a>
                         </td>
                         <td>
-                            <?php if ($review->status !== 'rejected'): ?>
+                            <?php if ($review['status'] !== 'rejected'): ?>
                                 <button type="button" class="button reply-now"
-                                    data-review-id="<?= intval($review->id) ?>"
-                                    data-review-author="<?= esc_attr($review->name) ?>"
-                                    data-reply-message="<?= esc_attr($review->admin_reply) ?>">Reply</button>
+                                    data-review-id="<?= intval($review['id']) ?>"
+                                    data-review-author="<?= esc_attr($review['name']) ?>"
+                                    data-reply-message="<?= esc_attr($review['admin_reply']) ?>">Reply</button>
                                 <button type="button" class="button edit-review"
-                                    data-review-id="<?= intval($review->id) ?>"
-                                    data-review-author="<?= esc_attr($review->name) ?>"
-                                    data-review-email="<?= esc_attr($review->email) ?>"
-                                    data-review-phone="<?= esc_attr($review->phone) ?>"
-                                    data-review-website="<?= esc_attr($review->website) ?>"
-                                    data-review-title="<?= esc_attr($review->title) ?>"
-                                    data-review-comment="<?= esc_attr($review->comment) ?>"
-                                    data-review-rating="<?= intval($review->rating) ?>"
-                                    data-review-status="<?= esc_attr($review->status) ?>"
-                                    data-review-city="<?= esc_attr($review->city) ?>"
-                                    data-review-state="<?= esc_attr($review->state) ?>"
-                                    data-review-positionid="<?= intval($review->positionid) ?>" data-update-type="update">
+                                    data-review-id="<?= intval($review['id']) ?>"
+                                    data-review-author="<?= esc_attr($review['name']) ?>"
+                                    data-review-email="<?= esc_attr($review['email']) ?>"
+                                    data-review-phone="<?= esc_attr($review['phone']) ?>"
+                                    data-review-website="<?= esc_attr($review['website']) ?>"
+                                    data-review-title="<?= esc_attr($review['title']) ?>"
+                                    data-review-comment="<?= esc_attr($review['comment']) ?>"
+                                    data-review-rating="<?= intval($review['rating']) ?>"
+                                    data-review-status="<?= esc_attr($review['status']) ?>"
+                                    data-review-city="<?= esc_attr($review['city']) ?>"
+                                    data-review-state="<?= esc_attr($review['state']) ?>"
+                                    data-review-positionid="<?= intval($review['positionid']) ?>" data-update-type="update">
                                     Edit Review
                                 </button>
                             <?php else: ?>
