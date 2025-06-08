@@ -338,6 +338,7 @@ class Review_Controller {
                     'city' => $data['city'],
                     'state' => $data['state'],
                     'rating' => intval($data['rating']),
+                    'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
                     'comment' => $data['comment'],
                     'status' => $status,
                     'positionid' => intval($data['positionid'])
@@ -386,15 +387,90 @@ class Review_Controller {
     private function notify_admin_of_pending_review($review_data) {
         $admin_email = get_option('admin_email');
         $subject = sprintf(__('Customer Review Notification - %s', 'wp_cr'), $review_data['name']);
-        $message = __("A new review has been submitted and is pending approval.\n\n", 'wp_cr');
 
-        $message .= __("Please log in to the admin panel to review and approve it.\n", 'wp_cr');
-        $message .= sprintf(
-            __("Pending reviews can be viewed here: %s", 'wp_cr'),
-            admin_url('admin.php?page=customer-reviews&status=pending')
-        );
+        $site_name = get_bloginfo('name');
+        $site_url = get_site_url();
+        $time = current_time('H:i:s');
+        $date = current_time('Y-m-d');
+        $remote_ip = $_SERVER['REMOTE_ADDR'] ?? '';
+        $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+       
+        $html_message = '
+        <div align="left">
+            <p><font size="2" face="Verdana">Customer Review from the website ' . esc_html($site_name) . ':</font></p>
+            <table border="0" cellspacing="1" cellpadding="3" bgcolor="silver">
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Name :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['name']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Email :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['email']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Website :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['website']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Phone :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['phone']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">City :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['city']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right"><font size="2" face="Verdana">State :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['state']) . '</font></td>
+                </tr>
+                <tr>
+                    <td bgcolor="#f5f5f5" width="193">
+                        <div align="right"><font size="2" face="Verdana">Review Title :</font></div>
+                    </td>
+                    <td bgcolor="white" width="491"><font size="2" face="Verdana">' . (isset($review_data['title']) ? esc_html($review_data['title']) : '') . '</font></td>
+                </tr>
+                <tr>
+                    <td valign="top" bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Comment :</font></div>
+                    </td>
+                    <td valign="top" bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['comment']) . '</font></td>
+                </tr>
+                <tr>
+                    <td valign="top" bgcolor="#f5f5f5" width="193">
+                        <div align="right">
+                            <font size="2" face="Verdana">Rating :</font></div>
+                    </td>
+                    <td valign="top" bgcolor="white" width="491"><font size="2" face="Verdana">' . esc_html($review_data['rating']) . '</font></td>
+                </tr>
+            </table>
+            <p><font size="2" face="Verdana">This e-mail was sent from a review form found on ' . esc_html($site_name) . ' website ' . esc_url($site_url) . '</font></p>
+            <p><font size="2" face="Verdana">Submission Details: ' . esc_html($time) . ', ' . esc_html($date) . ', ' . esc_html($remote_ip) . ', ' . esc_html($user_agent) . '</font></p>
+            <p><font size="2" color="gray" face="Verdana">Notification Form Created by <a href="https://wordpress.org/plugins/customer-comments/" target="_blank">Customer Comments</a></font></p>
+        </div>
+        ';
 
-        wp_mail($admin_email, $subject, $message);
+
+
+        $headers = array('Content-Type: text/html; charset=UTF-8');
+        wp_mail($admin_email, $subject, $html_message, $headers);
     }
 
 
