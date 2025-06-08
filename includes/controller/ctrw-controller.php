@@ -232,6 +232,7 @@ class Review_Controller {
                 'auto_approve_reviews' => isset($_POST['auto_approve_reviews']) ? 1 : 0,
                 'show_city' => isset($_POST['show_city']) ? 1 : 0,
                 'show_state' => isset($_POST['show_state']) ? 1 : 0,
+                'enable_review_title' => isset($_POST['enable_review_title']) ? 1 : 0,
                 'name_font_size' => intval(sanitize_text_field($_POST['name_font_size'] ?? 10)),
                 'name_font_weight' => sanitize_text_field($_POST['name_font_weight'] ?? 'normal'),
                 'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 9)),
@@ -345,7 +346,8 @@ class Review_Controller {
             $this->model->ctrw_add_review($review_data);
 
             // Notify admin via email
-            if (get_option('customer_reviews_settings')['enable_email_notification'] ?? false) {
+            $settings = get_option('customer_reviews_settings');
+            if (!isset($settings['enable_email_notification']) || $settings['enable_email_notification']) {
                 $this->notify_admin_of_pending_review($review_data);
             }
             // Notify customer via email if enabled

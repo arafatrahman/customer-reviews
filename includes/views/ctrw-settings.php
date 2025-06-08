@@ -27,7 +27,7 @@
                     <label for="include_time"><input type="checkbox" name="include_time" id="include_time" value="1" 
                     <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>> <?php esc_html_e('Include Time', 'wp_cr'); ?></label>
                     <label for="enable_email_notification"><input type="checkbox" name="enable_email_notification" id="enable_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 1, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
                     <label for="enable_customer_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
                     <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Notification', 'wp_cr'); ?></label>
                     <label for="auto_approve_reviews">
@@ -44,6 +44,12 @@
                         <input type="checkbox" name="show_state" id="show_state" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['show_state'] ?? 0, false) ?>>
                         <?php esc_html_e('Show State in Review List', 'wp_cr'); ?>
+                        <label for="enable_review_title">
+                            <input type="checkbox" name="enable_review_title" id="enable_review_title" value="1"
+                            <?= checked(1, get_option('customer_reviews_settings')['enable_review_title'] ?? 0, false) ?>>
+                            <?php esc_html_e('Enable Review Title', 'wp_cr'); ?>
+                        </label>
+
                     <input type="number" name="name_font_size" id="name_font_size" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['name_font_size'] ?? 10) ?>" min="1">
                     <label for="name_font_weight"><?php esc_html_e('Name Font Weight:', 'wp_cr'); ?></label>
@@ -79,7 +85,7 @@
             <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
             <div style="display: flex; flex-wrap: wrap; gap: 24px;">
             <?php 
-            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Comment', 'Rating'];
+            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Title', 'Comment', 'Rating'];
             $half = ceil(count($fields) / 2);
             $columns = [array_slice($fields, 0, $half), array_slice($fields, $half)];
             foreach ($columns as $colFields): ?>
