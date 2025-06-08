@@ -385,7 +385,7 @@ class Review_Controller {
 
     private function notify_admin_of_pending_review($review_data) {
         $admin_email = get_option('admin_email');
-        $subject = __('New Pending Review Submitted', 'wp_cr');
+        $subject = sprintf(__('Customer Review Notification - %s', 'wp_cr'), $review_data['name']);
         $message = __("A new review has been submitted and is pending approval.\n\n", 'wp_cr');
 
         $message .= __("Please log in to the admin panel to review and approve it.\n", 'wp_cr');
