@@ -91,15 +91,16 @@ $reviews = (new Review_Model())->get_reviews('approved');
             $settings = get_option('customer_reviews_settings');
             $show_title = !empty($settings['enable_review_title']);
             ?>
+            
+            <?php
+            if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
+               <span class="review-date"><?= esc_html($formatted_date); ?></span>
+               <?php } ?>
             <?php if ($show_title && !empty($review->title)) : ?>
                 <div class="review-title">
                     <?= esc_html($review->title); ?>
                 </div>
             <?php endif; ?>
-            <?php
-            if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
-               <span class="review-date"><?= esc_html($formatted_date); ?></span>
-               <?php } ?>
             <div class="review-content">
                 <p><?= esc_html($review->comment); ?></p>
             </div>

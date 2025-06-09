@@ -70,6 +70,23 @@ class Review_Model {
     public function get_review_by_id($id) {
         return $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM $this->table WHERE id = %d", $id));
     }
+    public function get_review_count_by_positionid($positionid) {
+        $count = $this->wpdb->get_var(
+            $this->wpdb->prepare("SELECT COUNT(*) FROM $this->table WHERE positionid = %d", $positionid)
+        );
+        return (int) $count;
+    }
+    public function get_average_rating_by_positionid($positionid) {
+        $avg = $this->wpdb->get_var(
+            $this->wpdb->prepare(
+                "SELECT AVG(rating) FROM $this->table WHERE positionid = %d AND status = %s",
+                $positionid,
+                'approved'
+            )
+        );
+        return $avg !== null ? round((float)$avg, 2) : 0;
+    }
+
 
     public function update_review($id, $data) {
      
@@ -101,6 +118,20 @@ class Review_Model {
         } else {
             return false;
         }
+    }
+
+    public function check_replace_woocommerce_reviews() {
+        $setting = get_option('customer_reviews_settings');
+        if (!empty($setting['replace_woocommerce_reviews'])) {
+            return true; // Return early if the setting is not enabled
+        }
+    }
+
+    public function get_review_count_by_status($status) {
+        $count = $this->wpdb->get_var(
+            $this->wpdb->prepare("SELECT COUNT(*) FROM $this->table WHERE status = %s", $status)
+        );
+        return (int) $count;
     }
 }
 ?>

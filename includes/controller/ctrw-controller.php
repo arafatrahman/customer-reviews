@@ -37,8 +37,64 @@ class Review_Controller {
 
         add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
 
+        add_action('woocommerce_single_product_summary', array($this, 'ctrw_reviews_after_title'), 6);
+
+        add_filter('woocommerce_product_settings', [$this, 'make_review_checkbox_disabled']);
+
          
     }
+
+ 
+
+
+    public function make_review_checkbox_disabled($settings) {
+        if(empty($this->model->check_replace_woocommerce_reviews())) {
+            return $settings; // Return early if the setting is not enabled
+        }
+        foreach ($settings as &$setting) {
+            if (isset($setting['id']) && $setting['id'] === 'woocommerce_enable_reviews') {
+                $setting['default'] = 'no';
+                $setting['custom_attributes'] = array('disabled' => 'disabled');
+                $setting['desc'] .= ' <strong>(' . __('This Setting off by Customer Reviews plugin', 'your-plugin-textdomain') . ')</strong>';
+            }
+        }
+        return $settings;
+    }
+
+
+
+    public function ctrw_reviews_after_title() {
+        if(!empty($this->model->check_replace_woocommerce_reviews())) {
+
+            echo '<div class="my-custom-section">';
+            global $post;
+            $review_count = $this->model->get_review_count_by_positionid($post->ID);
+            $average_rating = $this->model->get_average_rating_by_positionid($post->ID);
+            // Display average rating as stars
+            if ($average_rating > 0) {
+                $full_stars = floor($average_rating);
+                $half_star = ($average_rating - $full_stars) >= 0.5 ? 1 : 0;
+                $empty_stars = 5 - $full_stars - $half_star;
+
+                echo '<div class="ctrw-average-rating-stars" style="font-size:1.2em;">';
+                for ($i = 0; $i < $full_stars; $i++) {
+                    echo '<span class="ctrw-star">&#9733;</span>'; // filled star
+                }
+                if ($half_star) {
+                    echo '<span class="ctrw-star">&#189;</span>'; // half star (can use SVG or custom CSS for better look)
+                }
+                for ($i = 0; $i < $empty_stars; $i++) {
+                    echo '<span class="ctrw-star" style="color:#ccc;">&#9733;</span>'; // empty star
+                }
+                 echo '<span> (' . sprintf(__('%d Customer reviews', 'wp_cr'), intval($review_count)) . ')</span>';
+                echo '</div>';
+            }
+           
+         
+            echo '</div>';
+        }
+    }
+
 
     // Add settings link to the plugin page
     public function ctrw_plugin_action_links($links) {
@@ -109,7 +165,7 @@ class Review_Controller {
             'ctrw_meta_box',
             __('Customer Reviews', 'wp_ctrw'),
             [$this, 'render_ctrw_meta_box'],
-            ['post', 'page', 'product'], // Post types
+            ['post', 'page'], // Post types
             'side',                      // Context: 'side' places it on the right
             'high'                       // Priority
         );

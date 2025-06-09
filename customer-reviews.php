@@ -191,30 +191,16 @@ function ctrw_save_column_visibility() {
 }
 
 
-add_filter('woocommerce_product_settings', 'make_review_checkbox_disabled');
-function make_review_checkbox_disabled($settings) {
-    $setting = get_option('customer_reviews_settings');
-    if(empty($setting['replace_woocommerce_reviews'])) {
-        return $settings; // Return early if the setting is not enabled
-    }
-    foreach ($settings as &$setting) {
-        if (isset($setting['id']) && $setting['id'] === 'woocommerce_enable_reviews') {
-            $setting['default'] = 'no';
-            $setting['custom_attributes'] = array('disabled' => 'disabled');
-            $setting['desc'] .= ' <strong>(' . __('This Setting off by Customer Reviews plugin', 'your-plugin-textdomain') . ')</strong>';
-        }
-    }
-    return $settings;
-}
 
-add_filter('woocommerce_product_tabs', 'remove_default_reviews_tab', 98);
-function remove_default_reviews_tab($tabs) {
-    unset($tabs['reviews']); // Remove default WooCommerce reviews tab
-    return $tabs;
-}
+
+
 
 add_filter('woocommerce_product_tabs', 'replace_reviews_tab_with_custom_plugin');
 function replace_reviews_tab_with_custom_plugin($tabs) {
+    $setting = get_option('customer_reviews_settings');
+    if(empty($setting['replace_woocommerce_reviews'])) {
+        return $tabs; // Return early if the setting is not enabled
+    }
     // Remove default WooCommerce Reviews tab
     unset($tabs['reviews']);
 
@@ -229,11 +215,26 @@ function replace_reviews_tab_with_custom_plugin($tabs) {
 }
 
 function render_custom_reviews_tab_content() {
-    echo '<div class="reviews_tab active" id="tab-title-reviews>';
 
+
+    
+    echo '<div class="reviews_tab active" id="tab-title-reviews>';
     // Render your plugin's form and list via shortcode
     echo do_shortcode('[wp_ctrw_lists]');
     echo do_shortcode('[wp_ctrw_form]');
 
     echo '</div>';
 }
+
+
+add_action('init', function () {
+    $setting = get_option('customer_reviews_settings');
+    if(empty($setting['replace_woocommerce_reviews'])) {
+        return ; // Return early if the setting is not enabled
+    }
+    update_option('woocommerce_enable_reviews', 'no');
+    update_option('woocommerce_enable_review_rating', 'no');
+    update_option('woocommerce_review_rating_required', 'no');
+    update_option('woocommerce_review_rating_verification_label', 'no');
+    update_option('woocommerce_review_rating_verification_required', 'no');
+});
