@@ -192,10 +192,11 @@ class Review_Controller {
             array($this, 'display_settings_page')
         );
 
-        add_submenu_page( 'woocommerce', 'Reviews', 'Reviews', 'manage_options', 'customer-product-reviews', 'my_custom_submenu_page_callback' ); 
+      //  add_submenu_page( 'woocommerce', 'Reviews', 'Reviews', 'manage_options', 'customer-product-reviews', 'my_custom_submenu_page_callback' ); 
 
     }
 
+    /*
     public function my_custom_submenu_page_callback() {
       // Retrieve the status from the URL, defaulting to 'all' if none is provided
       if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['bulk_action']) && isset($_POST['review_ids'])) {
@@ -206,7 +207,8 @@ class Review_Controller {
         $reviews = $this->model->get_reviews_by_status($status);
         $counts = $this->model->get_review_counts();
         $this->view->display_reviews($reviews, $counts, $status);
-  }
+    }
+    */
 
 
 
