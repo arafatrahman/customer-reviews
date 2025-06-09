@@ -22,12 +22,10 @@ $reviews = (new Review_Model())->get_reviews('approved');
     $post_id = get_the_ID();
     $product_id = function_exists('wc_get_product') ? get_the_ID() : null;
 
-    if (
-        (!empty($review->positionid)) &&
-        $review->positionid != $page_id &&
-        $review->positionid != $post_id &&
-        ($product_id === null || $review->positionid != $product_id)
-    )
+    $is_product_page = function_exists('is_product') && is_product();
+    if($is_product_page && $review->positionid != $is_product_page ){
+        continue; // Skip if the review is not for the current product
+    }
 
    
     ?>
@@ -86,10 +84,8 @@ $reviews = (new Review_Model())->get_reviews('approved');
                             break;
                     }
 
-                }
-                if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
-               <span class="review-date"><?= esc_html($formatted_date); ?></span>
-               <?php } ?>
+                }?>
+                
             </div>
             <?php
             $settings = get_option('customer_reviews_settings');
@@ -100,6 +96,10 @@ $reviews = (new Review_Model())->get_reviews('approved');
                     <?= esc_html($review->title); ?>
                 </div>
             <?php endif; ?>
+            <?php
+            if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
+               <span class="review-date"><?= esc_html($formatted_date); ?></span>
+               <?php } ?>
             <div class="review-content">
                 <p><?= esc_html($review->comment); ?></p>
             </div>
