@@ -23,7 +23,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
     $product_id = function_exists('wc_get_product') ? get_the_ID() : null;
 
     $is_product_page = function_exists('is_product') && is_product();
-    if($is_product_page && $review->positionid != $is_product_page ){
+    if($is_product_page && $review->positionid != $is_product_page || $review->positionid != $page_id || $review->positionid != $post_id) {
         continue; // Skip if the review is not for the current product
     }
 
