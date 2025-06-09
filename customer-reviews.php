@@ -189,3 +189,51 @@ function ctrw_save_column_visibility() {
     update_user_meta($user_id, 'ctrw_column_visibility', $columns);
     wp_send_json_success();
 }
+
+
+add_filter('woocommerce_product_settings', 'make_review_checkbox_disabled');
+function make_review_checkbox_disabled($settings) {
+    $setting = get_option('customer_reviews_settings');
+    if(empty($setting['replace_woocommerce_reviews'])) {
+        return $settings; // Return early if the setting is not enabled
+    }
+    foreach ($settings as &$setting) {
+        if (isset($setting['id']) && $setting['id'] === 'woocommerce_enable_reviews') {
+            $setting['default'] = 'no';
+            $setting['custom_attributes'] = array('disabled' => 'disabled');
+            $setting['desc'] .= ' <strong>(' . __('This Setting off by Customer Reviews plugin', 'your-plugin-textdomain') . ')</strong>';
+        }
+    }
+    return $settings;
+}
+
+add_filter('woocommerce_product_tabs', 'remove_default_reviews_tab', 98);
+function remove_default_reviews_tab($tabs) {
+    unset($tabs['reviews']); // Remove default WooCommerce reviews tab
+    return $tabs;
+}
+
+add_filter('woocommerce_product_tabs', 'replace_reviews_tab_with_custom_plugin');
+function replace_reviews_tab_with_custom_plugin($tabs) {
+    // Remove default WooCommerce Reviews tab
+    unset($tabs['reviews']);
+
+    // Add your custom reviews tab
+    $tabs['custom_reviews'] = array(
+        'title'    => __('Customer Reviews', 'your-plugin-textdomain'),
+        'priority' => 30,
+        'callback' => 'render_custom_reviews_tab_content'
+    );
+
+    return $tabs;
+}
+
+function render_custom_reviews_tab_content() {
+    echo '<div class="reviews_tab active" id="tab-title-reviews>';
+
+    // Render your plugin's form and list via shortcode
+    echo do_shortcode('[wp_ctrw_lists]');
+    echo do_shortcode('[wp_ctrw_form]');
+
+    echo '</div>';
+}

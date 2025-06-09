@@ -243,6 +243,7 @@ class Review_Controller {
                 'date_format' => sanitize_text_field($_POST['date_format'] ?? 'MM/DD/YYYY'),
                 'include_time' => isset($_POST['include_time']) ? 1 : 0,
                 'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),
+                'replace_woocommerce_reviews' => isset($_POST['replace_woocommerce_reviews']) ? 1 : 0,
                 'fields' => array_map(function($field) {
                     return array_map('sanitize_text_field', $field);
                 }, $_POST['fields'] ?? [])

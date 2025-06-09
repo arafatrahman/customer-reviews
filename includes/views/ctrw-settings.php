@@ -5,6 +5,8 @@
         <a href="#" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
         <a href="#" class="nav-tab" onclick="showTab(event, 'review_form')">Review Form Settings</a>
         <a href="#" class="nav-tab" onclick="showTab(event, 'display')">Shortcodes</a>
+        <a href="#" class="nav-tab" onclick="showTab(event, 'advanced')">Advanced Settings</a>
+
     </h2>
 
     <form method="post" action="" class="wp-review-settings-form">
@@ -57,6 +59,7 @@
                         <option value="normal" <?= selected(get_option('customer_reviews_settings')['name_font_weight'] ?? '', 'normal', false) ?>>Normal</option>
                         <option value="bold" <?= selected(get_option('customer_reviews_settings')['name_font_weight'] ?? '', 'bold', false) ?>>Bold</option>
                     </select>
+                    
                 
                 </div>
                 <div style="flex: 1 1 0; min-width: 260px;">
@@ -123,6 +126,16 @@
                 <input type="text" id="shortcode" value="[wp_ctrw_lists]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_lists]')">Copy</button>
             </div>
+        </div>
+
+        <div class="form-group tab-section" id="tab-advanced" style="display:none;">
+        
+        <label for="replace_woocommerce_reviews">
+                        <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
+                        <?= checked(1, get_option('customer_reviews_settings')['replace_woocommerce_reviews'] ?? 0, false) ?>>
+                        <?php esc_html_e('Replace WooCommerce Default Review System', 'wp_cr'); ?>
+                    </label>
+
         </div>
 
         <?php submit_button('Save Settings', 'primary', 'submit', true); ?>

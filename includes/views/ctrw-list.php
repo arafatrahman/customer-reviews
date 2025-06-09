@@ -27,9 +27,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
         $review->positionid != $page_id &&
         $review->positionid != $post_id &&
         ($product_id === null || $review->positionid != $product_id)
-    ) {
-        continue;
-    }
+    )
 
    
     ?>
