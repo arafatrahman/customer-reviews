@@ -30,12 +30,31 @@ $reviews = (new Review_Model())->get_reviews('approved');
      $show_city = !empty($settings['show_city']);
      $show_state = !empty($settings['show_state']);
 
-     print_r($settings);
+            $show_title = !empty($settings['enable_review_title']);
+
+     $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
+            $include_time = get_option('customer_reviews_settings')['include_time'] ?? 0;
+
+            $formatted_date = '';
+            if (!empty($review->created_at)) {
+                $timestamp = strtotime($review->created_at);
+                switch ($date_format) {
+                    case 'DD/MM/YYYY':
+                        $formatted_date = date('d/m/Y', $timestamp);
+                        break;
+                    case 'YYYY/MM/DD':
+                        $formatted_date = date('Y/m/d', $timestamp);
+                        break;
+                     default:
+                            $formatted_date = date('m/d/Y', $timestamp);
+                            break;
+                    }
+
+                }
+
    
     ?>
-        <div class="review-item">
-            <div class="review-header">
-             <span class="review-author">
+    <div class="review-author-details"> <span class="review-author">
                 Posted By 
                 
                 <?php if (!empty($review->name)) : ?>
@@ -49,7 +68,20 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 <?php if ($show_state && !empty($review->state)) :?>
                      <?= esc_html($review->state); ?>
                 <?php endif; ?>
-                </span>
+             </span><br>
+             <?php
+            if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
+               <span class="review-date">Post Date/Time: <?= esc_html($formatted_date); ?></span>
+               <?php } ?>
+             <div>
+        <div class="review-item">
+            <div class="review-header">
+            
+            <?php if ($show_title && !empty($review->title)) : ?>
+                <div class="review-title">
+                    <?= esc_html($review->title); ?>
+                </div>
+            <?php endif; ?>
 
                 <span class="stars">
             <?php
@@ -89,19 +121,11 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 
             </div>
             <?php
-            $settings = get_option('customer_reviews_settings');
-            $show_title = !empty($settings['enable_review_title']);
+            
             ?>
             
-            <?php
-            if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
-               <span class="review-date">Post Date/Time: <?= esc_html($formatted_date); ?></span>
-               <?php } ?>
-            <?php if ($show_title && !empty($review->title)) : ?>
-                <div class="review-title">
-                    <?= esc_html($review->title); ?>
-                </div>
-            <?php endif; ?>
+            
+            
             <div class="review-content">
                 <?php
                 $font_size = get_option('customer_reviews_settings')['comment_font_size'] ?? 16; // Default font size if not set
