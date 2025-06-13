@@ -26,7 +26,9 @@ $reviews = (new Review_Model())->get_reviews('approved');
     if($is_product_page && $review->positionid != $is_product_page || $review->positionid != $page_id || $review->positionid != $post_id) {
         continue; // Skip if the review is not for the current product
     }
-
+     $settings = get_option('customer_reviews_settings');
+                $show_city = !empty($settings['show_city']);
+                $show_state = !empty($settings['show_state']);
    
     ?>
         <div class="review-item">
@@ -35,18 +37,15 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 Posted By 
                 
                 <?php if (!empty($review->name)) : ?>
-                    <?= esc_html($review->name); ?> 
+                    <?= esc_html($review->name);if ($show_city && !empty($review->city)) { echo ', '; }
+                    ?> 
                 <?php endif; ?>
-                <?php
-                $settings = get_option('customer_reviews_settings');
-                $show_city = !empty($settings['show_city']);
-                $show_state = !empty($settings['show_state']);
-                ?>
-                <?php if ($show_city && !empty($review->city)) : ?>
-                     ,<?= esc_html($review->city); ?> 
+                
+                <?php if ($show_city && !empty($review->city)) :?>
+                     <?= esc_html($review->city);if ($show_state && !empty($review->state)) { echo ', '; } ?> 
                 <?php endif; ?>
-                <?php if ($show_state && !empty($review->state)) : ?>
-                     ,<?= esc_html($review->state); ?>
+                <?php if ($show_state && !empty($review->state)) :?>
+                     <?= esc_html($review->state); ?>
                 <?php endif; ?>
                 </span>
 
