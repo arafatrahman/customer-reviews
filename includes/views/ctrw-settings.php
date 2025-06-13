@@ -129,7 +129,7 @@
         </div>
 
         <div class="form-group tab-section" id="tab-advanced" style="display:none;">
-        
+        <h3><?php esc_html_e('Advanced Settings', 'wp_cr'); ?></h3>
         <label for="replace_woocommerce_reviews">
                         <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['replace_woocommerce_reviews'] ?? 0, false) ?>>
