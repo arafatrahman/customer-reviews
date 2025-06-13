@@ -136,6 +136,24 @@
                         <?php esc_html_e('Replace WooCommerce Default Review System', 'wp_cr'); ?>
                     </label>
 
+        <div style="margin-top: 18px;">
+            <label for="notification_admin_emails">
+                <?php esc_html_e('Notification Admin Emails', 'wp_cr'); ?>
+                <span title="<?php esc_attr_e('Enter one or more email addresses separated by commas. These addresses will receive admin notifications. By default, the site admin email is included.', 'wp_cr'); ?>" style="cursor: help; color: #888; margin-left: 4px;">&#9432;</span>
+            </label>
+            <?php
+                $settings = get_option('customer_reviews_settings');
+                $admin_email = get_option('admin_email');
+                $emails = isset($settings['notification_admin_emails']) && trim($settings['notification_admin_emails']) !== ''
+                    ? $settings['notification_admin_emails']
+                    : $admin_email;
+            ?>
+            <input type="text" name="notification_admin_emails" id="notification_admin_emails"
+                value="<?= esc_attr($emails); ?>"
+                placeholder="<?= esc_attr($admin_email); ?>"
+                style="width: 100%;">
+        </div>
+
         </div>
 
         <?php submit_button('Save Settings', 'primary', 'submit', true); ?>

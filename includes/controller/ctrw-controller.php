@@ -300,6 +300,7 @@ class Review_Controller {
                 'include_time' => isset($_POST['include_time']) ? 1 : 0,
                 'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),
                 'replace_woocommerce_reviews' => isset($_POST['replace_woocommerce_reviews']) ? 1 : 0,
+                'notification_admin_emails' => isset($_POST['notification_admin_emails']) ? $_POST['notification_admin_emails'] : '',   
                 'fields' => array_map(function($field) {
                     return array_map('sanitize_text_field', $field);
                 }, $_POST['fields'] ?? [])
@@ -525,11 +526,29 @@ class Review_Controller {
             <p><font size="2" color="gray" face="Verdana">Notification Form Created by <a href="https://wordpress.org/plugins/customer-comments/" target="_blank">Customer Comments</a></font></p>
         </div>
         ';
+        $settings = get_option('customer_reviews_settings');
+        $admin_email = $settings['notification_admin_emails'] ?? get_option('admin_email');
+        if (empty($admin_email)) {
+            return; // No admin email set, exit early
+        }
 
+        if (is_array($admin_email)) {
+            $admin_email = implode(',', $admin_email);
+        }
+        if (strpos($admin_email, ',') !== false) {
+            $admin_email = array_map('trim', explode(',', $admin_email));
+        }
+        $headers = [
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . esc_html($site_name) . ' <' . esc_html($admin_email) . '>',
+            'Reply-To: ' . esc_html($review_data['email']),
+        ];
+        $html_message.= "this email is sent to " . esc_html($admin_email) . " for review notification";
 
-
-        $headers = array('Content-Type: text/html; charset=UTF-8');
+        $headers = implode("\r\n", $headers);
         wp_mail($admin_email, $subject, $html_message, $headers);
+
+        
     }
 
 
