@@ -27,8 +27,10 @@ $reviews = (new Review_Model())->get_reviews('approved');
         continue; // Skip if the review is not for the current product
     }
      $settings = get_option('customer_reviews_settings');
-                $show_city = !empty($settings['show_city']);
-                $show_state = !empty($settings['show_state']);
+     $show_city = !empty($settings['show_city']);
+     $show_state = !empty($settings['show_state']);
+
+     print_r($settings);
    
     ?>
         <div class="review-item">
@@ -101,7 +103,14 @@ $reviews = (new Review_Model())->get_reviews('approved');
                 </div>
             <?php endif; ?>
             <div class="review-content">
-                <p><?= esc_html($review->comment); ?></p>
+                <?php
+                $font_size = get_option('customer_reviews_settings')['comment_font_size'] ?? 16; // Default font size if not set
+                $font_style = get_option('customer_reviews_settings')['comment_font_style'] ?? 'normal';
+                
+                ?>
+                <p style="font-size: <?php echo esc_attr($font_size); ?>px; font-style: <?php echo esc_attr($font_style); ?>;">
+                    <?= esc_html($review->comment); ?>
+                </p>
             </div>
             <?php if (!empty($review->admin_reply)) : ?>
                 <div class="admin-response">
