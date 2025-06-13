@@ -85,6 +85,9 @@ h3 {
 .review-content p {
     margin: 10px 0;
 }
+.review-date {
+    font-size: 14px;
+}
 
 .review-actions {
     font-size: 14px;

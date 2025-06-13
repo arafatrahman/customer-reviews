@@ -95,7 +95,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
             
             <?php
             if ($include_time) { $formatted_date .= ' ' . date('H:i', $timestamp); ?>
-               <span class="review-date"><?= esc_html($formatted_date); ?></span>
+               <span class="review-date">Post Date/Time: <?= esc_html($formatted_date); ?></span>
                <?php } ?>
             <?php if ($show_title && !empty($review->title)) : ?>
                 <div class="review-title">
