@@ -30,7 +30,11 @@ $reviews = (new Review_Model())->get_reviews('approved');
      $show_city = !empty($settings['show_city']);
      $show_state = !empty($settings['show_state']);
 
-            $show_title = !empty($settings['enable_review_title']);
+    if (!isset($settings['enable_review_title'])) {
+        $show_title = true;
+    } else {
+        $show_title = !empty($settings['enable_review_title']);
+    }
 
      $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
             $include_time = get_option('customer_reviews_settings')['include_time'] ?? 0;

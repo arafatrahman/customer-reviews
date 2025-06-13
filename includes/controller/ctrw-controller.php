@@ -538,13 +538,12 @@ class Review_Controller {
         if (strpos($admin_email, ',') !== false) {
             $admin_email = array_map('trim', explode(',', $admin_email));
         }
+        // Use default wp_mail() with standard headers so plugins like WP Mail SMTP work seamlessly
         $headers = [
             'Content-Type: text/html; charset=UTF-8',
             'From: ' . esc_html($site_name) . ' <' . esc_html($admin_email) . '>',
             'Reply-To: ' . esc_html($review_data['email']),
         ];
-        $html_message.= "this email is sent to " . esc_html($admin_email) . " for review notification";
-
         $headers = implode("\r\n", $headers);
         wp_mail($admin_email, $subject, $html_message, $headers);
 
