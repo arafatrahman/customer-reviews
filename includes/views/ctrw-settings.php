@@ -65,10 +65,16 @@
 
                    
 
-                    <label for="comment_font_size"><?php esc_html_e('Comment Font Size:', 'wp_cr'); ?></label>
+                    <label for="comment_font_size"><?php esc_html_e('Comment Font Size In Pixels:', 'wp_cr'); ?></label>
                     <input type="number" name="comment_font_size" id="comment_font_size" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['comment_font_size'] ?? 14) ?>" min="1">
-                    <label for="comment_font_style"><?php esc_html_e('Comment Font Style:', 'wp_cr'); ?></label>
+                    
+                    
+                    <label for="comment_line_height"><?php esc_html_e('Comment Line Height In Pixels:', 'wp_cr'); ?></label>
+                    <input type="number" step="0.1" min="1" name="comment_line_height" id="comment_line_height"
+                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_line_height'] ?? 1.5) ?>">
+
+        <label for="comment_font_style"><?php esc_html_e('Comment Font Style:', 'wp_cr'); ?></label>
                     <select name="comment_font_style" id="comment_font_style">
                         <option value="normal" <?= selected(get_option('customer_reviews_settings')['comment_font_style'] ?? '', 'normal', false) ?>>Normal</option>
                         <option value="italic" <?= selected(get_option('customer_reviews_settings')['comment_font_style'] ?? '', 'italic', false) ?>>Italic</option>
