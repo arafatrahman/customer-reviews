@@ -67,7 +67,7 @@
 
                     <label for="comment_font_size"><?php esc_html_e('Comment Font Size:', 'wp_cr'); ?></label>
                     <input type="number" name="comment_font_size" id="comment_font_size" 
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_font_size'] ?? 16) ?>" min="1">
+                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_font_size'] ?? 14) ?>" min="1">
                     <label for="comment_font_style"><?php esc_html_e('Comment Font Style:', 'wp_cr'); ?></label>
                     <select name="comment_font_style" id="comment_font_style">
                         <option value="normal" <?= selected(get_option('customer_reviews_settings')['comment_font_style'] ?? '', 'normal', false) ?>>Normal</option>

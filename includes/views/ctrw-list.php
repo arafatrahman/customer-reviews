@@ -132,7 +132,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
             
             <div class="review-content">
                 <?php
-                $font_size = get_option('customer_reviews_settings')['comment_font_size'] ?? 16; // Default font size if not set
+                $font_size = get_option('customer_reviews_settings')['comment_font_size'] ?? 14; // Default font size if not set
                 $font_style = get_option('customer_reviews_settings')['comment_font_style'] ?? 'normal';
                 
                 ?>

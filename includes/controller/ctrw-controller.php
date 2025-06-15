@@ -293,7 +293,7 @@ class Review_Controller {
                 'show_city' => isset($_POST['show_city']) ? 1 : 0,
                 'show_state' => isset($_POST['show_state']) ? 1 : 0,
                 'enable_review_title' => isset($_POST['enable_review_title']) ? 1 : 0,                'name_font_weight' => sanitize_text_field($_POST['name_font_weight'] ?? 'normal'),
-                'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 9)),
+                'comment_font_size' => intval(sanitize_text_field($_POST['comment_font_size'] ?? 14)),
                 'comment_font_style' => sanitize_text_field($_POST['comment_font_style'] ?? 'normal'),
                 'reviews_per_page' => intval(sanitize_text_field($_POST['reviews_per_page'] ?? 10)),
                 'date_format' => sanitize_text_field($_POST['date_format'] ?? 'MM/DD/YYYY'),
