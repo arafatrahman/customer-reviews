@@ -27,11 +27,16 @@ h3 {
     font-size: 15px;
 }
 
-.customer-reviews-form-container input,
-.customer-reviews-form-container textarea  {
+.customer-reviews-form-container .form-group input,
+.customer-reviews-form-container .form-group textarea  {
     width: 100%;
     border: 1px solid #ccc;
     border-radius: 5px;
+    padding: 4px 10px;
+    padding-top: 4px;
+    padding-right: 10px;
+    padding-bottom: 4px;
+    padding-left: 10px;
 }
 
 .customer-reviews-form-container textarea {
