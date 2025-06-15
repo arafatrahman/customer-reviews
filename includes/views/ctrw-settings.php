@@ -52,8 +52,6 @@
                             <?php esc_html_e('Enable Review Title', 'wp_cr'); ?>
                         </label>
 
-                    <input type="number" name="name_font_size" id="name_font_size" 
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['name_font_size'] ?? 10) ?>" min="1">
                     <label for="name_font_weight"><?php esc_html_e('Name Font Weight:', 'wp_cr'); ?></label>
                     <select name="name_font_weight" id="name_font_weight">
                         <option value="normal" <?= selected(get_option('customer_reviews_settings')['name_font_weight'] ?? '', 'normal', false) ?>>Normal</option>
