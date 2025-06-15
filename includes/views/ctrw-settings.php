@@ -27,29 +27,70 @@
                     </select>
 
                     <label for="include_time"><input type="checkbox" name="include_time" id="include_time" value="1" 
-                    <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>> <?php esc_html_e('Include Time', 'wp_cr'); ?></label>
+                    <?= checked(1, get_option('customer_reviews_settings')['include_time'] ?? 0, false) ?>> 
+                    <?php esc_html_e('Include Time', 'wp_cr'); ?>
+                    <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">Display a time stamp behind the date on each comment.</span>
+				    </span>
+                    
+                
+                   </label>
                     <label for="enable_email_notification"><input type="checkbox" name="enable_email_notification" id="enable_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 1, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 1, false) ?>> 
+                      <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?>
+                    <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">Email(s) designated under 'Advanced Settings' tab will receive a notification from each review entered in the plugins form.</span>
+				    </span>
+                    </label>
+                  
                     <label for="enable_customer_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Receipt', 'wp_cr'); ?></label>
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> 
+                     <?php esc_html_e('Enable Customer Email Receipt', 'wp_cr'); ?>
+                    <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">Users receive a receipt from their form submission</span>
+				    </span>
+                   </label>
                     <label for="auto_approve_reviews">
                         <input type="checkbox" name="auto_approve_reviews" id="auto_approve_reviews" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['auto_approve_reviews'] ?? 0, false) ?>>
-                        <?php esc_html_e('Enable Automatic Review Approval', 'wp_cr'); ?>
+                      <?php esc_html_e('Enable Automatic Review Approval', 'wp_cr'); ?>
+                        <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">New reviews are immediately posted for viewing without admin review.</span>
+				    </span>
+                       
                     </label>
                     <label for="show_city">
                         <input type="checkbox" name="show_city" id="show_city" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['show_city'] ?? 0, false) ?>>
-                        <?php esc_html_e('Show City in Review List', 'wp_cr'); ?>
+                     <?php esc_html_e('Show City in Review List', 'wp_cr'); ?>
+                        <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">This option allows the city to be displayed with each comment.</span>
+				    </span>
+                    
                     </label>
                     <label for="show_state">
                         <input type="checkbox" name="show_state" id="show_state" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['show_state'] ?? 0, false) ?>>
-                        <?php esc_html_e('Show State in Review List', 'wp_cr'); ?>
+          <?php esc_html_e('Show State in Review List', 'wp_cr'); ?>
+                        <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">This option allows the state to be displayed with each comment.</span>
+				    </span>
+                      
                     </label>    <label for="enable_review_title">
                             <input type="checkbox" name="enable_review_title" id="enable_review_title" value="1"
                             <?= checked(1, get_option('customer_reviews_settings')['enable_review_title'] ?? 1, false) ?>>
-                            <?php esc_html_e('Enable Review Title', 'wp_cr'); ?>
+                               <?php esc_html_e('Enable Review Title', 'wp_cr'); ?>
+                            <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">This option allows the review title to be displayed with each comment.</span>
+				    </span>
+                         
                         </label>
 
                     <label for="name_font_weight"><?php esc_html_e('Name Font Weight:', 'wp_cr'); ?></label>
