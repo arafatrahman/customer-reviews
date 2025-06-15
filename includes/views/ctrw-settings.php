@@ -143,7 +143,10 @@
         <div style="margin-top: 18px;">
             <label for="notification_admin_emails">
                 <?php esc_html_e('Notification Admin Emails', 'wp_cr'); ?>
-                <span title="<?php esc_attr_e('Enter one or more email addresses separated by commas. These addresses will receive admin notifications. By default, the site admin email is included.', 'wp_cr'); ?>" style="cursor: help; color: #888; margin-left: 4px;">&#9432;</span>
+                <span class="ctrw-tooltip">
+					<span class="dashicons dashicons-editor-help"></span>
+					<span class="tooltiptext tooltip-right-msg">If more than one email, separate with a comma</span>
+				</span>
             </label>
             <?php
                 $settings = get_option('customer_reviews_settings');

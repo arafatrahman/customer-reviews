@@ -131,7 +131,81 @@
       background-color: #005177;
 }
 
-/**
- * Styles for the popup modal
- */
-
+.ctrw-tooltip {
+    position: relative;
+    display: inline-block;
+ }
+ 
+.ctrw-tooltip .tooltiptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: rgba(0, 0, 0, 0.67);
+    color: #fff;
+    text-align: left;
+    font-family: 'Lato';
+    font-size: 13px;
+    line-height: 16px;
+    border-radius: 3px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 2;
+    bottom: 0%;
+    left: 70%;
+    margin-left: 10px;
+    padding: 8px 10px 10px 12px;
+    height: fit-content;
+ }
+span.tooltiptext.tooltip-right {
+     font-size: .9em;
+     font-weight: 500;
+ }
+.tooltip-right {
+     top: -58px;
+     left: 119%;
+ }
+.tooltip-right::after {
+     content: "";
+     position: absolute;
+     top: 50%;
+     right: 100%;
+     margin-top: -5px;
+     border-width: 5px;
+     border-style: solid;
+     border-color: transparent #555 transparent transparent;
+ }
+.ctrw-tooltip:hover .tooltiptext {
+   visibility: visible;
+       opacity: 1;
+ }
+.help-icon {
+     width: 18px;
+     vertical-align: middle;
+ }
+span.tooltiptext.tooltip-right-msg {
+     font-size: .9em;
+     font-weight: 500;
+ }
+.tooltip-right-msg {
+     top: -30px;
+     left: 132%;
+ }
+.tooltip-right-msg::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #555 transparent transparent;
+ }
+.ctrw-tooltip span.dashicons {
+    font-size: 1.2em;
+    vertical-align: middle;
+    line-height: unset;
+    margin-top: -5px;
+ }
+.ctrw-tooltip .dashicons-editor-help:before {
+     color: #72777c;
+     opacity: 1;
+ }
