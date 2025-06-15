@@ -144,15 +144,17 @@ class Review_Controller {
 
 
             if ($enable_reviews) {
+
+                if ($enable_review_list) {
+                    $content .= do_shortcode('[wp_ctrw_lists]');
+                }
                 if ($enable_review_form) {
                     // Only append the form shortcode if it's not already present in the content
                     if (strpos($content, '[wp_ctrw_form]') === false) {
                         $content .= do_shortcode('[wp_ctrw_form]');
                     }
                 }
-                if ($enable_review_list) {
-                    $content .= do_shortcode('[wp_ctrw_lists]');
-                }
+                
             }
         }
     
