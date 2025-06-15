@@ -46,7 +46,7 @@
                         <input type="checkbox" name="show_state" id="show_state" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['show_state'] ?? 0, false) ?>>
                         <?php esc_html_e('Show State in Review List', 'wp_cr'); ?>
-                        <label for="enable_review_title">
+                    </label>    <label for="enable_review_title">
                             <input type="checkbox" name="enable_review_title" id="enable_review_title" value="1"
                             <?= checked(1, get_option('customer_reviews_settings')['enable_review_title'] ?? 1, false) ?>>
                             <?php esc_html_e('Enable Review Title', 'wp_cr'); ?>
