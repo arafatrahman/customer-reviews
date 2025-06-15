@@ -410,13 +410,23 @@ class Review_Controller {
             // Notify admin via email
             $settings = get_option('customer_reviews_settings');
             if (!isset($settings['enable_email_notification']) || $settings['enable_email_notification']) {
-                $this->notify_admin_of_pending_review($review_data);
+                if (get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? false) {
+                    $customerEmail = $data['email'] ?? '';
+                }
+                else{
+                    $customerEmail = '';
+                }
+                $this->notify_admin_of_pending_review($review_data, $customerEmail);
             }
+
+            /*
             // Notify customer via email if enabled
             if (get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? false) {
             
               $this->notify_customer_of_pending_review($data['email'],$data['name'],$status);
             }
+            */
+
             // Send success response
             wp_send_json([
                     'success' => true,
@@ -445,7 +455,7 @@ class Review_Controller {
         
     }
 
-    private function notify_admin_of_pending_review($review_data) {
+    private function notify_admin_of_pending_review($review_data,$customerEmail) {
         $admin_email = get_option('admin_email');
         $subject = sprintf(__('Customer Review Notification - %s', 'wp_cr'), $review_data['name']);
 
@@ -533,6 +543,14 @@ class Review_Controller {
             return; // No admin email set, exit early
         }
 
+        // Add customer email to admin notification if available and valid
+        if (!empty($customerEmail) && is_email($customerEmail)) {
+            if (is_array($admin_email)) {
+            $admin_email[] = $customerEmail;
+            } else {
+            $admin_email = [$admin_email, $customerEmail];
+            }
+        }
         if (is_array($admin_email)) {
             $admin_email = implode(',', $admin_email);
         }

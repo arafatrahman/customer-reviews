@@ -31,7 +31,7 @@
                     <label for="enable_email_notification"><input type="checkbox" name="enable_email_notification" id="enable_email_notification" value="1"
                     <?= checked(1, get_option('customer_reviews_settings')['enable_email_notification'] ?? 1, false) ?>> <?php esc_html_e('Enable Admin Email Notification', 'wp_cr'); ?></label>
                     <label for="enable_customer_email_notification"><input type="checkbox" name="enable_customer_email_notification" id="enable_customer_email_notification" value="1"
-                    <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Notification', 'wp_cr'); ?></label>
+                    <?= checked(1, get_option('customer_reviews_settings')['enable_customer_email_notification'] ?? 0, false) ?>> <?php esc_html_e('Enable Customer Email Receipt', 'wp_cr'); ?></label>
                     <label for="auto_approve_reviews">
                         <input type="checkbox" name="auto_approve_reviews" id="auto_approve_reviews" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['auto_approve_reviews'] ?? 0, false) ?>>
