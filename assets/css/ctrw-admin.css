@@ -101,7 +101,8 @@
   }
   
   .wp-review-settings-form .checkbox-group {
-      margin-top: 10px;
+      margin-top: 0px;
+      line-height: 12px;
   }
   
   .wp-review-settings-form .checkbox-group label {
