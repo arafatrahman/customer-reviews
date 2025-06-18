@@ -63,7 +63,7 @@ h3 {
         .rating label {
             cursor: pointer;
             transition: color 0.2s;
-            font-size: 24px;;
+            font-size: 32px;
         }
 
         .review-author{

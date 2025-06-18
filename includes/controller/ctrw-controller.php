@@ -302,6 +302,7 @@ class Review_Controller {
                 'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),
                 'replace_woocommerce_reviews' => isset($_POST['replace_woocommerce_reviews']) ? 1 : 0,
                 'notification_admin_emails' => isset($_POST['notification_admin_emails']) ? $_POST['notification_admin_emails'] : '',   
+                'active_tab' => sanitize_text_field($_POST['active_tab'] ?? 'general'),
                 'fields' => array_map(function($field) {
                     return array_map('sanitize_text_field', $field);
                 }, $_POST['fields'] ?? [])

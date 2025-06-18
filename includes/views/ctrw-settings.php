@@ -1,11 +1,16 @@
 <div class="wrap wp-review-settings-wrap">
     <h1>Customer Review Settings</h1>
 
+    <?php
+    $active_tab = get_option('customer_reviews_settings')['active_tab'] ?? 'general';
+    
+    ?>
+ 
     <h2 class="nav-tab-wrapper">
-        <a href="#" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
-        <a href="#" class="nav-tab" onclick="showTab(event, 'review_form')">Review Form Settings</a>
-        <a href="#" class="nav-tab" onclick="showTab(event, 'display')">Shortcodes</a>
-        <a href="#" class="nav-tab" onclick="showTab(event, 'advanced')">Advanced Settings</a>
+        <a href="#" id="ctrw-general-tab" class="nav-tab<?= $active_tab === 'general' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'general')">General</a>
+        <a href="#" id="ctrw-review-form-tab"class="nav-tab <?= $active_tab == 'review_form' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'review_form')">Review Form Settings</a>
+        <a href="#" id="ctrw-advanced-tab"class="nav-tab <?= $active_tab == 'shortcodes' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'display')">Shortcodes</a>
+        <a href="#" id="ctrw-advanced-tab" class="nav-tab <?= $active_tab == 'advanced' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'advanced')">Advanced Settings</a>
 
     </h2>
 
@@ -204,6 +209,8 @@
 
         </div>
 
+        <input type="hidden" name="active_tab" id="ctrw-active-tab" value="<?= esc_attr(get_option('customer_reviews_settings')['active_tab'] ?? 'general') ?>">
+        
         <?php submit_button('Save Settings', 'primary', 'submit', true); ?>
     </form>
 </div>

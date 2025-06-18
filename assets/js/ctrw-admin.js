@@ -134,7 +134,23 @@ jQuery(document).ready(function($) {
       let isChecked = $(this).prop('checked');
       $('input[name=\"review_ids[]\"]').prop('checked', isChecked);
       });
+
+
+
+      $('#ctrw-general-tab, #ctrw-review-form-tab, #ctrw-advanced-tab').on('click', function(e) {
+    e.preventDefault();
+    let tabId = $(this).attr('id');
+    let tabName = '';
+    if (tabId === 'ctrw-general-tab') tabName = 'general';
+    else if (tabId === 'ctrw-review-form-tab') tabName = 'review_form';
+    else if (tabId === 'ctrw-advanced-tab') tabName = 'advanced';
+    $('#ctrw-active-tab').val(tabName);
+});
+
+
   });
+
+
 
 
 
