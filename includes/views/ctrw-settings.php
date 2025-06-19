@@ -126,6 +126,10 @@
                         <option value="italic" <?= selected(get_option('customer_reviews_settings')['comment_font_style'] ?? '', 'italic', false) ?>>Italic</option>
                     </select>
 
+                    <label for="comment_box_fill_color"><?php esc_html_e('Comment Box Fill Color:', 'wp_cr'); ?></label>
+                    <input type="color" name="comment_box_fill_color" id="comment_box_fill_color"
+                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_box_fill_color'] ?? '#f5f5f5') ?>">
+
                     <label for="star_color"><?php esc_html_e('Star Color:', 'wp_cr'); ?></label>
                     <input type="color" name="star_color" id="star_color" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['star_color'] ?? '#fbbc04') ?>">

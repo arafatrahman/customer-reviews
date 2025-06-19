@@ -73,7 +73,12 @@ $reviews = (new Review_Model())->get_reviews('approved');
                         <div class="review-date">Post Date/Time: <?= esc_html($formatted_date); ?></div>
                     <?php } ?>
                 </div>
-            <div class="review-item">
+
+            <?php
+            $comment_box_fill_color = get_option('customer_reviews_settings')['comment_box_fill_color'] ?? '#f5f5f5';
+            ?>
+
+            <div class="review-item" style="background-color: <?php echo esc_attr($comment_box_fill_color); ?>;">
                
                 
                 <div class="review-header">
