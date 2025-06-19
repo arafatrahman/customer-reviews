@@ -127,12 +127,29 @@
                     </select>
 
                     <label for="comment_box_fill_color"><?php esc_html_e('Comment Box Fill Color:', 'wp_cr'); ?></label>
-                    <input type="color" name="comment_box_fill_color" id="comment_box_fill_color"
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_box_fill_color'] ?? '#f5f5f5') ?>">
+                    <?php
+                    // Enqueue WordPress color picker scripts/styles
+                    if (function_exists('wp_enqueue_style')) {
+                        wp_enqueue_style('wp-color-picker');
+                        wp_enqueue_script('wp-color-picker');
+                    }
+                    $comment_box_fill_color = get_option('customer_reviews_settings')['comment_box_fill_color'] ?? '#f5f5f5';
+                    ?>
+                    <input type="text" name="comment_box_fill_color" id="comment_box_fill_color"
+                        value="<?= esc_attr($comment_box_fill_color) ?>" class="wp-color-picker-field" data-default-color="#f5f5f5">
 
                     <label for="star_color"><?php esc_html_e('Star Color:', 'wp_cr'); ?></label>
-                    <input type="color" name="star_color" id="star_color" 
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['star_color'] ?? '#fbbc04') ?>">
+                    <?php
+                    $star_color = get_option('customer_reviews_settings')['star_color'] ?? '#fbbc04';
+                    ?>
+                    <input type="text" name="star_color" id="star_color"
+                        value="<?= esc_attr($star_color) ?>" class="wp-color-picker-field" data-default-color="#fbbc04">
+                    <script>
+                    jQuery(document).ready(function($){
+                        $('#star_color').wpColorPicker();
+                        $('#comment_box_fill_color').wpColorPicker();
+                    });
+                    </script>
                 </div>
             </div>
         </div>
