@@ -47,7 +47,7 @@
         endforeach; ?>
         <input type="hidden" name="action" value="submit_review">
         <input type="hidden" name="positionid" value="<?php echo esc_attr(get_the_ID()); ?>">
-        <button type="submit" class="submit-button"><?php echo esc_html__('Submit Review', 'wp_cr'); ?></button>
+        <input class="button-default" id="comment-submit" type="submit" value="<?php esc_attr_e('Submit', 'customer-reviews'); ?>">
     </form>
     <p id="review-message"></p>
 </div>

@@ -118,7 +118,7 @@
                     
                     <label for="comment_line_height"><?php esc_html_e('Comment Line Height In Pixels:', 'wp_cr'); ?></label>
                     <input type="number" step="0.1" min="1" name="comment_line_height" id="comment_line_height"
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_line_height'] ?? 1.5) ?>">
+                        value="<?= esc_attr(get_option('customer_reviews_settings')['comment_line_height'] ?? 23) ?>">
 
         <label for="comment_font_style"><?php esc_html_e('Comment Font Style:', 'wp_cr'); ?></label>
                     <select name="comment_font_style" id="comment_font_style">

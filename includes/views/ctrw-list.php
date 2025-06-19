@@ -103,9 +103,9 @@ $reviews = (new Review_Model())->get_reviews('approved');
                     <?php
                     $font_size = get_option('customer_reviews_settings')['comment_font_size'] ?? 14;
                     $font_style = get_option('customer_reviews_settings')['comment_font_style'] ?? 'normal';
-                    $line_height = get_option('customer_reviews_settings')['comment_line_height'] ?? 1.5;
+                    $line_height = get_option('customer_reviews_settings')['comment_line_height'] ?? 23;
                     ?>
-                    <p style="font-size: <?php echo esc_attr($font_size); ?>px; font-style: <?php echo esc_attr($font_style); ?>; line-height: <?php echo esc_attr($line_height); ?>;">
+                    <p style="font-size: <?php echo esc_attr($font_size); ?>px; font-style: <?php echo esc_attr($font_style); ?>; line-height: <?php echo esc_attr($line_height); ?>px;">
                         <?= esc_html($review->comment); ?>
                     </p>
                 </div>
