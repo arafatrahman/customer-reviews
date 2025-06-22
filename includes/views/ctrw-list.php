@@ -82,11 +82,7 @@ $reviews = (new Review_Model())->get_reviews('approved');
                
                 
                 <div class="review-header">
-                    <?php if ($show_title && !empty($review->title)) : ?>
-                        <div class="review-title">
-                            <?= esc_html($review->title); ?>
-                        </div>
-                    <?php endif; ?>
+                    
 
                     <span class="stars">
                         <?php
@@ -102,6 +98,11 @@ $reviews = (new Review_Model())->get_reviews('approved');
                         }
                         ?>   
                     </span>
+                    <?php if ($show_title && !empty($review->title)) : ?>
+                        <div class="review-title">
+                            <?= esc_html($review->title); ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="review-content">
