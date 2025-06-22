@@ -60,7 +60,6 @@ class Review_Model {
     }
 
     public function ctrw_add_review($data) {
-        update_option('ccmuucustomer_reviews_settings', $data);
         return $this->wpdb->insert($this->table, $data);
     }
 
@@ -110,7 +109,6 @@ class Review_Model {
             'rating' => intval($post['rating']),
             'status' => sanitize_text_field($post['status']),
         ];
-        update_option('ccccustomer_reviews_settings', $data);
         $id = intval($post['id']);
 
         if ($this->wpdb->update($this->table, $data, ['id' => $id])) {

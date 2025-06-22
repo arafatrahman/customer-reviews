@@ -238,3 +238,35 @@ add_action('init', function () {
     update_option('woocommerce_review_rating_verification_label', 'no');
     update_option('woocommerce_review_rating_verification_required', 'no');
 });
+
+
+register_uninstall_hook(__FILE__, 'wp_customer_reviews_uninstall');
+function wp_customer_reviews_uninstall() {
+    global $wpdb;
+
+    // Delete the custom reviews table
+    $table_name = $wpdb->prefix . 'customer_reviews';
+    $wpdb->query("DROP TABLE IF EXISTS $table_name");
+
+    // Remove plugin options
+    delete_option('customer_reviews_settings');
+
+    delete_option('woocommerce_enable_reviews');
+    delete_option('woocommerce_enable_review_rating');
+    delete_option('woocommerce_review_rating_required');
+    delete_option('woocommerce_review_rating_verification_label');
+    delete_option('woocommerce_review_rating_verification_required');
+    delete_option('customer_reviews_settings');
+
+    
+
+    // Remove user meta for column visibility
+    $users = get_users(['fields' => 'ID']);
+    foreach ($users as $user_id) {
+        delete_user_meta($user_id, 'ctrw_column_visibility');
+    }
+
+    delete_post_meta_by_key('_ctrw_enable_reviews');
+    delete_post_meta_by_key('_ctrw_enable_review_form');
+    delete_post_meta_by_key('_ctrw_enable_review_list');
+}
