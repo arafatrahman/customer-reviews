@@ -174,18 +174,11 @@
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="fields[<?= esc_attr($field) ?>][require]" value="1"
                         <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['require'] ?? 0, false) ?>> Require</label>
-                        <?php if (strtolower($field) === 'title'): ?>
-                            <label>
-                                <input type="checkbox" name="fields[<?= esc_attr($field) ?>][show]" value="1" checked disabled>
-                                Show
-                                <span style="color: #888; font-size: 11px;">(Always enabled)</span>
-                            </label>
-                        <?php else: ?>
                             <label>
                                 <input type="checkbox" name="fields[<?= esc_attr($field) ?>][show]" value="1"
                                 <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['show'] ?? 0, false) ?>> Show
                             </label>
-                        <?php endif; ?>
+
                     </div>
                     </fieldset>
                 <?php endforeach; ?>

@@ -11,19 +11,18 @@
         foreach ($fields as $field): 
             $field_key = strtolower($field);
 
-            // Show all fields by default if no settings
             if (empty($settings)) {
-                $is_shown = ($field === 'Title') ? 1 : 1;
+                $is_shown = 1;
                 $is_required = 0;
                 $label_name = $field;
             } else {
-                if ($field === 'Title') {
-                    $is_shown = 1;
-                } else {
-                    $is_shown = $settings[$field]['show'] ?? 0;
-                }
+                $is_shown = $settings[$field]['show'] ?? 0;
                 $is_required = $settings[$field]['require'] ?? 0;
                 $label_name = $settings[$field]['label'] ?? $field;
+
+                if ($field === 'Title' && $label_name === 'Title') {
+                    $label_name = 'Review Title';
+                }
             }
 
             if ($is_shown): ?>
