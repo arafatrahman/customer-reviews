@@ -209,3 +209,63 @@ span.tooltiptext.tooltip-right-msg {
      color: #72777c;
      opacity: 1;
  }
+
+
+
+
+
+/* <!-- Review Form Settings --> */
+
+ ctrw-settings-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.ctrw-settings-field-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #fff;
+    padding: 16px 16px;
+    border-radius: 8px;
+    
+}
+
+.ctrw-settings-field-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.ctrw-settings-field-input:focus {
+    border-color: #4d90fe;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(77, 144, 254, 0.2);
+}
+
+.ctrw-settings-field-options {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.ctrw-settings-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #555;
+    white-space: nowrap;
+}
+
+.ctrw-settings-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #4d90fe;
+    margin: 0;
+}

@@ -154,36 +154,41 @@
             </div>
         </div>
 
-        <!-- Review Form Settings -->
+       <!-- Review Form Settings -->
         <div class="tab-section" id="tab-review_form" style="display:<?= ($active_tab == 'review_form') ? 'block' : 'none'; ?>;">
-            <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
-            <div style="display: flex; flex-wrap: wrap; gap: 24px;">
-            <?php 
-            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Review Title', 'Comment', 'Rating'];
-            $half = ceil(count($fields) / 2);
-            $columns = [array_slice($fields, 0, $half), array_slice($fields, $half)];
-            foreach ($columns as $colFields): ?>
-                <div style="flex: 1 1 0; min-width: 220px;">
-                <?php foreach ($colFields as $field): ?>
-                    <fieldset style="margin-bottom: 18px;">
-                    <legend>
-                        <input type="text" name="fields[<?= esc_attr($field) ?>][label]" 
-                        value="<?= esc_attr(get_option('customer_reviews_settings')['fields'][$field]['label'] ?? $field) ?>" 
-                        placeholder="<?= esc_attr($field) ?>">
-                    </legend>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" name="fields[<?= esc_attr($field) ?>][require]" value="1"
-                        <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['require'] ?? 0, false) ?>> Required</label>
-                            <label>
-                                <input type="checkbox" name="fields[<?= esc_attr($field) ?>][show]" value="1"
-                                <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['show'] ?? 0, false) ?>> Show
+            <h3><?php esc_html_e('Review Form Fields Settings', 'wp_cr'); ?></h3>
+            
+            <div class="ctrw-settings-fields-grid">
+                <?php 
+                $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Review Title', 'Comment', 'Rating'];
+                foreach ($fields as $field): 
+                    $settings = get_option('customer_reviews_settings')['fields'][$field] ?? [];
+                ?>
+                    <div class="ctrw-settings-field-row">
+                        <input type="text" 
+                            name="fields[<?= esc_attr($field) ?>][label]" 
+                            value="<?= esc_attr($settings['label'] ?? $field) ?>" 
+                            placeholder="<?= esc_attr($field) ?>"
+                            class="ctrw-settings-field-input">
+                        
+                        <div class="ctrw-settings-field-options">
+                            <label class="ctrw-settings-option">
+                                <input type="checkbox" 
+                                    name="fields[<?= esc_attr($field) ?>][require]" 
+                                    value="1"
+                                    <?= checked(1, $settings['require'] ?? 0, false) ?>>
+                                <span>Required</span>
                             </label>
-
+                            <label class="ctrw-settings-option">
+                                <input type="checkbox" 
+                                    name="fields[<?= esc_attr($field) ?>][show]" 
+                                    value="1"
+                                    <?= checked(1, $settings['show'] ?? 1, false) ?>>
+                                <span>Show</span>
+                            </label>
+                        </div>
                     </div>
-                    </fieldset>
                 <?php endforeach; ?>
-                </div>
-            <?php endforeach; ?>
             </div>
         </div>
 
