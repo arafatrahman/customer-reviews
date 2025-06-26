@@ -5,10 +5,12 @@
     <b class="ctrw-form-heading">Submit Your Review</b>
     <form id="customer-reviews-form">
         <?php 
-        $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Title', 'Comment', 'Rating'];
+        $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Review Title', 'Comment', 'Rating'];
         $settings = get_option('customer_reviews_settings')['fields'] ?? [];
 
         foreach ($fields as $field): 
+
+            
             $field_key = strtolower($field);
 
             if (empty($settings)) {
@@ -19,7 +21,6 @@
                 $is_shown = $settings[$field]['show'] ?? 0;
                 $is_required = $settings[$field]['require'] ?? 0;
                 $label_name = $settings[$field]['label'] ?? $field;
-
                 if ($field === 'Title' && $label_name === 'Title') {
                     $label_name = 'Review Title';
                 }

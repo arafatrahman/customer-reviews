@@ -159,7 +159,7 @@
             <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
             <div style="display: flex; flex-wrap: wrap; gap: 24px;">
             <?php 
-            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Title', 'Comment', 'Rating'];
+            $fields = ['Name', 'Email', 'Website', 'Phone', 'City', 'State', 'Review Title', 'Comment', 'Rating'];
             $half = ceil(count($fields) / 2);
             $columns = [array_slice($fields, 0, $half), array_slice($fields, $half)];
             foreach ($columns as $colFields): ?>
