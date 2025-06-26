@@ -9,14 +9,14 @@
     <h2 class="nav-tab-wrapper">
         <a href="#" id="ctrw-general-tab" class="nav-tab<?= $active_tab === 'general' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'general')">General</a>
         <a href="#" id="ctrw-review-form-tab"class="nav-tab <?= $active_tab == 'review_form' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'review_form')">Review Form Settings</a>
-        <a href="#" id="ctrw-advanced-tab"class="nav-tab <?= $active_tab == 'shortcodes' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'display')">Shortcodes</a>
+        <a href="#" id="ctrw-shortcodes-tab"class="nav-tab <?= $active_tab == 'shortcodes' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'display')">Shortcodes</a>
         <a href="#" id="ctrw-advanced-tab" class="nav-tab <?= $active_tab == 'advanced' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'advanced')">Advanced Settings</a>
 
     </h2>
 
     <form method="post" action="" class="wp-review-settings-form">
         <!-- General Settings -->
-        <div class="form-group tab-section" id="tab-general">
+        <div class="form-group tab-section" id="tab-general" style="display:<?= ($active_tab == 'general') ? 'block' : 'none'; ?>;">
             <h3><?php esc_html_e('General Settings', 'wp_cr'); ?></h3>
             <div style="display: flex; flex-wrap: wrap; gap: 24px;">
                 <div style="flex: 1 1 0; min-width: 260px;">
@@ -155,7 +155,7 @@
         </div>
 
         <!-- Review Form Settings -->
-        <div class="tab-section" id="tab-review_form" style="display:none;">
+        <div class="tab-section" id="tab-review_form" style="display:<?= ($active_tab == 'review_form') ? 'block' : 'none'; ?>;">
             <h3><?php esc_html_e('Review Form Settings', 'wp_cr'); ?></h3>
             <div style="display: flex; flex-wrap: wrap; gap: 24px;">
             <?php 
@@ -188,7 +188,7 @@
         </div>
 
         <!-- Shortcodes -->
-        <div class="form-group tab-section" id="tab-display" style="display:none;">
+        <div class="form-group tab-section" id="tab-display" style="display:<?= ($active_tab == 'shortcodes') ? 'block' : 'none'; ?>;">
             <h3><?php esc_html_e('Shortcodes', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
                 <label for="shortcode">Form Shortcode:</label>
@@ -202,7 +202,7 @@
             </div>
         </div>
 
-        <div class="form-group tab-section" id="tab-advanced" style="display:none;">
+        <div class="form-group tab-section" id="tab-advanced" style="display:<?= ($active_tab == 'advanced') ? 'block' : 'none'; ?>;">
         <h3><?php esc_html_e('Advanced Settings', 'wp_cr'); ?></h3>
         <label for="replace_woocommerce_reviews">
                         <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
