@@ -173,7 +173,7 @@
                     </legend>
                     <div class="checkbox-group">
                         <label><input type="checkbox" name="fields[<?= esc_attr($field) ?>][require]" value="1"
-                        <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['require'] ?? 0, false) ?>> Require</label>
+                        <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['require'] ?? 0, false) ?>> Required</label>
                             <label>
                                 <input type="checkbox" name="fields[<?= esc_attr($field) ?>][show]" value="1"
                                 <?= checked(1, get_option('customer_reviews_settings')['fields'][$field]['show'] ?? 0, false) ?>> Show
