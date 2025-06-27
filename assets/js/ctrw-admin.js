@@ -96,6 +96,32 @@ jQuery(document).ready(function($) {
       $('#cr-reply-popup').hide();
       });
 
+    $('#ctrw-import-form').on('submit', function(event) {
+        event.preventDefault();
+
+        
+        let selectedPlugin = $('#ctrw_import_plugin').val();
+        $.ajax({
+            url: cradmin_ajax.ajax_url,
+            method: 'POST',
+            data: {
+              action: 'ctrw_import_review_from_others',
+              ctrw_import_review: selectedPlugin,
+           },
+            success: function(response) {
+                console.log(response.data);
+                if (response.success) {
+                    alert('Imports completed successfully.');
+                    $('#ctrw-import-popup').hide();
+                   
+                } 
+            },
+            error: function() {
+                alert('An error occurred during import.');
+            }
+        });
+    });
+
       $('#reply-form').on('submit', function(event) {
       event.preventDefault();
 
@@ -134,6 +160,10 @@ jQuery(document).ready(function($) {
       let isChecked = $(this).prop('checked');
       $('input[name=\"review_ids[]\"]').prop('checked', isChecked);
       });
+    $('#import-customer-reviews').on('click', function() {
+       
+        $('#ctrw-import-popup').show();
+    });
 
 
 

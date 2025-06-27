@@ -53,6 +53,66 @@ class Review_Model {
         );
     }
 
+    public function import_reviews_from_site_reviews_plugin() {
+
+        global $wpdb;
+        // Get all 'site-review' posts from wp_posts
+        $site_reviews = $wpdb->get_results(
+            "SELECT ID, post_date, post_content, post_title
+             FROM {$wpdb->posts} 
+             WHERE post_type = 'site-review'"
+        );
+
+        $imported = 0;
+        $data = [];
+        if ($site_reviews) {
+            foreach ($site_reviews as $review) {
+                // Fetch name, rating, and email from wp_glsr_ratings for this review
+                $glsr_rating = $wpdb->get_row(
+                    $wpdb->prepare(
+                        "SELECT name, rating, email FROM {$wpdb->prefix}glsr_ratings WHERE review_id = %d LIMIT 1",
+                        $review->ID
+                    ),
+                    ARRAY_A
+                );
+
+
+
+                // Merge fetched data into $data
+                if ($glsr_rating) {
+                    $data['name'] = $glsr_rating['name'];
+                    $data['rating'] = $glsr_rating['rating'];
+                    $data['email'] = $glsr_rating['email'];
+                } else {
+                    $data['name'] = '';
+                    $data['rating'] = 0;
+                    $data['email'] = '';
+                }
+
+                 $review_data = [
+                    
+                    'name' => $data['name'],
+                    'email' => $data['email'],
+                    'phone' => '',
+                    'website' => '',
+                    'city' => '',
+                    'state' => '',
+                    'rating' => $data['rating'],
+                    'title' => $review->post_title,
+                    'comment' => $review->post_content,
+                    'status' => 'approved',
+                    'positionid' => '',
+                    'created_at' => $review->post_date
+                ];
+                $imported++;
+                $this->ctrw_add_review($review_data);
+                
+            }
+        }
+        
+        return $imported;
+    }
+
     public function delete_reviews($review_ids) {
         $this->wpdb->query(
             "DELETE FROM $this->table WHERE id IN (" . implode(',', array_map('intval', $review_ids)) . ")"

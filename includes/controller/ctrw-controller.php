@@ -32,6 +32,8 @@ class Review_Controller {
         add_action('wp_ajax_edit_customer_review', [$this, 'edit_customer_review']);
         add_action('wp_ajax_nopriv_edit_customer_review', [$this, 'edit_customer_review']);
         
+        add_action('wp_ajax_ctrw_import_review_from_others', [$this, 'ctrw_import_reviews']);
+        add_action('wp_ajax_nopriv_ctrw_import_review_from_others', [$this, 'ctrw_import_reviews']);
         add_action( 'add_meta_boxes', [$this, 'ctrw_add_meta_box' ]);
         add_action( 'save_post', [$this, 'ctrw_save_meta_box_data' ] );
 
@@ -44,6 +46,26 @@ class Review_Controller {
          
     }
 
+    // Import reviews via AJAX
+    public function ctrw_import_reviews() {
+        // Check nonce for security if you use one (recommended)
+        // if (!isset($_POST['ctrw_import_nonce']) || !wp_verify_nonce($_POST['ctrw_import_nonce'], 'ctrw_import_reviews')) {
+        //     wp_send_json_error(['message' => __('Invalid nonce', 'wp_cr')]);
+        // }
+
+
+        $importPlugin = isset($_POST['ctrw_import_review']) ? sanitize_text_field($_POST['ctrw_import_review']) : '';
+        if ($importPlugin == 'siteReviews') {
+            $reviews = $this->model->import_reviews_from_site_reviews_plugin();
+            
+        } else {
+           wp_send_json_error(['message' => __('No reviews to import', 'wp_cr')]);
+        }
+        wp_send_json_success(['message' => __('Imported  Reviews', 'wp_cr')]);
+        
+    }
+
+    
  
 
 
