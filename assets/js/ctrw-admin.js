@@ -122,6 +122,10 @@ jQuery(document).ready(function($) {
         });
     });
 
+    $('#close-ctrw-import-popup').on('click', function() {
+        $('#ctrw-import-popup').hide();
+    });
+
       $('#reply-form').on('submit', function(event) {
       event.preventDefault();
 

@@ -15,12 +15,19 @@ if (!defined('ABSPATH')) {
                     <label for="ctrw_import_plugin">Select Review Plugin:</label><br>
                     <select name="ctrw_import_plugin" id="ctrw_import_plugin" required>
                               <option value="">-- Select Plugin --</option>
-                              <option value="siteReviews">Site Reviews</option>
+
+
+                              <?php if (is_plugin_active('site-reviews/site-reviews.php')) : ?>
+                                    <option value="siteReviews">Site Reviews</option>
+                              <?php endif; ?>
+                             
                     </select>
             </p>
             
             <p>
+                  
                   <input type="submit" class="button button-primary" value="Import Reviews">
+                  <button type="button" id="close-ctrw-import-popup" class="button button-danger" >Close</button>
             </p>
       </form>
       <div id="ctrw-import-result"></div>
