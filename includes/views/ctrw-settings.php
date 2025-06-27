@@ -191,7 +191,7 @@
                                 <input type="checkbox" 
                                     name="fields[<?= esc_attr($field) ?>][show]" 
                                     value="1"
-                                    <?= checked(1, $settings['show'] ?? 1, false) ?>>
+                                    <?= checked(1, $settings['show'] ?? 0, false) ?>>
                                 <span>Show</span>
                             </label>
                         </div>
