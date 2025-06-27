@@ -3,7 +3,6 @@
 
     <?php
     $active_tab = get_option('customer_reviews_settings')['active_tab'] ?? 'general';
-    print_r(get_option('customer_reviews_settings'));
     ?>
  
     <h2 class="nav-tab-wrapper">
