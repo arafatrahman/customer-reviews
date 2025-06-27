@@ -53,6 +53,15 @@ class Review_Model {
         );
     }
 
+    /**
+     * Import reviews from the Site Reviews plugin.
+     *
+     * This function retrieves reviews from the Site Reviews plugin's database tables
+     * and imports them into the custom reviews table.
+     *
+     * @return int The number of reviews imported.
+     */
+
     public function import_reviews_from_site_reviews_plugin() {
 
         global $wpdb;
@@ -110,6 +119,90 @@ class Review_Model {
             }
         }
         
+        return $imported;
+    }
+
+    public function import_reviews_from_wp_customer_reviews() {
+        global $wpdb;
+
+        // Get all review post IDs from wp_postmeta where meta_key = 'wpcr3_review_post'
+        $review_post_ids = $wpdb->get_col(
+            "SELECT DISTINCT post_id FROM {$wpdb->postmeta} WHERE meta_key = 'wpcr3_review_post'"
+        );
+
+        
+
+          $imported = 0;
+          $data = [];
+        if ($review_post_ids) {
+            foreach ($review_post_ids as $post_id) {
+              
+            // Get all relevant meta values for this review
+            $postID    = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_post' LIMIT 1",
+                $post_id
+            ));
+            $name    = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_name' LIMIT 1",
+                $post_id
+            ));
+            $email   = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_email' LIMIT 1",
+                $post_id
+            ));
+            $rating  = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_rating' LIMIT 1",
+                $post_id
+            ));
+            $title   = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_title' LIMIT 1",
+                $post_id
+            ));
+            $website = $wpdb->get_var($wpdb->prepare(
+                "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = 'wpcr3_review_website' LIMIT 1",
+                $post_id
+            ));
+
+
+       
+
+        // Get post_date and post_content from wp_posts for this review
+        $post_data = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT post_date, post_content FROM {$wpdb->posts} WHERE ID = %d LIMIT 1",
+                $post_id
+            )
+        );
+
+        
+
+              
+
+            
+                $data = [
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => '',
+                    'website' => $website,
+                    'city' => '',
+                    'state' => '',
+                    'title' => $title, 
+                    'comment' => $post_data->post_content,
+                    'rating' => $rating,
+                    'status' => 'approved',
+                    'positionid' => $postID,
+                    'created_at' => $post_data->post_date
+                ];
+
+               
+
+                $this->ctrw_add_review($data);
+                    $imported++;
+                
+            
+        }
+    }
+
         return $imported;
     }
 

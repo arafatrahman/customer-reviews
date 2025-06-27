@@ -109,7 +109,7 @@ jQuery(document).ready(function($) {
               ctrw_import_review: selectedPlugin,
            },
             success: function(response) {
-                console.log(response.data);
+                console.log(response);
                 if (response.success) {
                     alert('Imports completed successfully.');
                     $('#ctrw-import-popup').hide();

@@ -150,6 +150,13 @@
                         $('#comment_box_fill_color').wpColorPicker();
                     });
                     </script>
+
+                    <label for="review_display_type"><?php esc_html_e('Review Display Type:', 'wp_cr'); ?></label>
+                    <select name="review_display_type" id="review_display_type">
+                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
+                        <option value="grid" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'grid', false) ?>><?php esc_html_e('Grid', 'wp_cr'); ?></option>
+                    </select>
+
                 </div>
             </div>
         </div>

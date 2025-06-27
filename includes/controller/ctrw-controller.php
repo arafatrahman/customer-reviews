@@ -58,7 +58,10 @@ class Review_Controller {
         if ($importPlugin == 'siteReviews') {
             $reviews = $this->model->import_reviews_from_site_reviews_plugin();
             
-        } else {
+        }elseif ($importPlugin == 'wpCustomerReviews') {
+                $reviews = $this->model->import_reviews_from_wp_customer_reviews();
+            }
+        else {
            wp_send_json_error(['message' => __('No reviews to import', 'wp_cr')]);
         }
         wp_send_json_success(['message' => __('Imported  Reviews', 'wp_cr')]);

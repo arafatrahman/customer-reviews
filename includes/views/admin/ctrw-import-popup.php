@@ -20,6 +20,10 @@ if (!defined('ABSPATH')) {
                               <?php if (is_plugin_active('site-reviews/site-reviews.php')) : ?>
                                     <option value="siteReviews">Site Reviews</option>
                               <?php endif; ?>
+
+                              <?php if (is_plugin_active('wp-customer-reviews/wp-customer-reviews-3.php')) : ?>
+                                    <option value="wpCustomerReviews">WP   Reviews</option>
+                              <?php endif; ?>
                              
                     </select>
             </p>
