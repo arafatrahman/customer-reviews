@@ -3,7 +3,7 @@
 
     <?php
     $active_tab = get_option('customer_reviews_settings')['active_tab'] ?? 'general';
-    
+    print_r(get_option('customer_reviews_settings'));
     ?>
  
     <h2 class="nav-tab-wrapper">
@@ -151,10 +151,12 @@
                     });
                     </script>
 
-                    <label for="review_display_type"><?php esc_html_e('Review Display Type:', 'wp_cr'); ?></label>
+                    <label for="review_display_type"><?php esc_html_e('Reviews Display Style:', 'wp_cr'); ?></label>
                     <select name="review_display_type" id="review_display_type">
-                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
-                        <option value="grid" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'grid', false) ?>><?php esc_html_e('Grid', 'wp_cr'); ?></option>
+                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? 'list', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
+                        <option value="slider" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'slider', false) ?>><?php esc_html_e('Slider', 'wp_cr'); ?></option>
+                        <option value="floating" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'floating', false) ?>><?php esc_html_e('Floating Widget', 'wp_cr'); ?></option>
+
                     </select>
 
                 </div>
