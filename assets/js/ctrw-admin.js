@@ -57,7 +57,7 @@ jQuery(document).ready(function($) {
 
 
         $.ajax({
-            url: cradmin_ajax.ajax_url,
+            url: ctrw_admin_ajax.ajax_url,
             method: 'POST',
             data: {
                 action: 'edit_customer_review',
@@ -102,7 +102,7 @@ jQuery(document).ready(function($) {
         
         let selectedPlugin = $('#ctrw_import_plugin').val();
         $.ajax({
-            url: cradmin_ajax.ajax_url,
+            url: ctrw_admin_ajax.ajax_url,
             method: 'POST',
             data: {
               action: 'ctrw_import_review_from_others',
@@ -138,7 +138,7 @@ jQuery(document).ready(function($) {
       }
 
       $.ajax({
-          url: cradmin_ajax.ajax_url, 
+          url: ctrw_admin_ajax.ajax_url, 
           method: 'POST',
           data: {
               action: 'save_review_reply',
@@ -197,6 +197,31 @@ jQuery(document).ready(function($) {
         }
         $('#review_display_info').text(infoText);
     });
+
+
+        $('#ctrw-form-settings').on('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            var formData = $(this).serialize();
+            console.log(formData);
+            // Add security nonce using your existing object
+            formData += '&security=' + ctrw_admin_ajax.nonce;
+            
+            // Add action
+            formData += '&action=ctrw_save_settings';            
+            // AJAX request
+            $.ajax({
+                type: 'POST',
+                url: ctrw_admin_ajax.ajax_url, // Note: ajax_url instead of ajaxurl
+                data: formData,
+                success: function(response) {
+                    console.log(response);
+                    $('#ctrw-success-msg').fadeIn().delay(2000).fadeOut();
+                
+                }
+            });
+        });
 
 
   });

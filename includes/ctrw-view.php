@@ -44,10 +44,10 @@ class Review_View {
     <hr class="wp-header-end">';
 
     // Provide variables to the included template files
-    include 'admin/ctrw-reviews-list.php';
-    include 'admin/ctrw-reply-popup.php';
-    include 'admin/ctrw-review-update-popup.php';
-    include 'admin/ctrw-import-popup.php';
+    include 'views/admin/ctrw-reviews-list.php';
+    include 'views/admin/ctrw-reply-popup.php';
+    include 'views/admin/ctrw-review-update-popup.php';
+    include 'views/admin/ctrw-import-popup.php';
 
     echo '</div>';
 }

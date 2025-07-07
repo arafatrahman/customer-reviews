@@ -20,7 +20,7 @@ class Review_Controller {
         add_action('wp_enqueue_scripts', [$this,'review_enqueue_scripts']);
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
 
-
+        add_action('wp_ajax_ctrw_save_settings', [$this, 'ctrw_save_settings']);
         add_shortcode('wp_ctrw_form', [$this,'customer_reviews_form_shortcode']);
         add_shortcode('wp_ctrw_lists', [$this,'customer_reviews_list_shortcode']);
 
@@ -306,13 +306,15 @@ class Review_Controller {
  
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
         include CTRW_PLUGIN_PATH . 'includes/views/admin/ctrw-settings-panel.php';
-        $this->save_review_settings();
+     //   $this->save_review_settings();
     
 
     }
 
     // Save Review Settings
-    private function save_review_settings() {
+    public function ctrw_save_settings() {
+      
+        check_ajax_referer('ctrw_nonce', 'security'); 
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $settings = [
@@ -339,7 +341,6 @@ class Review_Controller {
                 }, $_POST['fields'] ?? [])
             ];
             update_option('customer_reviews_settings', $settings);
-            echo '<script>location.reload();</script>';
         }
     }
 
@@ -404,7 +405,7 @@ class Review_Controller {
             }
             
             wp_enqueue_script('cr-admin-script', CTRW_PLUGIN_ASSETS . 'js/ctrw-admin.js', ['jquery'], '1.0.0', true);
-            wp_localize_script('cr-admin-script', 'cradmin_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
+            wp_localize_script('cr-admin-script', 'ctrw_admin_ajax', ['ajax_url' => admin_url('admin-ajax.php'), 'nonce' => wp_create_nonce('ctrw_nonce')]);
     }
 
     private function sanitize_post_data($data) {

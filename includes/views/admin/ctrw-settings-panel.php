@@ -1,21 +1,24 @@
 <div class="wrap wp-review-settings-wrap">
     <h1>Customer Review Settings</h1>
 
-    <?php
-    $active_tab = get_option('customer_reviews_settings')['active_tab'] ?? 'general';
-    ?>
+    
  
     <h2 class="nav-tab-wrapper">
-        <a href="#" id="ctrw-general-tab" class="nav-tab<?= $active_tab === 'general' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'general')">General</a>
-        <a href="#" id="ctrw-review-form-tab"class="nav-tab <?= $active_tab == 'review_form' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'review_form')">Review Form Settings</a>
-        <a href="#" id="ctrw-shortcodes-tab"class="nav-tab <?= $active_tab == 'shortcodes' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'display')">Shortcodes</a>
-        <a href="#" id="ctrw-advanced-tab" class="nav-tab <?= $active_tab == 'advanced' ? ' nav-tab-active' : '' ?>" onclick="showTab(event, 'advanced')">Advanced Settings</a>
+        <a href="#" id="ctrw-general-tab" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
+        <a href="#" id="ctrw-review-form-tab"class="nav-tab " onclick="showTab(event, 'review_form')">Review Form Settings</a>
+        <a href="#" id="ctrw-shortcodes-tab"class="nav-tab " onclick="showTab(event, 'display')">Shortcodes</a>
+        <a href="#" id="ctrw-advanced-tab" class="nav-tab " onclick="showTab(event, 'advanced')">Advanced Settings</a>
 
     </h2>
 
-    <form method="post"  class="wp-review-settings-form">
+    <!-- Success message -->
+    <div id="ctrw-success-msg" class="notice notice-success is-dismissible" style="display: none;">
+        <p>Customer Review Settings Saved Successfully.</p>
+    </div>
+
+    <form method="post"  id="ctrw-form-settings" class="wp-review-settings-form">
         <!-- General Settings -->
-        <div class="form-group tab-section" id="tab-general" style="display:<?= ($active_tab == 'general') ? 'block' : 'none'; ?>;">
+        <div class="form-group tab-section" id="tab-general" >
             <h3><?php esc_html_e('General Settings', 'wp_cr'); ?></h3>
             <div style="display: flex; flex-wrap: wrap; gap: 24px;">
                 <div style="flex: 1 1 0; min-width: 260px;">
@@ -157,7 +160,7 @@
         </div>
 
        <!-- Review Form Settings -->
-        <div class="tab-section" id="tab-review_form" style="display:<?= ($active_tab == 'review_form') ? 'block' : 'none'; ?>;">
+        <div class="tab-section" id="tab-review_form" style="display:none">
             <h3><?php esc_html_e('Review Form Fields Settings', 'wp_cr'); ?></h3>
             
             <div class="ctrw-settings-fields-grid" style="display: flex; gap: 32px;">
@@ -228,7 +231,7 @@
         </div>
 
         <!-- Shortcodes -->
-        <div class="form-group tab-section" id="tab-display" style="display:<?= ($active_tab == 'shortcodes') ? 'block' : 'none'; ?>;">
+        <div class="form-group tab-section" id="tab-display" style="display:none">
             <h3><?php esc_html_e('Shortcodes', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
                 <label for="shortcode">Form Shortcode:</label>
@@ -257,7 +260,7 @@
             </div>
         </div>
 
-        <div class="form-group tab-section" id="tab-advanced" style="display:<?= ($active_tab == 'advanced') ? 'block' : 'none'; ?>;">
+        <div class="form-group tab-section" id="tab-advanced" style="display:none">
         <h3><?php esc_html_e('Advanced Settings', 'wp_cr'); ?></h3>
         <label for="replace_woocommerce_reviews">
                         <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
@@ -297,9 +300,11 @@
 
         </div>
 
-        <input type="hidden" name="active_tab" id="ctrw-active-tab" value="<?= esc_attr(get_option('customer_reviews_settings')['active_tab'] ?? 'general') ?>">
         
-        <?php submit_button('Save Settings', 'primary', 'submit', true); ?>
+        
+        <p class="submit">
+            <button type="submit" class="button-primary">Save Settings</button>
+        </p>    
     </form>
 </div>
 
