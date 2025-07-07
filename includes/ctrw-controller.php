@@ -37,7 +37,7 @@ class Review_Controller {
         add_action( 'add_meta_boxes', [$this, 'ctrw_add_meta_box' ]);
         add_action( 'save_post', [$this, 'ctrw_save_meta_box_data' ] );
 
-        add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
+   //     add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
 
         add_action('woocommerce_single_product_summary', array($this, 'ctrw_reviews_after_title'), 6);
 
@@ -158,6 +158,7 @@ class Review_Controller {
       return $links;
    }
 
+    /*
     // Append the customer reviews shortcode to the content
     public function append_customer_reviews_shortcode($content) {
         if (is_singular(['post', 'page', 'product'])) {
@@ -185,6 +186,7 @@ class Review_Controller {
     
         return $content;
     }
+    */
 
     // Add meta box to the review post type
     public function ctrw_add_meta_box() {
@@ -204,8 +206,8 @@ class Review_Controller {
         // Retrieve current settings
         $settings = [
             'enable_reviews'      => get_post_meta($post->ID, '_ctrw_enable_reviews', true),
-            'enable_review_form'  => get_post_meta($post->ID, '_ctrw_enable_review_form', true),
-            'enable_review_list'  => get_post_meta($post->ID, '_ctrw_enable_review_list', true),
+          //  'enable_review_form'  => get_post_meta($post->ID, '_ctrw_enable_review_form', true),
+          //  'enable_review_list'  => get_post_meta($post->ID, '_ctrw_enable_review_list', true),
         ];
 
         // Add nonce field for security
@@ -220,6 +222,7 @@ class Review_Controller {
         echo '</p>';
 
         // Enable review form option
+        /*
         echo '<p>';
         echo '<label for="enable_review_form">';
         echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, isset($settings['enable_review_form']) ? $settings['enable_review_form'] : 1, false) . ' />';
@@ -234,6 +237,7 @@ class Review_Controller {
         echo __('Display Review List', 'wp_cr');
         echo '</label>';
         echo '</p>';
+        */
     }
     // Save meta box data
     public function ctrw_save_meta_box_data($post_id) {
@@ -249,8 +253,8 @@ class Review_Controller {
 
         // Save the settings as post meta for this post/page only
         update_post_meta($post_id, '_ctrw_enable_reviews', isset($_POST['enable_reviews']) ? 1 : 0);
-        update_post_meta($post_id, '_ctrw_enable_review_form', isset($_POST['enable_review_form']) ? 1 : 0);
-        update_post_meta($post_id, '_ctrw_enable_review_list', isset($_POST['enable_review_list']) ? 1 : 0);
+     //   update_post_meta($post_id, '_ctrw_enable_review_form', isset($_POST['enable_review_form']) ? 1 : 0);
+      //  update_post_meta($post_id, '_ctrw_enable_review_list', isset($_POST['enable_review_list']) ? 1 : 0);
     }
  
 
@@ -301,11 +305,11 @@ class Review_Controller {
     public function display_settings_page() {
  
         $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'general';
-        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-settings.php';
+        include CTRW_PLUGIN_PATH . 'includes/views/admin/ctrw-settings-panel.php';
         $this->save_review_settings();
     
 
-}
+    }
 
     // Save Review Settings
     private function save_review_settings() {
@@ -664,16 +668,37 @@ public function edit_customer_review() {
 }
 
 public function customer_reviews_form_shortcode() {
-    ob_start();
-    include CTRW_PLUGIN_PATH . 'includes/views/ctrw-form.php';
-    return ob_get_clean();
+
+    $post_id = get_the_ID();
+    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
+
+    if (isset($enable_reviews) && $enable_reviews === '1') {
+        // Include the form template
+        ob_start();
+        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-form.php';
+        return ob_get_clean();
+    } else {
+        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
+    }  
+
 
 }
 
 public function customer_reviews_list_shortcode() {
-    ob_start();
-    include CTRW_PLUGIN_PATH . 'includes/views/ctrw-list.php';
-    return ob_get_clean();
+
+    $post_id = get_the_ID();
+    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
+
+    if (isset($enable_reviews) && $enable_reviews === '1') {
+        // Include the form template
+        ob_start();
+        ob_start();
+        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-list.php';
+        return ob_get_clean();
+    } else {
+        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
+    }  
+
 }
 
 

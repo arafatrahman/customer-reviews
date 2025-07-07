@@ -65,9 +65,9 @@ define('CTRW_PLUGIN_ASSETS', plugin_dir_url(__FILE__) . 'assets/');
 define('CTRW_BASE_NAME', plugin_basename(__FILE__));
 
 // Include MVC structure
-include_once CTRW_PLUGIN_PATH . 'includes/views/ctrw-view.php';
-include_once CTRW_PLUGIN_PATH . 'includes/model/ctrw-model.php';
-include_once CTRW_PLUGIN_PATH . 'includes/controller/ctrw-controller.php';
+include_once CTRW_PLUGIN_PATH . 'includes/ctrw-view.php';
+include_once CTRW_PLUGIN_PATH . 'includes/ctrw-model.php';
+include_once CTRW_PLUGIN_PATH . 'includes/ctrw-controller.php';
 
 add_action('load-toplevel_page_customer-reviews', 'ctrw_add_screen_options');
 

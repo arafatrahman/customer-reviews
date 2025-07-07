@@ -13,7 +13,7 @@
 
     </h2>
 
-    <form method="post" action="" class="wp-review-settings-form">
+    <form method="post"  class="wp-review-settings-form">
         <!-- General Settings -->
         <div class="form-group tab-section" id="tab-general" style="display:<?= ($active_tab == 'general') ? 'block' : 'none'; ?>;">
             <h3><?php esc_html_e('General Settings', 'wp_cr'); ?></h3>
@@ -150,13 +150,7 @@
                     });
                     </script>
 
-                    <label for="review_display_type"><?php esc_html_e('Reviews Display Style:', 'wp_cr'); ?></label>
-                    <select name="review_display_type" id="review_display_type">
-                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? 'list', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
-                        <option value="slider" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'slider', false) ?>><?php esc_html_e('Slider', 'wp_cr'); ?></option>
-                        <option value="floating" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'floating', false) ?>><?php esc_html_e('Floating Widget', 'wp_cr'); ?></option>
 
-                    </select>
 
                 </div>
             </div>
@@ -242,9 +236,24 @@
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_form]')">Copy</button>
             </div>
             <div class="shortcode-section">
+                <label for="shortcode">Review Summary</label>
+                <input type="text" id="shortcode" value="[wp_ctrw_summary]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_summary]')">Copy</button>
+            </div>
+            <div class="shortcode-section">
                 <label for="shortcode">Review Lists Shortcode:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_lists]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_lists]')">Copy</button>
+            </div>
+            <div class="shortcode-section">
+                <label for="shortcode">Review Slider</label>
+                <input type="text" id="shortcode" value="[wp_ctrw_slider]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_slider]')">Copy</button>
+            </div>
+                        <div class="shortcode-section">
+                <label for="shortcode">Review Floating Widget</label>
+                <input type="text" id="shortcode" value="[wp_ctrw_widget]" readonly>
+                <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_widget]')">Copy</button>
             </div>
         </div>
 
@@ -255,6 +264,15 @@
                         <?= checked(1, get_option('customer_reviews_settings')['replace_woocommerce_reviews'] ?? 0, false) ?>>
                         <?php esc_html_e('Replace WooCommerce Default Review System', 'wp_cr'); ?>
                     </label>
+
+
+        <label for="review_display_type"><?php esc_html_e('WooCommerce Reviews Display Style:', 'wp_cr'); ?></label>
+                    <select name="review_display_type" id="review_display_type">
+                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? 'list', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
+                        <option value="slider" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'slider', false) ?>><?php esc_html_e('Slider', 'wp_cr'); ?></option>
+                        <option value="floating" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'floating', false) ?>><?php esc_html_e('Floating Widget', 'wp_cr'); ?></option>
+
+                    </select><br> <p id="review_display_info"></p>
 
         <div style="margin-top: 18px;">
             <label for="notification_admin_emails">
@@ -293,4 +311,5 @@ function showTab(e, tabId) {
     document.getElementById('tab-' + tabId).style.display = 'block';
     e.currentTarget.classList.add('nav-tab-active');
 }
+
 </script>

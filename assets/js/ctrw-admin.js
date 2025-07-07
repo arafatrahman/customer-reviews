@@ -182,6 +182,22 @@ jQuery(document).ready(function($) {
     $('#ctrw-active-tab').val(tabName);
 });
 
+    $('#review_display_type').on('change', function() {
+        var infoText = '';
+        switch ($(this).val()) {
+            case 'list':
+                infoText = 'Displays reviews in a standard list format on the product page.';
+                break;
+            case 'slider':
+                infoText = 'Displays reviews in a slider/carousel on the product page.';
+                break;
+            case 'floating':
+                infoText = 'Displays reviews in a floating widget on the product page.';
+                break;
+        }
+        $('#review_display_info').text(infoText);
+    });
+
 
   });
 
