@@ -270,3 +270,52 @@ function wp_customer_reviews_uninstall() {
     delete_post_meta_by_key('_ctrw_enable_review_form');
     delete_post_meta_by_key('_ctrw_enable_review_list');
 }
+
+
+
+/**
+ * 1. Ensure WooCommerce Reviews Tab Exists
+ */
+add_filter('woocommerce_product_tabs', 'ctrw_force_reviews_tab', 10);
+function ctrw_force_reviews_tab($tabs) {
+    $woocommerceSettings = get_option('ctrw_woocommerce_settings', array());
+    if(isset($woocommerceSettings['show_on_product_pages']) && $woocommerceSettings['show_on_product_pages'] == 'on'){
+      
+    
+
+    global $post;
+    
+    if (!is_product()) return $tabs;
+    
+    // Always show Reviews tab, even with 0 reviews
+    $tabs['reviews'] = array(
+        'title'    => __('Reviews', 'woocommerce'),
+        'priority' => 30,
+        'callback' => 'ctrw_custom_reviews_tab_content'
+    );
+    }
+    
+    return $tabs;
+}
+
+/**
+ * 2. Custom Reviews Tab Content
+ */
+function ctrw_custom_reviews_tab_content() {
+
+   $woocommerceSettings = get_option('customer_reviews_settings', array());
+
+   
+   if(isset($woocommerceSettings['review_summary']) && $woocommerceSettings['review_summary'] == 'on'){
+     echo do_shortcode('[wp_ctrw_summary]');
+   }
+   
+   if(isset($woocommerceSettings['review_display_type']) && $woocommerceSettings['review_display_type'] == 'slider'){
+        echo do_shortcode('[wp_ctrw_slider]');
+   }elseif(isset($woocommerceSettings['review_display_type']) && $woocommerceSettings['review_display_type'] == 'floating'){
+        echo do_shortcode('[wp_ctrw_widget]');
+   }else{
+        echo do_shortcode('[wp_ctrw_lists]');
+   }
+  
+}

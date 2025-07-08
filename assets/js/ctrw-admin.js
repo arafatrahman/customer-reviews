@@ -204,7 +204,7 @@ jQuery(document).ready(function($) {
             
             // Get form data
             var formData = $(this).serialize();
-            console.log(formData);
+            
             // Add security nonce using your existing object
             formData += '&security=' + ctrw_admin_ajax.nonce;
             
@@ -216,7 +216,7 @@ jQuery(document).ready(function($) {
                 url: ctrw_admin_ajax.ajax_url, // Note: ajax_url instead of ajaxurl
                 data: formData,
                 success: function(response) {
-                    console.log(response);
+                   
                     $('#ctrw-success-msg').fadeIn().delay(2000).fadeOut();
                 
                 }

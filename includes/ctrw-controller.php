@@ -8,7 +8,7 @@ class Review_Controller {
     private $view;
 
     public function __construct() {
-        $this->model = new Review_Model();
+        $this->model = new CTRW_Review_Model();
         $this->view = new Review_View();
         add_action('admin_menu', [$this, 'add_admin_menu']);
         add_filter('plugin_action_links_' . CTRW_BASE_NAME, array($this, 'ctrw_plugin_action_links'));
@@ -21,8 +21,13 @@ class Review_Controller {
         add_action('admin_enqueue_scripts', [$this,'wp_review_admin_styles']);
 
         add_action('wp_ajax_ctrw_save_settings', [$this, 'ctrw_save_settings']);
+        
         add_shortcode('wp_ctrw_form', [$this,'customer_reviews_form_shortcode']);
+        add_shortcode('wp_ctrw_summary', [$this,'ctrw_display_summary']);
         add_shortcode('wp_ctrw_lists', [$this,'customer_reviews_list_shortcode']);
+        add_shortcode('wp_ctrw_widget', [$this,'ctrw_display_floating_widget']);
+        add_shortcode('wp_ctrw_slider', [$this,'ctrw_display_slider']);
+
 
         add_action('wp_ajax_submit_review', [$this, 'submit_review']);
         add_action('wp_ajax_nopriv_submit_review', [$this, 'submit_review']);
@@ -39,9 +44,12 @@ class Review_Controller {
 
    //     add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
 
-        add_action('woocommerce_single_product_summary', array($this, 'ctrw_reviews_after_title'), 6);
+        // Hook to display under product titles - adjust priority as needed
+      add_action('woocommerce_after_shop_loop_item_title', array($this, 'ctrw_display_product_review_info'), 15);
+      add_action('woocommerce_single_product_summary', array($this, 'ctrw_display_product_review_info'), 7);
 
-        add_filter('woocommerce_product_settings', [$this, 'make_review_checkbox_disabled']);
+            add_action('wp_head', array($this, 'ctrw_output_schema_markup'));
+
 
          
     }
@@ -332,6 +340,15 @@ class Review_Controller {
                 'date_format' => sanitize_text_field($_POST['date_format'] ?? 'MM/DD/YYYY'),
                 'include_time' => isset($_POST['include_time']) ? 1 : 0,
                 'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),
+
+                'enabled_schema' => isset($_POST['enabled_schema']) ? 1 : 0,
+                'business_name' => sanitize_text_field($_POST['business_name'] ?? get_bloginfo('name')),
+                'default_description' => sanitize_text_field($_POST['default_description'] ?? get_bloginfo('description')),
+                'default_url' => sanitize_text_field($_POST['default_url'] ?? ''),
+                'custom_image_url' => sanitize_text_field($_POST['custom_image_url'] ?? ''),
+                'business_address' => sanitize_text_field($_POST['business_address'] ?? ''),
+                 'business_phone' => sanitize_text_field($_POST['business_phone'] ?? ''),
+                 'price_range' => sanitize_text_field($_POST['price_range'] ?? '$'),
                 'review_display_type' => sanitize_text_field($_POST['review_display_type'] ?? 'list'),
                 'replace_woocommerce_reviews' => isset($_POST['replace_woocommerce_reviews']) ? 1 : 0,
                 'notification_admin_emails' => isset($_POST['notification_admin_emails']) ? $_POST['notification_admin_emails'] : '',   
@@ -606,7 +623,7 @@ class Review_Controller {
 
 public function get_review_list() {
     ob_start();
-    include plugin_dir_path(__FILE__) . '../views/ctrw-list.php';
+    include plugin_dir_path(__FILE__) . '../views/shortcodes/ctrw-list.php';
     return ob_get_clean();
 }
 
@@ -676,7 +693,7 @@ public function customer_reviews_form_shortcode() {
     if (isset($enable_reviews) && $enable_reviews === '1') {
         // Include the form template
         ob_start();
-        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-form.php';
+        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-form.php';
         return ob_get_clean();
     } else {
         return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
@@ -685,7 +702,22 @@ public function customer_reviews_form_shortcode() {
 
 }
 
-public function customer_reviews_list_shortcode() {
+public function customer_reviews_list_shortcode(){
+    $post_id = get_the_ID();
+    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
+
+    if (isset($enable_reviews) && $enable_reviews === '1') {
+        // Include the form template
+        ob_start();
+        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-list.php';
+        return ob_get_clean();
+    } else {
+        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
+    }  
+
+}
+
+public function ctrw_display_summary() {
 
     $post_id = get_the_ID();
     $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
@@ -693,14 +725,148 @@ public function customer_reviews_list_shortcode() {
     if (isset($enable_reviews) && $enable_reviews === '1') {
         // Include the form template
         ob_start();
-        ob_start();
-        include CTRW_PLUGIN_PATH . 'includes/views/ctrw-list.php';
+        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-summary.php';
         return ob_get_clean();
     } else {
         return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
     }  
 
 }
+
+public function ctrw_display_floating_widget() {
+
+    $post_id = get_the_ID();
+    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
+
+    if (isset($enable_reviews) && $enable_reviews === '1') {
+        // Include the form template
+        ob_start();
+        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-floating.php';
+        return ob_get_clean();
+    } else {
+        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
+    }  
+
+}
+
+public function ctrw_display_slider() {
+
+    $post_id = get_the_ID();
+    $enable_reviews = get_option('customer_reviews_settings');
+
+    
+    if (isset($enable_reviews['replace_woocommerce_reviews']) && $enable_reviews['replace_woocommerce_reviews'] == '1') {
+        // Include the form template
+        ob_start();
+        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-slider.php';
+        return ob_get_clean();
+    } else {
+        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
+    }  
+
+}
+
+
+// Function to display review info under product titles
+      public function ctrw_display_product_review_info() {
+            global $post;
+            
+            // Only run for products
+            if (!is_a($post, 'WP_Post') || $post->post_type !== 'product') {
+                  return;
+            }
+
+            $woocommerceSettings = get_option('ctrw_woocommerce_settings', array());
+            if(!isset($woocommerceSettings['show_on_product_pages']) && $woocommerceSettings['show_on_product_pages'] != 'on'){
+                  return;
+            }
+            
+            $current_id = isset($post->ID) ? $post->ID : 0;
+
+            // Get reviews - ensure it returns an array
+            $reviews = (new CTRW_Review_Model())->get_review_by_id($current_id);
+
+            // Calculate rating statistics
+            $total_reviews = count($reviews);
+            $total_rating = 0;
+            
+            foreach ($reviews as $review) {
+                  $review_data = (array) $review;
+                  $rating = (int) $review_data['rating'];
+                  if ($rating >= 1 && $rating <= 5) {
+                        $total_rating += $rating;
+                  }
+            }
+            
+            $average_rating = $total_reviews > 0 ? round($total_rating / $total_reviews, 1) : 0;
+            
+            // Get display settings
+            $displaySettings = get_option('ctrw_display_settings', []);
+            $star_color = $displaySettings['star_color'] ?? '#ffb100';
+            
+            // Generate stars HTML
+            $stars_html = '';
+            if ($total_reviews > 0) {
+                  $full_stars = floor($average_rating);
+                  $has_half_star = ($average_rating - $full_stars) >= 0.5;
+                  
+                  for ($i = 1; $i <= 5; $i++) {
+                        if ($i <= $full_stars) {
+                        $stars_html .= '<i class="fas fa-star" style="color:' . esc_attr($star_color) . '"></i>';
+                        } elseif ($i == $full_stars + 1 && $has_half_star) {
+                        $stars_html .= '<i class="fas fa-star-half-alt" style="color:' . esc_attr($star_color) . '"></i>';
+                        } else {
+                        $stars_html .= '<i class="far fa-star" style="color:' . esc_attr($star_color) . '"></i>';
+                        }
+                  }
+            }
+            
+            // Output the review info
+            if ($total_reviews > 0) {
+                  echo '<div class="ctrw-product-review-summary" style="margin: 5px 0 10px; font-size: 14px;">';
+                  echo '<div class="ctrw-review-stars" style="display: inline-block; margin-right: 5px;">' . $stars_html . '</div>';
+                  echo '<span class="ctrw-review-average" style="font-weight: bold; margin-right: 5px;">' . number_format($average_rating, 1) . '</span>';
+                  echo '<span class="ctrw-review-count">(' . $total_reviews . ' ' . ($total_reviews === 1 ? 'review' : 'reviews') . ')</span>';
+                  echo '</div>';
+            } else {
+                  echo '<div class="ctrw-product-review-summary" style="margin: 5px 0 10px; font-size: 14px; color: #666;">';
+                  echo 'No reviews yet';
+                  echo '</div>';
+            }
+      }
+
+
+       public function ctrw_output_schema_markup() {
+        $schemaSettings = get_option('customer_reviews_settings');
+        if (empty($schemaSettings['enabled_schema'])) {
+            return;
+        }
+
+        $review_count = $this->model->get_review_counts();
+        $average_rating = $this->model->get_average_rating();
+        
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'LocalBusiness',
+            'name' => $schemaSettings['business_name'],
+            'image' => !empty($schemaSettings['custom_image_url']) ? $schemaSettings['custom_image_url'] : '',
+            'telephone' => isset($schemaSettings['business_phone']) ? $schemaSettings['business_phone'] : '',
+            'priceRange' => isset($schemaSettings['price_range']) ? $schemaSettings['price_range'] : '',
+            'address' => array(
+                '@type' => 'PostalAddress',
+                'streetAddress' => isset($schemaSettings['business_address']) ? $schemaSettings['business_address'] : ''
+            ),
+            'aggregateRating' => array(
+                  '@type' => 'AggregateRating',
+                  'ratingValue' => isset($average_rating) ? $average_rating : '5.0',
+                  'reviewCount' => isset($review_count['all']) ? $review_count['all'] : '1'
+            ),
+        );
+        
+        echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . '</script>';
+    }
+
+
 
 
 }

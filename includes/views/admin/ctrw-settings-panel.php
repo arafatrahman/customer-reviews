@@ -7,6 +7,7 @@
         <a href="#" id="ctrw-general-tab" class="nav-tab nav-tab-active" onclick="showTab(event, 'general')">General</a>
         <a href="#" id="ctrw-review-form-tab"class="nav-tab " onclick="showTab(event, 'review_form')">Review Form Settings</a>
         <a href="#" id="ctrw-shortcodes-tab"class="nav-tab " onclick="showTab(event, 'display')">Shortcodes</a>
+        <a href="#" id="ctrw-schema-tab" class="nav-tab " onclick="showTab(event, 'schema')">Schema Settings</a>
         <a href="#" id="ctrw-advanced-tab" class="nav-tab " onclick="showTab(event, 'advanced')">Advanced Settings</a>
 
     </h2>
@@ -260,45 +261,140 @@
             </div>
         </div>
 
-        <div class="form-group tab-section" id="tab-advanced" style="display:none">
-        <h3><?php esc_html_e('Advanced Settings', 'wp_cr'); ?></h3>
-        <label for="replace_woocommerce_reviews">
-                        <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
-                        <?= checked(1, get_option('customer_reviews_settings')['replace_woocommerce_reviews'] ?? 0, false) ?>>
-                        <?php esc_html_e('Replace WooCommerce Default Review System', 'wp_cr'); ?>
-                    </label>
 
-
-        <label for="review_display_type"><?php esc_html_e('WooCommerce Reviews Display Style:', 'wp_cr'); ?></label>
-                    <select name="review_display_type" id="review_display_type">
-                        <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? 'list', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
-                        <option value="slider" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'slider', false) ?>><?php esc_html_e('Slider', 'wp_cr'); ?></option>
-                        <option value="floating" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'floating', false) ?>><?php esc_html_e('Floating Widget', 'wp_cr'); ?></option>
-
-                    </select><br> <p id="review_display_info"></p>
-
-        <div style="margin-top: 18px;">
-            <label for="notification_admin_emails">
-                <?php esc_html_e('Notification Admin Emails', 'wp_cr'); ?>
-                <span class="ctrw-tooltip">
-					<span class="dashicons dashicons-editor-help"></span>
-					<span class="tooltiptext tooltip-right-msg">If more than one email, separate with a comma</span>
-				</span>
-            </label>
+        <div class="form-group tab-section" id="tab-schema" style="display:none">
+            <h3><?php esc_html_e('Schema Settings', 'wp_cr'); ?></h3>
             <?php
-                $settings = get_option('customer_reviews_settings');
-                $admin_email = get_option('admin_email');
-                $emails = isset($settings['notification_admin_emails']) && trim($settings['notification_admin_emails']) !== ''
-                    ? $settings['notification_admin_emails']
-                    : $admin_email;
+            $schemaSettings = get_option('customer_reviews_settings');
             ?>
-            <input type="text" name="notification_admin_emails" id="notification_admin_emails"
-                value="<?= esc_attr($emails); ?>"
-                placeholder="<?= esc_attr($admin_email); ?>"
-                style="width: 100%;">
-        </div>
+            <table class="form-table">
+            <tbody>
+                <tr>
+                    <th scope="row"><label for="business_name">Enabled Schema markup</label></th>
+                    <td>
+                        <input type="checkbox" name="enabled_schema" <?php checked(isset($schemaSettings['enabled_schema']) ? $schemaSettings['enabled_schema'] : '', '1'); ?>>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="business_name">Local Business Name</label></th>
+                    <td>
+                        <input type="text" id="business_name" name="business_name" class="regular-text" placeholder="Your Business Name" value="<?php echo isset($schemaSettings['business_name']) ? esc_attr($schemaSettings['business_name']) : esc_attr(get_bloginfo('name')); ?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="default_description">Default Description</label></th>
+                    <td>
+                        <input type="text" id="default_description" name="default_description" class="regular-text" placeholder="Enter default description" value="<?php echo isset($schemaSettings['default_description']) ? esc_attr($schemaSettings['default_description']) : esc_attr(get_bloginfo('description')); ?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="default_url">Default URL</label></th>
+                    <td>
+                        <input type="text" id="default_url" name="default_url" class="regular-text" placeholder="Enter default URL" value="<?php echo isset($schemaSettings['default_url']) ? esc_attr($schemaSettings['default_url']) : esc_url(home_url('/')); ?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="default_image">Default Image</label></th>
+                    <td>
+                            <div class="image-upload-wrapper">
+                                <div class="image-preview-wrapper">
+                                    <?php 
+                                    $fallback_image = '';
+                                    if (!empty($schemaSettings['custom_image_url'])) {
+                                        $image_url = esc_url($schemaSettings['custom_image_url']);
+                                    } else {
+                                        $site_icon_id = get_option('site_icon');
+                                        if ($site_icon_id) {
+                                            $image_url = esc_url(wp_get_attachment_image_url($site_icon_id, 'thumbnail'));
+                                            $fallback_image = $image_url;
+                                        } else {
+                                            $image_url = '';
+                                        }
+                                    }
+                                    ?>
+                                    <img id="image-preview" src="<?php echo $image_url; ?>" height="100" <?php echo empty($image_url) ? 'style="display: none;"' : ''; ?>>
+                                </div>
+                                <input id="upload_image_button" type="button" class="button" value="Upload Image" />
+                                <input type="hidden" name="custom_image_url" id="custom_image_url" value="<?php echo isset($schemaSettings['custom_image_url']) ? esc_attr($schemaSettings['custom_image_url']) : esc_attr($fallback_image); ?>">
+                                <p class="description">Upload an image or it will use the site icon by default</p>
+                            </div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="business_address">Address</label></th>
+                    <td>
+                        <textarea id="business_address" name="business_address" class="regular-text" style="height: 80px;"><?php echo isset($schemaSettings['business_address']) ? esc_textarea($schemaSettings['business_address']) : ''; ?></textarea>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="business_phone">Telephone Number</label></th>
+                    <td>
+                        <input type="text" id="business_phone" name="business_phone" class="regular-text" value="<?php echo isset($schemaSettings['business_phone']) ? esc_attr($schemaSettings['business_phone']) : ''; ?>">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th scope="row"><label for="price_range">Price Range</label></th>
+                    <td>
+                        <select id="price_range" name="price_range" class="regular-text">
+                            <option value="$" <?php selected(isset($schemaSettings['price_range']) ? $schemaSettings['price_range'] : '', '$'); ?>>$</option>
+                            <option value="$$" <?php selected(isset($schemaSettings['price_range']) ? $schemaSettings['price_range'] : '', '$$'); ?>>$$</option>
+                            <option value="$$$" <?php selected(isset($schemaSettings['price_range']) ? $schemaSettings['price_range'] : '', '$$$'); ?>>$$$</option>
+                            <option value="$$$$" <?php selected(isset($schemaSettings['price_range']) ? $schemaSettings['price_range'] : '', '$$$$'); ?>>$$$$</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         </div>
+
+        <div class="form-group tab-section" id="tab-advanced" style="display:none">
+            <h3><?php esc_html_e('Advanced Settings', 'wp_cr'); ?></h3>
+            <label for="replace_woocommerce_reviews">
+                            <input type="checkbox" name="replace_woocommerce_reviews" id="replace_woocommerce_reviews" value="1"
+                            <?= checked(1, get_option('customer_reviews_settings')['replace_woocommerce_reviews'] ?? 0, false) ?>>
+                            <?php esc_html_e('Replace WooCommerce Default Review System', 'wp_cr'); ?>
+                        </label>
+
+
+            <label for="review_display_type"><?php esc_html_e('WooCommerce Reviews Display Style:', 'wp_cr'); ?></label>
+                        <select name="review_display_type" id="review_display_type">
+                            <option value="list" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? 'list', 'list', false) ?>><?php esc_html_e('List', 'wp_cr'); ?></option>
+                            <option value="slider" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'slider', false) ?>><?php esc_html_e('Slider', 'wp_cr'); ?></option>
+                            <option value="floating" <?= selected(get_option('customer_reviews_settings')['review_display_type'] ?? '', 'floating', false) ?>><?php esc_html_e('Floating Widget', 'wp_cr'); ?></option>
+
+                        </select><br> <p id="review_display_info"></p>
+
+            <div style="margin-top: 18px;">
+                <label for="notification_admin_emails">
+                    <?php esc_html_e('Notification Admin Emails', 'wp_cr'); ?>
+                    <span class="ctrw-tooltip">
+                        <span class="dashicons dashicons-editor-help"></span>
+                        <span class="tooltiptext tooltip-right-msg">If more than one email, separate with a comma</span>
+                    </span>
+                </label>
+                <?php
+                    $settings = get_option('customer_reviews_settings');
+                    $admin_email = get_option('admin_email');
+                    $emails = isset($settings['notification_admin_emails']) && trim($settings['notification_admin_emails']) !== ''
+                        ? $settings['notification_admin_emails']
+                        : $admin_email;
+                ?>
+                <input type="text" name="notification_admin_emails" id="notification_admin_emails"
+                    value="<?= esc_attr($emails); ?>"
+                    placeholder="<?= esc_attr($admin_email); ?>"
+                    style="width: 100%;">
+            </div>
+
+        </div>
+
+
 
         
         

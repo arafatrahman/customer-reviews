@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class Review_Model {
+class CTRW_Review_Model {
 
     private $wpdb;
     private $table;
@@ -41,6 +41,16 @@ class Review_Model {
         $counts['all'] = array_sum($counts);
 
         return $counts;
+    }
+
+    function get_average_rating() {
+        global $wpdb;
+        
+        // Base query
+        $query = "SELECT AVG(rating) as average_rating FROM $this->table WHERE status = 'approved'";
+        $result = $wpdb->get_var($query);
+        
+        return $result ? round($result, 1) : 0;
     }
 
     public function update_review_status($review_ids, $status) {
@@ -220,6 +230,7 @@ class Review_Model {
         return $this->wpdb->get_results("SELECT * FROM {$this->table} WHERE status = '$status' ORDER BY created_at DESC");
     }
     public function get_review_by_id($id) {
+        return $this->wpdb->get_results("SELECT * FROM {$this->table} WHERE positionid = $id ORDER BY created_at DESC");
         return $this->wpdb->get_row($this->wpdb->prepare("SELECT * FROM $this->table WHERE id = %d", $id));
     }
     public function get_review_count_by_positionid($positionid) {
