@@ -49,13 +49,23 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
                             break;
                     }
                 }
+
+                // Generate initials for avatar (max 2 letters)
+                $name_parts = explode(' ', $review->name);
+                $initials = '';
+                $count = 0;
+                foreach ($name_parts as $part) {
+                    if (!empty($part) && $count < 2) {
+                        $initials .= strtoupper(substr($part, 0, 1));
+                        $count++;
+                    }
+                }
             ?>
             <div class="ctrw-slider-slide <?php echo $index === 0 ? 'ctrw-slider-active' : ''; ?>" data-index="<?php echo $index; ?>">
                 <div class="ctrw-slider-card">
                     <div class="ctrw-slider-meta">
-                        <div class="ctrw-slider-avatar">
-                            <?php echo get_avatar($review->email, 80); ?>
-                        </div>
+                        <div class="ctrw-reviewer-avatar"><?php echo esc_html($initials); ?></div>
+
                         <div class="ctrw-slider-author-info">
                             <div class="ctrw-slider-author-name">
                                 <?= esc_html($review->name); ?>
@@ -166,7 +176,7 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
     top: 0;
     left: 0;
     right: 0;
-    width: 35%;
+    width: 100%;
     height: 100%;
     opacity: 0;
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -174,6 +184,10 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.ctrw-slider-slides
+ {
+    width: 40%;
 }
 
 .ctrw-slider-slide.ctrw-slider-active {
@@ -203,17 +217,19 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
     text-align: center;
 }
 
-.ctrw-slider-avatar {
-    margin-bottom: 15px;
-}
-
-.ctrw-slider-avatar img {
+.ctrw-reviewer-avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
-    object-fit: cover;
+    background-color:rgb(218, 218, 218);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
 }
-
 .ctrw-slider-author-info {
     text-align: center;
 }
