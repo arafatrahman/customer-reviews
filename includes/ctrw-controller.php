@@ -690,14 +690,12 @@ public function customer_reviews_form_shortcode() {
     $post_id = get_the_ID();
     $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
 
-    if (isset($enable_reviews) && $enable_reviews === '1') {
-        // Include the form template
+  
+        
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-form.php';
         return ob_get_clean();
-    } else {
-        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
-    }  
+    
 
 
 }
@@ -706,14 +704,12 @@ public function customer_reviews_list_shortcode(){
     $post_id = get_the_ID();
     $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
 
-    if (isset($enable_reviews) && $enable_reviews === '1') {
-        // Include the form template
+   
+        
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-list.php';
         return ob_get_clean();
-    } else {
-        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
-    }  
+      
 
 }
 
@@ -722,14 +718,12 @@ public function ctrw_display_summary() {
     $post_id = get_the_ID();
     $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
 
-    if (isset($enable_reviews) && $enable_reviews === '1') {
-        // Include the form template
+    
+       
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-summary.php';
         return ob_get_clean();
-    } else {
-        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
-    }  
+    
 
 }
 
@@ -738,14 +732,11 @@ public function ctrw_display_floating_widget() {
     $post_id = get_the_ID();
     $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
 
-    if (isset($enable_reviews) && $enable_reviews === '1') {
-        // Include the form template
+    
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-floating.php';
         return ob_get_clean();
-    } else {
-        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
-    }  
+      
 
 }
 
@@ -755,14 +746,11 @@ public function ctrw_display_slider() {
     $enable_reviews = get_option('customer_reviews_settings');
 
     
-    if (isset($enable_reviews['replace_woocommerce_reviews']) && $enable_reviews['replace_woocommerce_reviews'] == '1') {
-        // Include the form template
+    
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-slider.php';
         return ob_get_clean();
-    } else {
-        return '<p>' . __('The Customer Review Is Currently Disabled For This Page', 'wp_cr') . '</p>';
-    }  
+      
 
 }
 
