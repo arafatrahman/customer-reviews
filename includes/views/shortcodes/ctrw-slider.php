@@ -32,7 +32,7 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
                 }
 
                 $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
-                $include_time = get_option('customer_reviews_settings')['include_time'];
+                $include_time = get_option('customer_reviews_settings')['include_time'] ?? false;
 
                 $formatted_date = '';
                 if (!empty($review->created_at)) {

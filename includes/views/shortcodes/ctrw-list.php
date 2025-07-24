@@ -35,7 +35,8 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
                 $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
               
                
-                $include_time = get_option('customer_reviews_settings')['include_time'];
+                $include_time = get_option('customer_reviews_settings')['include_time'] ?? false;;
+
 
                 $formatted_date = '';
                 if (!empty($review->created_at)) {
@@ -71,7 +72,9 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
                         <?php endif; ?>
                     </span>
                     
-                    <?php  $include_time = get_option('customer_reviews_settings')['include_time']; if ($include_time) { 
+                    <?php  
+                    $include_time = get_option('customer_reviews_settings')['include_time'] ?? false;;
+                     if ($include_time) { 
                         $formatted_date .= ' ' . date('H:i', $timestamp); ?>
                         <div class="review-date">Post Date/Time: <?= esc_html($formatted_date); ?></div>
                     <?php } else { ?>

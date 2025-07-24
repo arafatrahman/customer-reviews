@@ -164,36 +164,6 @@ class Review_Controller {
       }
       return $links;
    }
-
-    /*
-    // Append the customer reviews shortcode to the content
-    public function append_customer_reviews_shortcode($content) {
-        if (is_singular(['post', 'page', 'product'])) {
-
-            $post_id = get_the_ID();
-            $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
-            $enable_review_form = get_post_meta($post_id, '_ctrw_enable_review_form', true);
-            $enable_review_list = get_post_meta($post_id, '_ctrw_enable_review_list', true);
-
-
-            if ($enable_reviews) {
-
-                if ($enable_review_list) {
-                    $content .= do_shortcode('[wp_ctrw_lists]');
-                }
-                if ($enable_review_form) {
-                    // Only append the form shortcode if it's not already present in the content
-                    if (strpos($content, '[wp_ctrw_form]') === false) {
-                        $content .= do_shortcode('[wp_ctrw_form]');
-                    }
-                }
-                
-            }
-        }
-    
-        return $content;
-    }
-    */
  
 
     // Add menu pages
@@ -371,16 +341,15 @@ class Review_Controller {
             }
         
             $review_data = [
-                    
+                    'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
                     'name' => $data['name'],
                     'email' => $data['email'],
                     'phone' => $data['phone'],
                     'website' => $data['website'],
+                    'rating' => intval($data['rating']),
+                    'comment' => $data['comment'],
                     'city' => $data['city'],
                     'state' => $data['state'],
-                    'rating' => intval($data['rating']),
-                    'title' => isset($data['title']) ? sanitize_text_field($data['title']) : '',
-                    'comment' => $data['comment'],
                     'status' => $status,
                     'positionid' => intval($data['positionid'])
             ];
@@ -616,11 +585,6 @@ public function edit_customer_review() {
 }
 
 public function customer_reviews_form_shortcode() {
-
-    $post_id = get_the_ID();
-    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
-
-  
         
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-form.php';
@@ -631,11 +595,7 @@ public function customer_reviews_form_shortcode() {
 }
 
 public function customer_reviews_list_shortcode(){
-    $post_id = get_the_ID();
-    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
 
-   
-        
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-list.php';
         return ob_get_clean();
@@ -645,10 +605,6 @@ public function customer_reviews_list_shortcode(){
 
 public function ctrw_display_summary() {
 
-    $post_id = get_the_ID();
-    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
-
-    
        
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-summary.php';
@@ -659,24 +615,15 @@ public function ctrw_display_summary() {
 
 public function ctrw_display_floating_widget() {
 
-    $post_id = get_the_ID();
-    $enable_reviews = get_post_meta($post_id, '_ctrw_enable_reviews', true);
-
-    
-        ob_start();
-        include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-floating.php';
-        return ob_get_clean();
+    ob_start();
+    include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-floating.php';
+    return ob_get_clean();
       
 
 }
 
 public function ctrw_display_slider() {
 
-    $post_id = get_the_ID();
-    $enable_reviews = get_option('customer_reviews_settings');
-
-    
-    
         ob_start();
         include CTRW_PLUGIN_PATH . 'includes/views/shortcodes/ctrw-slider.php';
         return ob_get_clean();
