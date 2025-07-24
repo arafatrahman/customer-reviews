@@ -4,220 +4,181 @@ if (!defined('ABSPATH')) {
 }
 $reviews = (new CTRW_Review_Model())->get_reviews('approved');
 ?>
+
+
 <style>
-    :root {
-        --ctrw-primary: #4361ee;
-        --ctrw-primary-light: #f0f5ff;
-        --ctrw-text: #333;
-        --ctrw-text-light: #666;
-        --ctrw-border: #e0e0e0;
-        --ctrw-bg: #fff;
-        --ctrw-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        --ctrw-transition: all 0.3s ease;
-    }
+    /* ========== Slider Container ========== */
+.ctrw-slider-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    .ctrw-slider-container {
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 20px;
-        position: relative;
-    }
+/* ========== Slides Wrapper ========== */
+.ctrw-slider-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    gap: 20px;
+}
 
-    .ctrw-slider-wrapper {
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-    }
+/* ========== Each Slide ========== */
+.ctrw-slider-slide {
+    min-width: calc(100% / 3 - 14px); /* 3 slides per view */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
 
-    .ctrw-slider-slides {
-        display: flex;
-        transition: var(--ctrw-transition);
-        will-change: transform;
-    }
+/* ========== Card Content ========== */
+.ctrw-slider-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+.ctrw-slider-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ctrw-reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0073aa;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.ctrw-slider-author-info {
+    flex-grow: 1;
+    font-size: 14px;
+    color: #333;
+}
+
+.ctrw-slider-author-name {
+    font-weight: bold;
+}
+
+.ctrw-slider-author-location,
+.ctrw-slider-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.ctrw-slider-rating {
+    color: #FFC107;
+    font-size: 18px;
+}
+
+.ctrw-slider-star {
+    margin-right: 2px;
+}
+
+.ctrw-slider-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.ctrw-slider-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+}
+
+.ctrw-slider-response {
+    margin-top: 10px;
+    border-left: 4px solid #0073aa;
+    padding-left: 12px;
+    font-size: 13px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.ctrw-slider-response-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* ========== Slider Controls ========== */
+.ctrw-slider-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.ctrw-slider-prev,
+.ctrw-slider-next {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.ctrw-slider-prev:hover,
+.ctrw-slider-next:hover {
+    background: #005f8d;
+}
+
+/* ========== Pagination Dots ========== */
+.ctrw-slider-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.ctrw-slider-dot {
+    width: 10px;
+    height: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.ctrw-slider-dot.ctrw-slider-active {
+    background: #0073aa;
+}
+
+/* ========== Responsive (Tablet & Mobile) ========== */
+@media (max-width: 992px) {
+    .ctrw-slider-slide {
+        min-width: calc(100% / 2 - 10px);
+    }
+}
+
+@media (max-width: 600px) {
     .ctrw-slider-slide {
         min-width: 100%;
-        padding: 15px;
-        box-sizing: border-box;
-        opacity: 0;
-        transition: var(--ctrw-transition);
-        transform: translateX(100%);
     }
+}
 
-    .ctrw-slider-slide.ctrw-slider-active {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.ctrw-slider-content
+{
+    max-width: 340px;
+}
 
-    .ctrw-slider-card {
-        background: var(--ctrw-bg);
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: var(--ctrw-shadow);
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .ctrw-slider-meta {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .ctrw-reviewer-avatar {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background-color: var(--ctrw-primary-light);
-        color: var(--ctrw-primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 18px;
-        margin-right: 15px;
-        flex-shrink: 0;
-    }
-
-    .ctrw-slider-author-info {
-        flex-grow: 1;
-    }
-
-    .ctrw-slider-author-name {
-        font-weight: 600;
-        color: var(--ctrw-text);
-        margin-bottom: 3px;
-    }
-
-    .ctrw-slider-author-location,
-    .ctrw-slider-date {
-        font-size: 13px;
-        color: var(--ctrw-text-light);
-    }
-
-    .ctrw-slider-time {
-        margin-left: 5px;
-    }
-
-    .ctrw-slider-rating {
-        margin-bottom: 15px;
-        line-height: 1;
-    }
-
-    .ctrw-slider-star {
-        font-size: 20px;
-        color: #ffc107;
-    }
-
-    .ctrw-slider-star.ctrw-slider-empty {
-        color: #e0e0e0;
-    }
-
-    .ctrw-slider-title {
-        font-size: 18px;
-        margin: 0 0 15px;
-        color: var(--ctrw-text);
-    }
-
-    .ctrw-slider-content {
-        flex-grow: 1;
-        margin-bottom: 20px;
-    }
-
-    .ctrw-slider-content p {
-        margin: 0;
-        color: var(--ctrw-text);
-        line-height: 1.6;
-    }
-
-    .ctrw-slider-response {
-        background: var(--ctrw-primary-light);
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 20px;
-        border-left: 3px solid var(--ctrw-primary);
-    }
-
-    .ctrw-slider-response-label {
-        font-weight: 600;
-        color: var(--ctrw-primary);
-        margin-bottom: 8px;
-        font-size: 14px;
-    }
-
-    .ctrw-slider-response-content {
-        color: var(--ctrw-text);
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .ctrw-slider-controls {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: 25px;
-        gap: 15px;
-    }
-
-    .ctrw-slider-prev,
-    .ctrw-slider-next {
-        background: var(--ctrw-bg);
-        border: 1px solid var(--ctrw-border);
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: var(--ctrw-transition);
-    }
-
-    .ctrw-slider-prev:hover,
-    .ctrw-slider-next:hover {
-        background: var(--ctrw-primary);
-        border-color: var(--ctrw-primary);
-        color: #fff;
-    }
-
-    .ctrw-slider-prev svg,
-    .ctrw-slider-next svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .ctrw-slider-dots {
-        display: flex;
-        gap: 8px;
-    }
-
-    .ctrw-slider-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #e0e0e0;
-        border: none;
-        padding: 0;
-        cursor: pointer;
-        transition: var(--ctrw-transition);
-    }
-
-    .ctrw-slider-dot.ctrw-slider-active {
-        background: var(--ctrw-primary);
-        transform: scale(1.2);
-    }
-
-    @media (max-width: 768px) {
-        .ctrw-slider-card {
-            padding: 20px;
-        }
-        
-        .ctrw-slider-controls {
-            margin-top: 15px;
-        }
-    }
 </style>
+
 
 <div class="ctrw-slider-container">
     <div class="ctrw-slider-wrapper">
@@ -367,81 +328,47 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const slides = document.querySelectorAll('.ctrw-slider-slide');
-        const dots = document.querySelectorAll('.ctrw-slider-dot');
-        const prevBtn = document.querySelector('.ctrw-slider-prev');
-        const nextBtn = document.querySelector('.ctrw-slider-next');
-        const slidesContainer = document.querySelector('.ctrw-slider-slides');
-        
-        let currentSlide = 0;
-        const slideCount = slides.length;
-        let slideInterval;
+document.addEventListener('DOMContentLoaded', function () {
+    const slidesContainer = document.querySelector('.ctrw-slider-slides');
+    const slides = document.querySelectorAll('.ctrw-slider-slide');
+    const prevButton = document.querySelector('.ctrw-slider-prev');
+    const nextButton = document.querySelector('.ctrw-slider-next');
+    const dots = document.querySelectorAll('.ctrw-slider-dot');
+    let currentIndex = 0;
 
-        // Initialize slider
-        function showSlide(index) {
-            // Update slides
-            slides.forEach((slide, i) => {
-                slide.classList.remove('ctrw-slider-active');
-                if (i === index) {
-                    slide.classList.add('ctrw-slider-active');
-                }
-            });
-            
-            // Update dots
-            dots.forEach((dot, i) => {
-                dot.classList.remove('ctrw-slider-active');
-                if (i === index) {
-                    dot.classList.add('ctrw-slider-active');
-                }
-            });
-            
-            currentSlide = index;
+    const slideCount = slides.length;
+    const visibleSlides = () => window.innerWidth <= 600 ? 1 : (window.innerWidth <= 992 ? 2 : 3);
+
+    function updateSliderPosition() {
+        const slideWidth = slides[0].offsetWidth + 20; // 20 = gap
+        const offset = currentIndex * slideWidth;
+        slidesContainer.style.transform = `translateX(-${offset}px)`;
+        dots.forEach(dot => dot.classList.remove('ctrw-slider-active'));
+        if (dots[currentIndex]) {
+            dots[currentIndex].classList.add('ctrw-slider-active');
         }
+    }
 
-        // Next slide
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slideCount;
-            showSlide(currentSlide);
-        }
-
-        // Previous slide
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-            showSlide(currentSlide);
-        }
-
-        // Auto-rotate slides
-        function startAutoSlide() {
-            slideInterval = setInterval(nextSlide, 5000);
-        }
-
-        // Pause on hover
-        const sliderWrapper = document.querySelector('.ctrw-slider-wrapper');
-        sliderWrapper.addEventListener('mouseenter', () => clearInterval(slideInterval));
-        sliderWrapper.addEventListener('mouseleave', startAutoSlide);
-
-        // Dot navigation
-        dots.forEach(dot => {
-            dot.addEventListener('click', function() {
-                const slideIndex = parseInt(this.getAttribute('data-index'));
-                showSlide(slideIndex);
-            });
-        });
-
-        // Button navigation
-        nextBtn.addEventListener('click', nextSlide);
-        prevBtn.addEventListener('click', prevSlide);
-
-        // Keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowRight') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
-
-        // Start auto-sliding
-        if (slideCount > 1) {
-            startAutoSlide();
-        }
+    prevButton.addEventListener('click', () => {
+        currentIndex = Math.max(currentIndex - 1, 0);
+        updateSliderPosition();
     });
+
+    nextButton.addEventListener('click', () => {
+        const maxIndex = slideCount - visibleSlides();
+        currentIndex = Math.min(currentIndex + 1, maxIndex);
+        updateSliderPosition();
+    });
+
+    dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            currentIndex = index;
+            updateSliderPosition();
+        });
+    });
+
+    window.addEventListener('resize', updateSliderPosition);
+    updateSliderPosition();
+});
 </script>
