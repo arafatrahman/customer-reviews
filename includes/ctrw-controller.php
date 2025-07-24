@@ -39,7 +39,6 @@ class Review_Controller {
         
         add_action('wp_ajax_ctrw_import_review_from_others', [$this, 'ctrw_import_reviews']);
         add_action('wp_ajax_nopriv_ctrw_import_review_from_others', [$this, 'ctrw_import_reviews']);
-        add_action( 'add_meta_boxes', [$this, 'ctrw_add_meta_box' ]);
         add_action( 'save_post', [$this, 'ctrw_save_meta_box_data' ] );
 
    //     add_filter('the_content', [$this, 'append_customer_reviews_shortcode']);
@@ -195,75 +194,6 @@ class Review_Controller {
         return $content;
     }
     */
-
-    // Add meta box to the review post type
-    public function ctrw_add_meta_box() {
-        add_meta_box(
-            'ctrw_meta_box',
-            __('Customer Reviews', 'wp_ctrw'),
-            [$this, 'render_ctrw_meta_box'],
-            ['post', 'page'], // Post types
-            'side',                      // Context: 'side' places it on the right
-            'high'                       // Priority
-        );
-    }
-
-    // Render the meta box content
-    public function render_ctrw_meta_box($post) {
-
-        // Retrieve current settings
-        $settings = [
-            'enable_reviews'      => get_post_meta($post->ID, '_ctrw_enable_reviews', true),
-          //  'enable_review_form'  => get_post_meta($post->ID, '_ctrw_enable_review_form', true),
-          //  'enable_review_list'  => get_post_meta($post->ID, '_ctrw_enable_review_list', true),
-        ];
-
-        // Add nonce field for security
-        wp_nonce_field('ctrw_meta_box_nonce', 'ctrw_meta_box_nonce');
-
-        // Enable customer reviews option
-        echo '<p>';
-        echo '<label for="enable_reviews">';
-        echo '<input type="checkbox" id="enable_reviews" name="enable_reviews" value="1" ' . checked(1, isset($settings['enable_reviews']) ? $settings['enable_reviews'] : 1, false) . ' />';
-        echo __('Enable Customer Reviews For This Page', 'wp_cr');
-        echo '</label>';
-        echo '</p>';
-
-        // Enable review form option
-        /*
-        echo '<p>';
-        echo '<label for="enable_review_form">';
-        echo '<input type="checkbox" id="enable_review_form" name="enable_review_form" value="1" ' . checked(1, isset($settings['enable_review_form']) ? $settings['enable_review_form'] : 1, false) . ' />';
-        echo __('Display Review Form', 'wp_cr');
-        echo '</label>';
-        echo '</p>';
-
-        // Enable review list option
-        echo '<p>';
-        echo '<label for="enable_review_list">';
-        echo '<input type="checkbox" id="enable_review_list" name="enable_review_list" value="1" ' . checked(1, isset($settings['enable_review_list']) ? $settings['enable_review_list'] : 1, false) . ' />';
-        echo __('Display Review List', 'wp_cr');
-        echo '</label>';
-        echo '</p>';
-        */
-    }
-    // Save meta box data
-    public function ctrw_save_meta_box_data($post_id) {
-        // Check nonce for security
-        if (!isset($_POST['ctrw_meta_box_nonce']) || !wp_verify_nonce($_POST['ctrw_meta_box_nonce'], 'ctrw_meta_box_nonce')) {
-            return;
-        }
-
-        // Check if the user has permission to save data
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
-
-        // Save the settings as post meta for this post/page only
-        update_post_meta($post_id, '_ctrw_enable_reviews', isset($_POST['enable_reviews']) ? 1 : 0);
-     //   update_post_meta($post_id, '_ctrw_enable_review_form', isset($_POST['enable_review_form']) ? 1 : 0);
-      //  update_post_meta($post_id, '_ctrw_enable_review_list', isset($_POST['enable_review_list']) ? 1 : 0);
-    }
  
 
     // Add menu pages
