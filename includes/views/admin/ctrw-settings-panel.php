@@ -235,27 +235,27 @@
         <div class="form-group tab-section" id="tab-display" style="display:none">
             <h3><?php esc_html_e('Shortcodes', 'wp_cr'); ?></h3>
             <div class="shortcode-section">
-                <label for="shortcode">Form Shortcode:</label>
+                <label for="shortcode">Reviews Form:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_form]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_form]')">Copy</button>
             </div>
             <div class="shortcode-section">
-                <label for="shortcode">Review Summary</label>
+                <label for="shortcode">Reviews Summary:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_summary]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_summary]')">Copy</button>
             </div>
             <div class="shortcode-section">
-                <label for="shortcode">Review Lists Shortcode:</label>
+                <label for="shortcode">Reviews List Widget:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_lists]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_lists]')">Copy</button>
             </div>
             <div class="shortcode-section">
-                <label for="shortcode">Review Slider</label>
+                <label for="shortcode">Reviews Slider Widget:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_slider]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_slider]')">Copy</button>
             </div>
                         <div class="shortcode-section">
-                <label for="shortcode">Review Floating Widget</label>
+                <label for="shortcode">Reviews Floating Widget:</label>
                 <input type="text" id="shortcode" value="[wp_ctrw_widget]" readonly>
                 <button type="button" class="copy-button" onclick="navigator.clipboard.writeText('[wp_ctrw_widget]')">Copy</button>
             </div>
