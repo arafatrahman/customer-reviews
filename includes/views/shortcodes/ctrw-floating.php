@@ -169,7 +169,7 @@ $display_reviews = array_slice($reviews, 0, $reviews_per_page);
 .ctrw-floating-content {
     display: none;
     background: var(--ctrw-bg);
-    border-radius: 12px 0 12px 12px;
+    border-radius: 0px 0 12px 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
     width: 380px;
     max-height: 70vh;
