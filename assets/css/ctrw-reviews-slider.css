@@ -1,108 +1,169 @@
- .ctrw_reviews-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .ctrw_reviews-slider {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-        }
-        
-        .ctrw_review {
-            min-width: 100%;
-            padding: 25px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
-        }
-        
-        .ctrw_review-header {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-        
-        .ctrw_review-author-details {
-            margin-bottom: 10px;
-        }
-        
-        .ctrw_review-author {
-            font-weight: bold;
-            font-size: 16px;
-        }
-        
-        .ctrw_review-date {
-            color: #666;
-            font-size: 13px;
-            margin-top: 5px;
-        }
-        
-        .ctrw_stars {
-            color: #FFD700;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .ctrw_star.filled {
-            color: #FFD700;
-        }
-        
-        .ctrw_star.empty {
-            color: #ddd;
-        }
-        
-        .ctrw_review-title {
-            font-weight: bold;
-            font-size: 18px;
-            margin: 10px 0;
-        }
-        
-        .ctrw_review-content {
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        
-        .ctrw_admin-response {
-            background-color: #f8f8f8;
-            padding: 10px;
-            border-left: 3px solid #0073aa;
-            margin-top: 15px;
-        }
-        
-        .ctrw_admin-response strong {
-            color: #0073aa;
-        }
-        
-        .ctrw_controls {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .ctrw_control-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #ccc;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .ctrw_control-btn.ctrw_active {
-            background: #555;
-        }
+    /* ========== Slider Container ========== */
+.ctrw-slider-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+/* ========== Slides Wrapper ========== */
+.ctrw-slider-slides {
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    gap: 20px;
+}
 
-        
+/* ========== Each Slide ========== */
+.ctrw-slider-slide {
+    min-width: calc(100% / 3 - 14px); /* 3 slides per view */
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 20px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
 
+/* ========== Card Content ========== */
+.ctrw-slider-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+.ctrw-slider-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
+.ctrw-reviewer-avatar {
+    width: 40px;
+    height: 40px;
+    background: #0073aa;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+}
 
+.ctrw-slider-author-info {
+    flex-grow: 1;
+    font-size: 14px;
+    color: #333;
+}
 
+.ctrw-slider-author-name {
+    font-weight: bold;
+}
 
+.ctrw-slider-author-location,
+.ctrw-slider-date {
+    font-size: 12px;
+    color: #666;
+}
 
+.ctrw-slider-rating {
+    color: #FFC107;
+    font-size: 18px;
+}
+
+.ctrw-slider-star {
+    margin-right: 2px;
+}
+
+.ctrw-slider-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.ctrw-slider-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #444;
+    margin: 0;
+}
+
+.ctrw-slider-response {
+    margin-top: 10px;
+    border-left: 4px solid #0073aa;
+    padding-left: 12px;
+    font-size: 13px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.ctrw-slider-response-label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* ========== Slider Controls ========== */
+.ctrw-slider-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    gap: 10px;
+}
+
+.ctrw-slider-prev,
+.ctrw-slider-next {
+    background: #0073aa;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.ctrw-slider-prev:hover,
+.ctrw-slider-next:hover {
+    background: #005f8d;
+}
+
+/* ========== Pagination Dots ========== */
+.ctrw-slider-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.ctrw-slider-dot {
+    width: 10px;
+    height: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+}
+
+.ctrw-slider-dot.ctrw-slider-active {
+    background: #0073aa;
+}
+
+/* ========== Responsive (Tablet & Mobile) ========== */
+@media (max-width: 992px) {
+    .ctrw-slider-slide {
+        min-width: calc(100% / 2 - 10px);
+    }
+}
+
+@media (max-width: 600px) {
+    .ctrw-slider-slide {
+        min-width: 100%;
+    }
+}
+
+.ctrw-slider-content
+{
+    max-width: 340px;
+}
