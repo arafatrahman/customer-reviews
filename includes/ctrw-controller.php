@@ -332,6 +332,7 @@ class Review_Controller {
             wp_enqueue_style('ctrw-review-form', CTRW_PLUGIN_ASSETS . 'css/ctrw-form.css', [], '1.0.0');
             wp_enqueue_style('ctrw-reviews-list', CTRW_PLUGIN_ASSETS . 'css/ctrw-reviews-list.css', [], '1.0.0');
             wp_enqueue_style('ctrw-reviews-slider', CTRW_PLUGIN_ASSETS . 'css/ctrw-reviews-slider.css', [], '1.0.0');
+            wp_enqueue_style('ctrw-reviews-floating', CTRW_PLUGIN_ASSETS . 'css/ctrw-reviews-floating.css', [], '1.0.0');
             // Add dynamic CSS
            
            $settings = get_option('customer_reviews_settings');
