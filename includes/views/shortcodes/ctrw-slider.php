@@ -4,6 +4,221 @@ if (!defined('ABSPATH')) {
 }
 $reviews = (new CTRW_Review_Model())->get_reviews('approved');
 ?>
+<style>
+    :root {
+        --ctrw-primary: #4361ee;
+        --ctrw-primary-light: #f0f5ff;
+        --ctrw-text: #333;
+        --ctrw-text-light: #666;
+        --ctrw-border: #e0e0e0;
+        --ctrw-bg: #fff;
+        --ctrw-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --ctrw-transition: all 0.3s ease;
+    }
+
+    .ctrw-slider-container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+    }
+
+    .ctrw-slider-wrapper {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+    }
+
+    .ctrw-slider-slides {
+        display: flex;
+        transition: var(--ctrw-transition);
+        will-change: transform;
+    }
+
+    .ctrw-slider-slide {
+        min-width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        opacity: 0;
+        transition: var(--ctrw-transition);
+        transform: translateX(100%);
+    }
+
+    .ctrw-slider-slide.ctrw-slider-active {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .ctrw-slider-card {
+        background: var(--ctrw-bg);
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: var(--ctrw-shadow);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .ctrw-slider-meta {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .ctrw-reviewer-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--ctrw-primary-light);
+        color: var(--ctrw-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+
+    .ctrw-slider-author-info {
+        flex-grow: 1;
+    }
+
+    .ctrw-slider-author-name {
+        font-weight: 600;
+        color: var(--ctrw-text);
+        margin-bottom: 3px;
+    }
+
+    .ctrw-slider-author-location,
+    .ctrw-slider-date {
+        font-size: 13px;
+        color: var(--ctrw-text-light);
+    }
+
+    .ctrw-slider-time {
+        margin-left: 5px;
+    }
+
+    .ctrw-slider-rating {
+        margin-bottom: 15px;
+        line-height: 1;
+    }
+
+    .ctrw-slider-star {
+        font-size: 20px;
+        color: #ffc107;
+    }
+
+    .ctrw-slider-star.ctrw-slider-empty {
+        color: #e0e0e0;
+    }
+
+    .ctrw-slider-title {
+        font-size: 18px;
+        margin: 0 0 15px;
+        color: var(--ctrw-text);
+    }
+
+    .ctrw-slider-content {
+        flex-grow: 1;
+        margin-bottom: 20px;
+    }
+
+    .ctrw-slider-content p {
+        margin: 0;
+        color: var(--ctrw-text);
+        line-height: 1.6;
+    }
+
+    .ctrw-slider-response {
+        background: var(--ctrw-primary-light);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border-left: 3px solid var(--ctrw-primary);
+    }
+
+    .ctrw-slider-response-label {
+        font-weight: 600;
+        color: var(--ctrw-primary);
+        margin-bottom: 8px;
+        font-size: 14px;
+    }
+
+    .ctrw-slider-response-content {
+        color: var(--ctrw-text);
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .ctrw-slider-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 25px;
+        gap: 15px;
+    }
+
+    .ctrw-slider-prev,
+    .ctrw-slider-next {
+        background: var(--ctrw-bg);
+        border: 1px solid var(--ctrw-border);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--ctrw-transition);
+    }
+
+    .ctrw-slider-prev:hover,
+    .ctrw-slider-next:hover {
+        background: var(--ctrw-primary);
+        border-color: var(--ctrw-primary);
+        color: #fff;
+    }
+
+    .ctrw-slider-prev svg,
+    .ctrw-slider-next svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .ctrw-slider-dots {
+        display: flex;
+        gap: 8px;
+    }
+
+    .ctrw-slider-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: var(--ctrw-transition);
+    }
+
+    .ctrw-slider-dot.ctrw-slider-active {
+        background: var(--ctrw-primary);
+        transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+        .ctrw-slider-card {
+            padding: 20px;
+        }
+        
+        .ctrw-slider-controls {
+            margin-top: 15px;
+        }
+    }
+</style>
+
 <div class="ctrw-slider-container">
     <div class="ctrw-slider-wrapper">
         <div class="ctrw-slider-slides">
@@ -32,7 +247,7 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
                 }
 
                 $date_format = get_option('customer_reviews_settings')['date_format'] ?? 'MM/DD/YYYY';
-                $include_time = get_option('customer_reviews_settings')['include_time'];
+                $include_time = get_option('customer_reviews_settings')['include_time'] ?? false;
 
                 $formatted_date = '';
                 if (!empty($review->created_at)) {
@@ -151,343 +366,82 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
     </div>
 </div>
 
-<style>
-.ctrw-slider-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.ctrw-slider-wrapper {
-    position: relative;
-    text-align: center;
-}
-
-.ctrw-slider-slides {
-    position: relative;
-    height: 400px;
-    overflow: hidden;
-    margin: 0 auto;
-}
-
-.ctrw-slider-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    transform: translateX(20px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.ctrw-slider-slides
- {
-    width: 40%;
-}
-
-.ctrw-slider-slide.ctrw-slider-active {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.ctrw-slider-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 30px;
-    max-width: 700px;
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.ctrw-slider-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.ctrw-reviewer-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    background-color:rgb(218, 218, 218);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 15px;
-}
-.ctrw-slider-author-info {
-    text-align: center;
-}
-
-.ctrw-slider-author-name {
-    font-weight: 600;
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.ctrw-slider-author-location {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.ctrw-slider-date {
-    font-size: 13px;
-    color: #888;
-}
-
-.ctrw-slider-time {
-    margin-left: 5px;
-}
-
-.ctrw-slider-rating {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-.ctrw-slider-star {
-    font-size: 24px;
-    margin: 0 3px;
-}
-
-.ctrw-slider-star.ctrw-slider-filled {
-    color: #FFB300;
-}
-
-.ctrw-slider-star.ctrw-slider-empty {
-    color: #E0E0E0;
-}
-
-.ctrw-slider-title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 15px;
-    color: #222;
-    text-align: center;
-}
-
-.ctrw-slider-content {
-    color: #444;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    text-align: center;
-    max-width: 600px;
-}
-
-.ctrw-slider-response {
-    background: #F8F9FA;
-    border-radius: 8px;
-    padding: 15px;
-    margin-top: 20px;
-    border-left: 3px solid #4CAF50;
-    text-align: center;
-    max-width: 600px;
-}
-
-.ctrw-slider-response-label {
-    font-weight: 600;
-    color: #4CAF50;
-    margin-bottom: 8px;
-    font-size: 14px;
-}
-
-.ctrw-slider-response-content {
-    color: #555;
-    font-size: 14px;
-    line-height: 1.5;
-}
-
-.ctrw-slider-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.ctrw-slider-prev, .ctrw-slider-next {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 50%;
-    background: #f5f5f5;
-    color: #333;
-    transition: all 0.3s ease;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ctrw-slider-prev:hover, .ctrw-slider-next:hover {
-    background: #4CAF50;
-    color: white;
-}
-
-.ctrw-slider-prev svg, .ctrw-slider-next svg {
-    width: 24px;
-    height: 24px;
-}
-
-.ctrw-slider-dots {
-    display: flex;
-    gap: 10px;
-}
-
-.ctrw-slider-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #E0E0E0;
-    cursor: pointer;
-    border: none;
-    padding: 0;
-    transition: all 0.3s ease;
-}
-
-.ctrw-slider-dot.ctrw-slider-active {
-    background: #4CAF50;
-    transform: scale(1.2);
-}
-
-@media (max-width: 768px) {
-    .ctrw-slider-container {
-        padding: 15px;
-    }
-    
-    .ctrw-slider-slides {
-        height: 450px;
-    }
-    
-    .ctrw-slider-card {
-        padding: 20px;
-    }
-    
-    .ctrw-slider-avatar img {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .ctrw-slider-title {
-        font-size: 18px;
-    }
-    
-    .ctrw-slider-content {
-        font-size: 15px;
-    }
-}
-</style>
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const slides = document.querySelectorAll('.ctrw-slider-slide');
-    const dots = document.querySelectorAll('.ctrw-slider-dot');
-    const prevBtn = document.querySelector('.ctrw-slider-prev');
-    const nextBtn = document.querySelector('.ctrw-slider-next');
-    let currentIndex = 0;
-    let autoSlideInterval;
-    const slideDuration = 5000; // 5 seconds
-    
-    // Initialize slider
-    function showSlide(index) {
-        // Hide all slides
-        slides.forEach(slide => {
-            slide.classList.remove('ctrw-slider-active');
-        });
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.ctrw-slider-slide');
+        const dots = document.querySelectorAll('.ctrw-slider-dot');
+        const prevBtn = document.querySelector('.ctrw-slider-prev');
+        const nextBtn = document.querySelector('.ctrw-slider-next');
+        const slidesContainer = document.querySelector('.ctrw-slider-slides');
         
-        // Show current slide
-        slides[index].classList.add('ctrw-slider-active');
-        
-        // Update dots
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        let slideInterval;
+
+        // Initialize slider
+        function showSlide(index) {
+            // Update slides
+            slides.forEach((slide, i) => {
+                slide.classList.remove('ctrw-slider-active');
+                if (i === index) {
+                    slide.classList.add('ctrw-slider-active');
+                }
+            });
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.remove('ctrw-slider-active');
+                if (i === index) {
+                    dot.classList.add('ctrw-slider-active');
+                }
+            });
+            
+            currentSlide = index;
+        }
+
+        // Next slide
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slideCount;
+            showSlide(currentSlide);
+        }
+
+        // Previous slide
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+            showSlide(currentSlide);
+        }
+
+        // Auto-rotate slides
+        function startAutoSlide() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+
+        // Pause on hover
+        const sliderWrapper = document.querySelector('.ctrw-slider-wrapper');
+        sliderWrapper.addEventListener('mouseenter', () => clearInterval(slideInterval));
+        sliderWrapper.addEventListener('mouseleave', startAutoSlide);
+
+        // Dot navigation
         dots.forEach(dot => {
-            dot.classList.remove('ctrw-slider-active');
+            dot.addEventListener('click', function() {
+                const slideIndex = parseInt(this.getAttribute('data-index'));
+                showSlide(slideIndex);
+            });
         });
-        dots[index].classList.add('ctrw-slider-active');
-        
-        currentIndex = index;
-    }
-    
-    // Next slide
-    function nextSlide() {
-        const newIndex = (currentIndex + 1) % slides.length;
-        showSlide(newIndex);
-        resetAutoSlide();
-    }
-    
-    // Previous slide
-    function prevSlide() {
-        const newIndex = (currentIndex - 1 + slides.length) % slides.length;
-        showSlide(newIndex);
-        resetAutoSlide();
-    }
-    
-    // Auto slide
-    function startAutoSlide() {
-        autoSlideInterval = setInterval(nextSlide, slideDuration);
-    }
-    
-    // Reset auto slide timer
-    function resetAutoSlide() {
-        clearInterval(autoSlideInterval);
-        startAutoSlide();
-    }
-    
-    // Event listeners
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-            const slideIndex = parseInt(this.getAttribute('data-index'));
-            showSlide(slideIndex);
-            resetAutoSlide();
+
+        // Button navigation
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
         });
-    });
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'ArrowRight') {
-            nextSlide();
-        } else if (e.key === 'ArrowLeft') {
-            prevSlide();
+
+        // Start auto-sliding
+        if (slideCount > 1) {
+            startAutoSlide();
         }
     });
-    
-    // Start auto sliding
-    if (slides.length > 1) {
-        startAutoSlide();
-        
-        // Pause on hover
-        const sliderContainer = document.querySelector('.ctrw-slider-wrapper');
-        sliderContainer.addEventListener('mouseenter', () => {
-            clearInterval(autoSlideInterval);
-        });
-        
-        sliderContainer.addEventListener('mouseleave', () => {
-            startAutoSlide();
-        });
-    }
-    
-    // Show first slide initially
-    showSlide(0);
-});
 </script>

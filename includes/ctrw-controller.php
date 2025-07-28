@@ -327,7 +327,9 @@ class Review_Controller {
     public function review_enqueue_scripts() {
             wp_enqueue_script('review-script', CTRW_PLUGIN_ASSETS . 'js/review-script.js', ['jquery'], '1.0.0', true);
             wp_localize_script('review-script', 'ctrw_ajax', ['ajax_url' => admin_url('admin-ajax.php')]);
-            wp_enqueue_style('review-style', CTRW_PLUGIN_ASSETS . 'css/ctrw-frontend.css', [], '1.0.0');
+            wp_enqueue_style('ctrw-review-form', CTRW_PLUGIN_ASSETS . 'css/ctrw-form.css', [], '1.0.0');
+            wp_enqueue_style('ctrw-reviews-list', CTRW_PLUGIN_ASSETS . 'css/ctrw-reviews-list.css', [], '1.0.0');
+            wp_enqueue_style('ctrw-reviews-slider', CTRW_PLUGIN_ASSETS . 'css/ctrw-reviews-slider.css', [], '1.0.0');
             // Add dynamic CSS
            
            $settings = get_option('customer_reviews_settings');
@@ -342,7 +344,7 @@ class Review_Controller {
                    color: {$star_color};
                }
            ";
-           wp_add_inline_style('review-style', $custom_css);
+           wp_add_inline_style('ctrw-review-form', $custom_css);
     }
 
     public function wp_review_admin_styles() {

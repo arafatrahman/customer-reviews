@@ -41,7 +41,7 @@ function wp_customer_reviews_table_create() {
         name VARCHAR(255) COLLATE utf8mb4_general_ci NOT NULL,
         email VARCHAR(255) COLLATE utf8mb4_general_ci NOT NULL,
         phone VARCHAR(18) COLLATE utf8mb4_general_ci DEFAULT NULL,
-        website VARCHAR(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+        website VARCHAR(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
         rating INT(1) NOT NULL,
         comment TEXT COLLATE utf8mb4_general_ci NOT NULL,
         city VARCHAR(255) COLLATE utf8mb4_general_ci NOT NULL,
