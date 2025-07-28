@@ -27,6 +27,14 @@
                     <input type="number" name="reviews_per_page" id="reviews_per_page" 
                         value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_page'] ?? 12) ?>">
 
+                        <label for="reviews_per_row_slder"><?php esc_html_e('Reviews per Row:', 'wp_cr'); ?></label>
+                        <input type="number" name="reviews_per_row_slder" id="reviews_per_row_slder"
+                            value="<?= esc_attr(get_option('customer_reviews_settings')['reviews_per_row_slder'] ?? 3) ?>" min="1" max="10">
+                        <span class="ctrw-tooltip">
+                            <span class="dashicons dashicons-editor-help"></span>
+                            <span class="tooltiptext tooltip-right-msg"><?php esc_html_e('Number of reviews to display horizontally in the Slider.', 'wp_cr'); ?></span>
+                        </span>
+
                     <label for="date_format"><?php esc_html_e('Date Format:', 'wp_cr'); ?></label>
                     <select name="date_format" id="date_format">
                         <option value="MM/DD/YYYY" <?= selected(get_option('customer_reviews_settings')['date_format'] ?? '', 'MM/DD/YYYY', false) ?>>MM/DD/YYYY</option>

@@ -269,6 +269,7 @@ class Review_Controller {
                 'comment_font_style' => sanitize_text_field($_POST['comment_font_style'] ?? 'normal'),
                 'comment_box_fill_color' => sanitize_hex_color($_POST['comment_box_fill_color'] ?? '#f9f9f9'),
                 'reviews_per_page' => intval(sanitize_text_field($_POST['reviews_per_page'] ?? 10)),
+                'reviews_per_row_slder' => intval(sanitize_text_field($_POST['reviews_per_row_slder'] ?? 3)),
                 'date_format' => sanitize_text_field($_POST['date_format'] ?? 'MM/DD/YYYY'),
                 'include_time' => isset($_POST['include_time']) ? 1 : 0,
                 'star_color' => sanitize_hex_color($_POST['star_color'] ?? '#fbbc04'),

@@ -2,11 +2,11 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+$horizontal_count =  $reviews_per_page = get_option('customer_reviews_settings')['reviews_per_row_slder'] ?? 3;
 $reviews = (new CTRW_Review_Model())->get_reviews('approved');
 ?>
 
-
-<div class="ctrw-slider-container">
+<div class="ctrw-slider-container" data-horizontal-count="<?php echo esc_attr($horizontal_count); ?>">
     <div class="ctrw-slider-wrapper">
         <div class="ctrw-slider-slides">
             <?php
@@ -155,46 +155,65 @@ $reviews = (new CTRW_Review_Model())->get_reviews('approved');
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const slidesContainer = document.querySelector('.ctrw-slider-slides');
-        const slides = document.querySelectorAll('.ctrw-slider-slide');
-        const prevButton = document.querySelector('.ctrw-slider-prev');
-        const nextButton = document.querySelector('.ctrw-slider-next');
-        const dots = document.querySelectorAll('.ctrw-slider-dot');
-        let currentIndex = 0;
-
-        const slideCount = slides.length;
-        const visibleSlides = () => window.innerWidth <= 600 ? 1 : (window.innerWidth <= 992 ? 2 : 3);
-
-        function updateSliderPosition() {
-            const slideWidth = slides[0].offsetWidth + 20; // 20 = gap
-            const offset = currentIndex * slideWidth;
-            slidesContainer.style.transform = `translateX(-${offset}px)`;
-            dots.forEach(dot => dot.classList.remove('ctrw-slider-active'));
-            if (dots[currentIndex]) {
-                dots[currentIndex].classList.add('ctrw-slider-active');
+        const sliderContainers = document.querySelectorAll('.ctrw-slider-container');
+        
+        sliderContainers.forEach(container => {
+            const slidesContainer = container.querySelector('.ctrw-slider-slides');
+            const slides = container.querySelectorAll('.ctrw-slider-slide');
+            const prevButton = container.querySelector('.ctrw-slider-prev');
+            const nextButton = container.querySelector('.ctrw-slider-next');
+            const dots = container.querySelectorAll('.ctrw-slider-dot');
+            let currentIndex = 0;
+            
+            // Get horizontal count from data attribute or default to 3
+            const horizontalCount = parseInt(container.dataset.horizontalCount) || 3;
+            
+            function updateSliderPosition() {
+                if (slides.length === 0) return;
+                
+                const slideWidth = slides[0].offsetWidth + 20; // 20 = gap
+                const offset = currentIndex * slideWidth * horizontalCount;
+                slidesContainer.style.transform = `translateX(-${offset}px)`;
+                
+                dots.forEach(dot => dot.classList.remove('ctrw-slider-active'));
+                if (dots[currentIndex]) {
+                    dots[currentIndex].classList.add('ctrw-slider-active');
+                }
+                
+                // Update slide widths based on horizontal count
+                const slidePercentage = 100 / horizontalCount;
+                slides.forEach(slide => {
+                    slide.style.minWidth = `calc(${slidePercentage}% - 20px)`;
+                });
             }
-        }
-
-        prevButton.addEventListener('click', () => {
-            currentIndex = Math.max(currentIndex - 1, 0);
-            updateSliderPosition();
-        });
-
-        nextButton.addEventListener('click', () => {
-            const maxIndex = slideCount - visibleSlides();
-            currentIndex = Math.min(currentIndex + 1, maxIndex);
-            updateSliderPosition();
-        });
-
-        dots.forEach(dot => {
-            dot.addEventListener('click', (e) => {
-                const index = parseInt(e.target.dataset.index);
-                currentIndex = index;
+            
+            function visibleSlides() {
+                if (window.innerWidth <= 600) return 1;
+                if (window.innerWidth <= 992) return Math.min(2, horizontalCount);
+                return horizontalCount;
+            }
+            
+            prevButton?.addEventListener('click', () => {
+                currentIndex = Math.max(currentIndex - 1, 0);
                 updateSliderPosition();
             });
+            
+            nextButton?.addEventListener('click', () => {
+                const maxIndex = Math.max(slides.length - visibleSlides(), 0);
+                currentIndex = Math.min(currentIndex + 1, maxIndex);
+                updateSliderPosition();
+            });
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const index = parseInt(e.target.dataset.index);
+                    currentIndex = index;
+                    updateSliderPosition();
+                });
+            });
+            
+            window.addEventListener('resize', updateSliderPosition);
+            updateSliderPosition();
         });
-
-        window.addEventListener('resize', updateSliderPosition);
-        updateSliderPosition();
     });
 </script>
